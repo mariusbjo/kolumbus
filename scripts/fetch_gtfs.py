@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from google.transit import gtfs_realtime_pb2
 
 # Entur GTFS-RT Vehicle Positions feed
-URL = "https://api.entur.io/realtime/v1/vehicle-positions"
+URL = "https://api.entur.io/realtime/v2/vehicles/graphql"
 HEADERS = {
     "ET-Client-Name": os.getenv("ET_CLIENT_NAME", "marius-kolumbus-demo")
 }
