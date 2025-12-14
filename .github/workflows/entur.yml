@@ -1,0 +1,50 @@
+# .github/workflows/entur.yml
+name: Fetch Entur data and publish
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"   # hvert 5. minutt
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    env:
+      ET_CLIENT_NAME: "marius-bjornor-kolumbus-pages-demo"  # Entur krever ET-Client-Name
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Fetch Entur data
+        run: python scripts/fetch_entur.py
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+
+      - name: Commit changes
+        run: |
+          if ! git diff --quiet data/entur.json; then
+            git add data/entur.json
+            git commit -m "Update Entur data"
+          else
+            echo "No changes to commit."
+          fi
+
+      - name: Rebase and push
+        run: |
+          git pull --rebase
+          git push
