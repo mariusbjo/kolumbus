@@ -11,10 +11,10 @@ HEADERS = {
 QUERY = """
 {
   vehicles(codespaceId:"KOL") {
-    id
+    vehicleId
     lastUpdated
     location { latitude longitude }
-    line { publicCode name }
+    line { publicCode }
     bearing
   }
 }
@@ -32,10 +32,9 @@ def main():
         vehicles = payload.get("data", {}).get("vehicles", [])
         cleaned = [
             {
-                "id": v.get("id"),
+                "vehicleId": v.get("vehicleId"),
                 "line": {
-                    "publicCode": v.get("line", {}).get("publicCode"),
-                    "name": v.get("line", {}).get("name")
+                    "publicCode": v.get("line", {}).get("publicCode")
                 },
                 "lat": v.get("location", {}).get("latitude"),
                 "lon": v.get("location", {}).get("longitude"),
