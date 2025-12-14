@@ -1,0 +1,55 @@
+# .github/workflows/kolumbus.yml
+name: Fetch Kolumbus bus data
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"   # kjør hvert 5. minutt
+  workflow_dispatch:         # manuell trigger fra Actions-fanen
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    env:
+      ET_CLIENT_NAME: "marius-kolumbus-demo"  # Entur krever ET-Client-Name header
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Fetch Kolumbus bus data
+        run: python scripts/fetch_entur.py
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+
+      - name: Commit changes safely
+        run: |
+          if [ -f data/kolumbus.json ]; then
+            if ! git diff --quiet -- data/kolumbus.json; then
+              git add data/kolumbus.json
+              git commit -m "Update Kolumbus bus data"
+            else
+              echo "No changes to commit."
+            fi
+          else
+            git add data/kolumbus.json
+            git commit -m "Add Kolumbus bus data"
+          fi
+
+      - name: Rebase and push
+        run: |
+          git pull --rebase
+          git push
