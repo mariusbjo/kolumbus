@@ -1,0 +1,34 @@
+<!-- index.html -->
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8">
+  <title>Kolumbus sanntid (Entur)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4QJmfG/4YkN2v2Z3F1uBf3iQbC1pK3eT1LhQ6ZbMkU="
+    crossorigin=""
+  />
+  <style>
+    html, body { height: 100%; margin: 0; }
+    #map { height: 100vh; }
+    .meta { position: absolute; z-index: 999; background: rgba(255,255,255,0.9); padding: 6px 10px; margin: 8px; border-radius: 6px; font: 14px/1.4 system-ui, sans-serif; }
+  </style>
+</head>
+<body>
+  <div class="meta">
+    <strong>Kolumbus sanntid</strong><br>
+    Data fra Entur, oppdatert automatisk av GitHub Actions.
+  </div>
+  <div id="map"></div>
+
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-o9N1j7kPszwCwHkBsycd0zVbZL3rjZ9n+1G6ZV0rj0M="
+    crossorigin=""
+  ></script>
+  <script src="assets/script.js"></script>
+</body>
+</html>
