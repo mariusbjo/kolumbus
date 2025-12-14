@@ -9,21 +9,22 @@ HEADERS = {
 }
 
 QUERY = """
-query KolumbusBuses {
-  vehicles(modes: [bus], bbox: {
-    minLat: 58.80,
-    minLon: 5.40,
-    maxLat: 59.10,
-    maxLon: 6.10
+query AllVehicles {
+  vehicles(bbox: {
+    minLat: 58.20,
+    minLon: 4.80,
+    maxLat: 59.60,
+    maxLon: 6.60
   }) {
     id
+    mode
     line { publicCode name }
     latitude
     longitude
-    bearing
     updatedAt
   }
 }
+
 """
 
 OUT_PATH = "data/kolumbus.json"
