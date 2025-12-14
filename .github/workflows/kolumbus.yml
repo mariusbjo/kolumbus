@@ -1,5 +1,5 @@
 # .github/workflows/kolumbus.yml
-name: Fetch Kolumbus bus data
+name: Fetch Kolumbus bus data and publish frontend
 
 on:
   schedule:
@@ -53,3 +53,16 @@ jobs:
         run: |
           git pull --rebase
           git push
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: fetch
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
