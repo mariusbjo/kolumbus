@@ -35,18 +35,23 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
 
-      - name: Commit changes safely
+      - name: Commit changes safely (kolumbus.json + debug.json)
         run: |
+          files=""
           if [ -f data/kolumbus.json ]; then
-            if ! git diff --quiet -- data/kolumbus.json; then
-              git add data/kolumbus.json
-              git commit -m "Update Kolumbus bus data"
+            files="$files data/kolumbus.json"
+          fi
+          if [ -f data/debug.json ]; then
+            files="$files data/debug.json"
+          fi
+
+          if [ -n "$files" ]; then
+            git add $files
+            if ! git diff --cached --quiet; then
+              git commit -m "Update Kolumbus data (with debug if empty)"
             else
               echo "No changes to commit."
             fi
-          else
-            git add data/kolumbus.json
-            git commit -m "Add Kolumbus bus data"
           fi
 
       - name: Rebase and push
