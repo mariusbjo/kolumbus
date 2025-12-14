@@ -1,8 +1,1039 @@
 {
   "meta": {
     "source": "Entur Realtime Vehicles API (Kolumbus)",
-    "generatedAt": "2025-12-14T19:30:40.939800+00:00",
-    "count": 0
+    "generatedAt": "2025-12-14T19:32:34.896735+00:00",
+    "count": 103
   },
-  "vehicles": []
+  "vehicles": [
+    {
+      "vehicleId": "2322",
+      "line": {
+        "publicCode": "42"
+      },
+      "lat": 58.9280225,
+      "lon": 5.6075757,
+      "bearing": 5.504415512084961,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2343",
+      "line": {
+        "publicCode": "4"
+      },
+      "lat": 58.9474595,
+      "lon": 5.7084733,
+      "bearing": -134.86660766601562,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2346",
+      "line": {
+        "publicCode": "4"
+      },
+      "lat": 58.9704203,
+      "lon": 5.7353662,
+      "bearing": 30.881418228149414,
+      "lastUpdated": "2025-12-14T19:30:20Z"
+    },
+    {
+      "vehicleId": "2358",
+      "line": {
+        "publicCode": "14"
+      },
+      "lat": 58.9692237,
+      "lon": 5.7309025,
+      "bearing": -27.669649124145508,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "3036",
+      "line": {
+        "publicCode": "23"
+      },
+      "lat": 58.7830072,
+      "lon": 5.8274147,
+      "bearing": -56.38296127319336,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "5503",
+      "line": {
+        "publicCode": "202"
+      },
+      "lat": 59.4060138,
+      "lon": 5.3328542,
+      "bearing": -68.32341766357422,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "259216000",
+      "line": {
+        "publicCode": "1130"
+      },
+      "lat": 59.170233333333336,
+      "lon": 5.499638333333333,
+      "bearing": 280.0,
+      "lastUpdated": "2025-12-14T19:32:29.791Z"
+    },
+    {
+      "vehicleId": "3031",
+      "line": {
+        "publicCode": "21"
+      },
+      "lat": 58.9205023,
+      "lon": 5.8595135,
+      "bearing": 72.69294738769531,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "5514",
+      "line": {
+        "publicCode": "201"
+      },
+      "lat": 59.3950242,
+      "lon": 5.3147091,
+      "bearing": 67.43705749511719,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2345",
+      "line": {
+        "publicCode": "11"
+      },
+      "lat": 58.9212458,
+      "lon": 5.7100085,
+      "bearing": 94.40353393554688,
+      "lastUpdated": "2025-12-14T19:24:42Z"
+    },
+    {
+      "vehicleId": "5529",
+      "line": {
+        "publicCode": "260"
+      },
+      "lat": 59.4626315,
+      "lon": 5.4762097,
+      "bearing": 110.88707733154297,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2027",
+      "line": {
+        "publicCode": "1"
+      },
+      "lat": 59.001943,
+      "lon": 5.7212967,
+      "bearing": -65.54540252685547,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2017",
+      "line": {
+        "publicCode": "24"
+      },
+      "lat": 58.8518749,
+      "lon": 5.7242463,
+      "bearing": 53.399600982666016,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2026",
+      "line": {
+        "publicCode": "3"
+      },
+      "lat": 58.9510858,
+      "lon": 5.6469413,
+      "bearing": 90.83245086669922,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "259386000",
+      "line": {
+        "publicCode": "1130"
+      },
+      "lat": 59.142491666666665,
+      "lon": 5.590190000000001,
+      "bearing": 334.0,
+      "lastUpdated": "2025-12-14T19:32:29.67Z"
+    },
+    {
+      "vehicleId": "2331",
+      "line": {
+        "publicCode": "6"
+      },
+      "lat": 58.9128195,
+      "lon": 5.7260395,
+      "bearing": 144.0845489501953,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2354",
+      "line": {
+        "publicCode": "6"
+      },
+      "lat": 58.9933287,
+      "lon": 5.676489,
+      "bearing": -113.99759674072266,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2013",
+      "line": {
+        "publicCode": "2"
+      },
+      "lat": 58.9520545,
+      "lon": 5.5792877,
+      "bearing": 14.015223503112793,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2333",
+      "line": {
+        "publicCode": "4"
+      },
+      "lat": 58.962198,
+      "lon": 5.7633795,
+      "bearing": -115.42607116699219,
+      "lastUpdated": "2025-12-14T19:27:35Z"
+    },
+    {
+      "vehicleId": "258000810",
+      "line": {
+        "publicCode": "1025"
+      },
+      "lat": 59.228715,
+      "lon": 5.85482,
+      "bearing": 257.0,
+      "lastUpdated": "2025-12-14T19:20:20.17Z"
+    },
+    {
+      "vehicleId": "2347",
+      "line": {
+        "publicCode": "42"
+      },
+      "lat": 58.9220922,
+      "lon": 5.605523,
+      "bearing": -170.00650024414062,
+      "lastUpdated": "2025-12-14T19:32:31Z"
+    },
+    {
+      "vehicleId": "258002060",
+      "line": {
+        "publicCode": "1054"
+      },
+      "lat": 59.2349,
+      "lon": 6.166036666666667,
+      "bearing": 180.0,
+      "lastUpdated": "2025-12-14T19:12:36.416Z"
+    },
+    {
+      "vehicleId": "2311",
+      "line": {
+        "publicCode": "4"
+      },
+      "lat": 58.9538057,
+      "lon": 5.684074,
+      "bearing": -110.92871856689453,
+      "lastUpdated": "2025-12-14T19:23:33Z"
+    },
+    {
+      "vehicleId": "5587",
+      "line": {
+        "publicCode": "202"
+      },
+      "lat": 59.3583997,
+      "lon": 5.3135428,
+      "bearing": -36.285255432128906,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2333",
+      "line": {
+        "publicCode": "4"
+      },
+      "lat": 58.9621833,
+      "lon": 5.7633615,
+      "bearing": -99.03289794921875,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2316",
+      "line": {
+        "publicCode": "X31"
+      },
+      "lat": 58.9595095,
+      "lon": 5.739124,
+      "bearing": 151.24545288085938,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2308",
+      "line": {
+        "publicCode": "42"
+      },
+      "lat": 58.894678,
+      "lon": 5.6791692,
+      "bearing": 113.51358795166016,
+      "lastUpdated": "2025-12-14T19:32:31Z"
+    },
+    {
+      "vehicleId": "258001700",
+      "line": {
+        "publicCode": "1054"
+      },
+      "lat": 59.23483,
+      "lon": 6.1660216666666665,
+      "bearing": 180.0,
+      "lastUpdated": "2025-12-14T18:54:38.247Z"
+    },
+    {
+      "vehicleId": "258223000",
+      "line": {
+        "publicCode": "1130"
+      },
+      "lat": 59.138085000000004,
+      "lon": 5.588843333333333,
+      "bearing": 198.0,
+      "lastUpdated": "2025-12-14T18:39:44.793Z"
+    },
+    {
+      "vehicleId": "2008",
+      "line": {
+        "publicCode": "1"
+      },
+      "lat": 58.9779113,
+      "lon": 5.7456308,
+      "bearing": 177.374755859375,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2018",
+      "line": {
+        "publicCode": "5"
+      },
+      "lat": 58.988587,
+      "lon": 5.6752225,
+      "bearing": 177.4870147705078,
+      "lastUpdated": "2025-12-14T19:27:38Z"
+    },
+    {
+      "vehicleId": "2010",
+      "line": {
+        "publicCode": "3"
+      },
+      "lat": 58.908294,
+      "lon": 5.7288183,
+      "bearing": 156.96676635742188,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2009",
+      "line": {
+        "publicCode": "5"
+      },
+      "lat": 58.9513903,
+      "lon": 5.7261025,
+      "bearing": -81.8833236694336,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "258223000",
+      "line": {
+        "publicCode": "1130"
+      },
+      "lat": 59.14910666666666,
+      "lon": 5.562585,
+      "bearing": 125.0,
+      "lastUpdated": "2025-12-14T19:32:29.866Z"
+    },
+    {
+      "vehicleId": "2004",
+      "line": {
+        "publicCode": "1"
+      },
+      "lat": 58.966636,
+      "lon": 5.7333067,
+      "bearing": -176.48536682128906,
+      "lastUpdated": "2025-12-14T19:22:20Z"
+    },
+    {
+      "vehicleId": "3170",
+      "line": {
+        "publicCode": "140"
+      },
+      "lat": 59.1846318,
+      "lon": 6.0689012,
+      "bearing": 164.203369140625,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "257144700",
+      "line": {
+        "publicCode": "1130"
+      },
+      "lat": 59.17098166666666,
+      "lon": 5.454588333333334,
+      "bearing": 236.0,
+      "lastUpdated": "2025-12-14T18:26:54.939Z"
+    },
+    {
+      "vehicleId": "2004",
+      "line": {
+        "publicCode": "1"
+      },
+      "lat": 58.9702882,
+      "lon": 5.7352358,
+      "bearing": 12.93111515045166,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2000",
+      "line": {
+        "publicCode": "2"
+      },
+      "lat": 58.9632268,
+      "lon": 5.7355347,
+      "bearing": 152.83575439453125,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2318",
+      "line": {
+        "publicCode": "8"
+      },
+      "lat": 58.971561,
+      "lon": 5.7237352,
+      "bearing": -32.169063568115234,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "5533",
+      "line": {
+        "publicCode": "210"
+      },
+      "lat": 59.22458,
+      "lon": 5.1930394,
+      "bearing": 177.6628875732422,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "257640900",
+      "line": {
+        "publicCode": "800"
+      },
+      "lat": 58.951978,
+      "lon": 5.845535,
+      "bearing": 28.0,
+      "lastUpdated": "2025-12-14T19:32:31Z"
+    },
+    {
+      "vehicleId": "2311",
+      "line": {
+        "publicCode": "4"
+      },
+      "lat": 58.9438517,
+      "lon": 5.7030062,
+      "bearing": 44.035362243652344,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "257144700",
+      "line": {
+        "publicCode": "1130"
+      },
+      "lat": 59.17100833333333,
+      "lon": 5.454806666666667,
+      "bearing": 236.0,
+      "lastUpdated": "2025-12-14T19:26:28.022Z"
+    },
+    {
+      "vehicleId": "258002060",
+      "line": {
+        "publicCode": "1054"
+      },
+      "lat": 59.234853333333334,
+      "lon": 6.166033333333333,
+      "bearing": 180.0,
+      "lastUpdated": "2025-12-14T18:33:04.409Z"
+    },
+    {
+      "vehicleId": "258002060",
+      "line": {
+        "publicCode": "1054"
+      },
+      "lat": 59.26105333333333,
+      "lon": 6.159831666666666,
+      "bearing": 327.0,
+      "lastUpdated": "2025-12-14T19:32:29.429Z"
+    },
+    {
+      "vehicleId": "2355",
+      "line": {
+        "publicCode": "7"
+      },
+      "lat": 58.9568402,
+      "lon": 5.7011138,
+      "bearing": 59.66504669189453,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "259386000",
+      "line": {
+        "publicCode": "1130"
+      },
+      "lat": 59.138038333333334,
+      "lon": 5.588833333333333,
+      "bearing": 197.0,
+      "lastUpdated": "2025-12-14T18:26:22.566Z"
+    },
+    {
+      "vehicleId": "2108",
+      "line": {
+        "publicCode": "10"
+      },
+      "lat": 59.0357640582241,
+      "lon": 5.626262320515775,
+      "bearing": -140.37330627441406,
+      "lastUpdated": "2025-12-14T19:32:33Z"
+    },
+    {
+      "vehicleId": "5527",
+      "line": {
+        "publicCode": "210"
+      },
+      "lat": 59.4077673,
+      "lon": 5.2760132,
+      "bearing": 145.7725067138672,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2034",
+      "line": {
+        "publicCode": "3"
+      },
+      "lat": 58.9514483,
+      "lon": 5.6489943,
+      "bearing": -108.77617645263672,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2319",
+      "line": {
+        "publicCode": "6"
+      },
+      "lat": 58.9680781,
+      "lon": 5.723161,
+      "bearing": 154.9276885986328,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "259216000",
+      "line": {
+        "publicCode": "1130"
+      },
+      "lat": 59.138115,
+      "lon": 5.588915,
+      "bearing": 196.0,
+      "lastUpdated": "2025-12-14T19:10:03.763Z"
+    },
+    {
+      "vehicleId": "3002",
+      "line": {
+        "publicCode": "88"
+      },
+      "lat": 58.3845302,
+      "lon": 6.0623467,
+      "bearing": 57.45522689819336,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "258000840",
+      "line": {
+        "publicCode": "1025"
+      },
+      "lat": 59.17026833333333,
+      "lon": 5.878285,
+      "bearing": 250.0,
+      "lastUpdated": "2025-12-14T19:25:27.134Z"
+    },
+    {
+      "vehicleId": "3172",
+      "line": {
+        "publicCode": "101"
+      },
+      "lat": 59.0365277,
+      "lon": 5.9353935,
+      "bearing": -36.73747634887695,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2003",
+      "line": {
+        "publicCode": "2"
+      },
+      "lat": 58.9352193,
+      "lon": 5.5986998,
+      "bearing": 78.08231353759766,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2351",
+      "line": {
+        "publicCode": "X31"
+      },
+      "lat": 58.9015008,
+      "lon": 5.7077821,
+      "bearing": 112.30338287353516,
+      "lastUpdated": "2025-12-14T19:23:22Z"
+    },
+    {
+      "vehicleId": "3024",
+      "line": {
+        "publicCode": "47"
+      },
+      "lat": 58.8416899,
+      "lon": 5.7342338,
+      "bearing": -168.47027587890625,
+      "lastUpdated": "2025-12-14T19:22:58Z"
+    },
+    {
+      "vehicleId": "2001",
+      "line": {
+        "publicCode": "5"
+      },
+      "lat": 58.9636605,
+      "lon": 5.7353128,
+      "bearing": -16.36085319519043,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "3041",
+      "line": {
+        "publicCode": "59"
+      },
+      "lat": 58.7748145,
+      "lon": 5.6294601,
+      "bearing": 23.692913055419922,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2351",
+      "line": {
+        "publicCode": "X31"
+      },
+      "lat": 58.8963592,
+      "lon": 5.7115525,
+      "bearing": 152.1305694580078,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "257144700",
+      "line": {
+        "publicCode": "1130"
+      },
+      "lat": 59.17155666666667,
+      "lon": 5.459046666666667,
+      "bearing": 89.0,
+      "lastUpdated": "2025-12-14T19:32:30.026Z"
+    },
+    {
+      "vehicleId": "5562",
+      "line": {
+        "publicCode": "246"
+      },
+      "lat": 59.422335,
+      "lon": 5.3789063,
+      "bearing": -131.34568786621094,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "5553",
+      "line": {
+        "publicCode": "210"
+      },
+      "lat": 59.2811887,
+      "lon": 5.2716583,
+      "bearing": 83.17953491210938,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "3084",
+      "line": {
+        "publicCode": "50"
+      },
+      "lat": 58.7345477,
+      "lon": 5.6489697,
+      "bearing": 38.170684814453125,
+      "lastUpdated": "2025-12-14T19:25:43Z"
+    },
+    {
+      "vehicleId": "2345",
+      "line": {
+        "publicCode": "11"
+      },
+      "lat": 58.921249,
+      "lon": 5.7100568,
+      "bearing": 66.17874908447266,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "3191",
+      "line": {
+        "publicCode": "100"
+      },
+      "lat": 59.0370678,
+      "lon": 5.9355816,
+      "bearing": 116.6790771484375,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "258000840",
+      "line": {
+        "publicCode": "1025"
+      },
+      "lat": 59.174575,
+      "lon": 5.884048333333333,
+      "bearing": 355.0,
+      "lastUpdated": "2025-12-14T19:32:30.12Z"
+    },
+    {
+      "vehicleId": "2346",
+      "line": {
+        "publicCode": "4"
+      },
+      "lat": 58.9695595,
+      "lon": 5.7346708,
+      "bearing": 177.0684051513672,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2321",
+      "line": {
+        "publicCode": "42"
+      },
+      "lat": 58.8921718,
+      "lon": 5.7066113,
+      "bearing": 155.1176300048828,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2021",
+      "line": {
+        "publicCode": "3"
+      },
+      "lat": 58.9189095,
+      "lon": 5.733841,
+      "bearing": -24.81141471862793,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2002",
+      "line": {
+        "publicCode": "2"
+      },
+      "lat": 58.877449,
+      "lon": 5.7252212,
+      "bearing": 11.366901397705078,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "258001700",
+      "line": {
+        "publicCode": "1054"
+      },
+      "lat": 59.23458166666667,
+      "lon": 6.164501666666666,
+      "bearing": 133.0,
+      "lastUpdated": "2025-12-14T19:32:29.252Z"
+    },
+    {
+      "vehicleId": "259386000",
+      "line": {
+        "publicCode": "1130"
+      },
+      "lat": 59.17101,
+      "lon": 5.4546866666666665,
+      "bearing": 237.0,
+      "lastUpdated": "2025-12-14T18:56:36.616Z"
+    },
+    {
+      "vehicleId": "2353",
+      "line": {
+        "publicCode": "28"
+      },
+      "lat": 58.831732,
+      "lon": 5.7655872,
+      "bearing": -165.5272674560547,
+      "lastUpdated": "2025-12-14T19:26:59Z"
+    },
+    {
+      "vehicleId": "2315",
+      "line": {
+        "publicCode": "8"
+      },
+      "lat": 58.9996823,
+      "lon": 5.6186863,
+      "bearing": 174.96029663085938,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "258001700",
+      "line": {
+        "publicCode": "1054"
+      },
+      "lat": 59.25299666666667,
+      "lon": 6.09634,
+      "bearing": 264.0,
+      "lastUpdated": "2025-12-14T18:36:09.228Z"
+    },
+    {
+      "vehicleId": "3172",
+      "line": {
+        "publicCode": "101"
+      },
+      "lat": 59.036304,
+      "lon": 5.9356733,
+      "bearing": -49.648094177246094,
+      "lastUpdated": "2025-12-14T19:29:13Z"
+    },
+    {
+      "vehicleId": "2312",
+      "line": {
+        "publicCode": "7"
+      },
+      "lat": 58.9289643,
+      "lon": 5.7028708,
+      "bearing": -129.25677490234375,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "259216000",
+      "line": {
+        "publicCode": "1130"
+      },
+      "lat": 59.171005,
+      "lon": 5.454691666666666,
+      "bearing": 236.0,
+      "lastUpdated": "2025-12-14T18:41:49.721Z"
+    },
+    {
+      "vehicleId": "258001700",
+      "line": {
+        "publicCode": "1054"
+      },
+      "lat": 59.261161666666666,
+      "lon": 6.159605,
+      "bearing": 330.0,
+      "lastUpdated": "2025-12-14T19:12:36.405Z"
+    },
+    {
+      "vehicleId": "5445",
+      "line": {
+        "publicCode": "150"
+      },
+      "lat": 59.5418427,
+      "lon": 5.8701807,
+      "bearing": -42.724761962890625,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2318",
+      "line": {
+        "publicCode": "X31"
+      },
+      "lat": 58.9672408,
+      "lon": 5.7320118,
+      "bearing": -53.642242431640625,
+      "lastUpdated": "2025-12-14T19:26:58Z"
+    },
+    {
+      "vehicleId": "2358",
+      "line": {
+        "publicCode": "13"
+      },
+      "lat": 58.968502,
+      "lon": 5.7311738,
+      "bearing": -3.5898373126983643,
+      "lastUpdated": "2025-12-14T19:25:11Z"
+    },
+    {
+      "vehicleId": "257144700",
+      "line": {
+        "publicCode": "1130"
+      },
+      "lat": 59.13802833333333,
+      "lon": 5.588808333333334,
+      "bearing": 199.0,
+      "lastUpdated": "2025-12-14T18:54:37.978Z"
+    },
+    {
+      "vehicleId": "5588",
+      "line": {
+        "publicCode": "201"
+      },
+      "lat": 59.4367613,
+      "lon": 5.2685333,
+      "bearing": 60.1020622253418,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2300",
+      "line": {
+        "publicCode": "6"
+      },
+      "lat": 58.8515548,
+      "lon": 5.7370467,
+      "bearing": -61.16069030761719,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2314",
+      "line": {
+        "publicCode": "8"
+      },
+      "lat": 58.976675,
+      "lon": 5.7173252,
+      "bearing": 138.61878967285156,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2023",
+      "line": {
+        "publicCode": "5"
+      },
+      "lat": 58.8764625,
+      "lon": 5.724908,
+      "bearing": 10.226129531860352,
+      "lastUpdated": "2025-12-14T19:32:31Z"
+    },
+    {
+      "vehicleId": "258000810",
+      "line": {
+        "publicCode": "1025"
+      },
+      "lat": 59.204901666666665,
+      "lon": 5.880166666666667,
+      "bearing": 172.0,
+      "lastUpdated": "2025-12-14T19:32:29.173Z"
+    },
+    {
+      "vehicleId": "3188",
+      "line": {
+        "publicCode": "100"
+      },
+      "lat": 59.0395088,
+      "lon": 5.9321393,
+      "bearing": -21.257007598876953,
+      "lastUpdated": "2025-12-14T19:32:28Z"
+    },
+    {
+      "vehicleId": "259386000",
+      "line": {
+        "publicCode": "1130"
+      },
+      "lat": 59.138025,
+      "lon": 5.58884,
+      "bearing": 196.0,
+      "lastUpdated": "2025-12-14T19:26:28.657Z"
+    },
+    {
+      "vehicleId": "2022",
+      "line": {
+        "publicCode": "5"
+      },
+      "lat": 58.8683672,
+      "lon": 5.7334475,
+      "bearing": 111.67732238769531,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2015",
+      "line": {
+        "publicCode": "2"
+      },
+      "lat": 58.8528482,
+      "lon": 5.7228827,
+      "bearing": 108.67321014404297,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2030",
+      "line": {
+        "publicCode": "2"
+      },
+      "lat": 58.9657522,
+      "lon": 5.7315493,
+      "bearing": -174.6553192138672,
+      "lastUpdated": "2025-12-14T19:32:31Z"
+    },
+    {
+      "vehicleId": "258002060",
+      "line": {
+        "publicCode": "1054"
+      },
+      "lat": 59.261118333333336,
+      "lon": 6.159663333333333,
+      "bearing": 328.0,
+      "lastUpdated": "2025-12-14T18:53:06.417Z"
+    },
+    {
+      "vehicleId": "3084",
+      "line": {
+        "publicCode": "50"
+      },
+      "lat": 58.7358432,
+      "lon": 5.6495149,
+      "bearing": 77.2666015625,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "258223000",
+      "line": {
+        "publicCode": "1130"
+      },
+      "lat": 59.170989999999996,
+      "lon": 5.454738333333333,
+      "bearing": 239.0,
+      "lastUpdated": "2025-12-14T19:10:03.825Z"
+    },
+    {
+      "vehicleId": "2353",
+      "line": {
+        "publicCode": "28"
+      },
+      "lat": 58.843428,
+      "lon": 5.762306,
+      "bearing": -44.532955169677734,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "2310",
+      "line": {
+        "publicCode": "6"
+      },
+      "lat": 58.9428275,
+      "lon": 5.6822072,
+      "bearing": -10.971497535705566,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    },
+    {
+      "vehicleId": "5501",
+      "line": {
+        "publicCode": "202"
+      },
+      "lat": 59.3944175,
+      "lon": 5.3298647,
+      "bearing": 13.038211822509766,
+      "lastUpdated": "2025-12-14T19:24:11Z"
+    },
+    {
+      "vehicleId": "3040",
+      "line": {
+        "publicCode": "22"
+      },
+      "lat": 58.7933318,
+      "lon": 5.714944,
+      "bearing": -129.85140991210938,
+      "lastUpdated": "2025-12-14T19:32:32Z"
+    }
+  ]
 }
