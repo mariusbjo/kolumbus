@@ -1,5 +1,5 @@
 # .github/workflows/kolumbus.yml
-name: Fetch Kolumbus bus data and publish frontend
+name: Fetch Kolumbus GTFS-RT data and publish frontend
 
 on:
   schedule:
@@ -25,10 +25,10 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests
+          pip install requests gtfs-realtime-bindings
 
-      - name: Fetch Kolumbus bus data
-        run: python scripts/fetch_entur.py
+      - name: Fetch Kolumbus GTFS-RT data
+        run: python scripts/fetch_gtfs.py
 
       - name: Configure git
         run: |
@@ -48,7 +48,7 @@ jobs:
           if [ -n "$files" ]; then
             git add $files
             if ! git diff --cached --quiet; then
-              git commit -m "Update Kolumbus data (with debug if empty)"
+              git commit -m "Update Kolumbus GTFS-RT data (with debug if empty)"
             else
               echo "No changes to commit."
             fi
