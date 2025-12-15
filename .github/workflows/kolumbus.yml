@@ -1,10 +1,10 @@
 # .github/workflows/kolumbus.yml
-name: Fetch Kolumbus realtime data and publish frontend
+name: Fetch Kolumbus static data and publish frontend
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
-  workflow_dispatch:
+    - cron: "0 * * * *"   # kjør hver hele time
+  workflow_dispatch:       # manuell trigger fra Actions-fanen
 
 jobs:
   fetch:
@@ -27,7 +27,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Fetch Kolumbus realtime data
+      - name: Fetch Kolumbus static data
         run: python scripts/fetch_entur.py
 
       - name: Configure git
@@ -48,7 +48,7 @@ jobs:
           if [ -n "$files" ]; then
             git add $files
             if ! git diff --cached --quiet; then
-              git commit -m "Update Kolumbus realtime data"
+              git commit -m "Update Kolumbus static data"
             else
               echo "No changes to commit."
             fi
