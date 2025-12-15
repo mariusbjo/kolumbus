@@ -25,16 +25,25 @@ query KolumbusVehicles {
 """
 
 OUT_PATH = "data/kolumbus.json"
-DEBUG_PATH = "data/debug.json"
+DEBUG_PATH = "data/debug_entur.json"
 
 def main():
     try:
         resp = requests.post(URL, headers=HEADERS_ENTUR, json={"query": QUERY}, timeout=30)
+        payload = resp.json()
+
+        # Lagre alltid rårespons til debug.json
+        os.makedirs(os.path.dirname(DEBUG_PATH), exist_ok=True)
+        with open(DEBUG_PATH, "w", encoding="utf-8") as f:
+            json.dump(payload, f, ensure_ascii=False, indent=2)
+
         if not resp.ok:
             print(f"❌ Feil fra Entur API: {resp.status_code} {resp.text}")
             return
 
-        payload = resp.json()
+        if "errors" in payload:
+            print("⚠️ Entur svarte med feil:", payload["errors"])
+
         vehicles = payload.get("data", {}).get("vehicleActivity", [])
 
         cleaned = [
@@ -42,7 +51,7 @@ def main():
                 "id": v.get("vehicleRef"),
                 "mode": v.get("mode"),
                 "line": {
-                    "publicCode": v.get("lineRef"),  # vehicleActivity gir lineRef, ikke line{}
+                    "publicCode": v.get("lineRef"),
                     "name": None
                 },
                 "lat": v.get("location", {}).get("latitude"),
@@ -67,9 +76,7 @@ def main():
             json.dump(result, f, ensure_ascii=False, indent=2)
 
         if len(cleaned) == 0:
-            with open(DEBUG_PATH, "w", encoding="utf-8") as f:
-                json.dump(payload, f, ensure_ascii=False, indent=2)
-            print(f"⚠️ Ingen kjøretøy funnet. Wrote {OUT_PATH} with 0 entries and saved raw response to {DEBUG_PATH}.")
+            print(f"⚠️ Ingen kjøretøy funnet. Wrote {OUT_PATH} with 0 entries. Se {DEBUG_PATH} for detaljer.")
         else:
             print(f"✅ Wrote {OUT_PATH} with {len(cleaned)} Kolumbus vehicles. Første ID: {cleaned[0]['id']}")
 
