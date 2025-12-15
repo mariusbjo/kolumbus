@@ -9,14 +9,18 @@ params = {
     "fylke": "11"  # Rogaland
 }
 
-speedlimits = {}
+headers = {
+    "Accept": "application/json",
+    "User-Agent": "strand-postliste/1.0 (github-actions)"
+}
 
-# --- 1. Hent alle fartsgrenseobjekter fra NVDB ---
-page = 1
+speedlimits = {}
 all_points = []
+
+page = 1
 while True:
     print(f"Henter side {page}...")
-    res = requests.get(BASE_URL, params={**params, "side": page}, headers={"Accept": "application/json"})
+    res = requests.get(BASE_URL, params={**params, "side": page}, headers=headers)
     if not res.ok:
         print("Feil ved henting:", res.status_code, res.text)
         break
@@ -48,11 +52,10 @@ while True:
 
 print(f"Hentet {len(all_points)} fartsgrensepunkter fra NVDB")
 
-# --- 2. Lag et grid over Rogaland (ca. bounding box) ---
-# Rogaland ca. lat 58.0–59.0, lon 5.0–7.0
+# --- grid fallback som før ---
 lat_min, lat_max = 58.0, 59.0
 lon_min, lon_max = 5.0, 7.0
-step = 0.01  # ~1 km grid
+step = 0.01
 
 def haversine(lat1, lon1, lat2, lon2):
     R = 6371000
@@ -61,13 +64,11 @@ def haversine(lat1, lon1, lat2, lon2):
     a = math.sin(dLat/2)**2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dLon/2)**2
     return R * 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
 
-# --- 3. Fyll inn gridpunkter med nærmeste fartsgrense ---
 for lat in [lat_min + i*step for i in range(int((lat_max-lat_min)/step)+1)]:
     for lon in [lon_min + j*step for j in range(int((lon_max-lon_min)/step)+1)]:
         key = f"{lat:.4f},{lon:.4f}"
         if key in speedlimits:
             continue
-        # Finn nærmeste NVDB‑punkt
         nearest = None
         nearest_dist = float("inf")
         for plat, plon, limit in all_points:
@@ -80,6 +81,5 @@ for lat in [lat_min + i*step for i in range(int((lat_max-lat_min)/step)+1)]:
 
 print(f"Totalt {len(speedlimits)} punkter lagret (inkl. grid fallback)")
 
-# --- 4. Lagre til JSON ---
 with open("data/speedlimits.json", "w", encoding="utf-8") as f:
     json.dump(speedlimits, f, ensure_ascii=False, indent=2)
