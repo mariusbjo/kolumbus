@@ -5,21 +5,21 @@ from config import HEADERS_ENTUR
 
 URL = "https://api.entur.io/journey-planner/v3/graphql"
 
+# Ny spørring: vehicleActivity i stedet for vehicles
 QUERY = """
 query KolumbusVehicles {
-  vehicles(modes: [bus, coach], bbox: {
+  vehicleActivity(modes: [bus, coach], bbox: {
     minLat: 58.20,
     minLon: 4.80,
     maxLat: 59.60,
     maxLon: 6.60
   }) {
-    id
+    vehicleRef
+    lineRef
     mode
-    line { publicCode name }
-    latitude
-    longitude
+    location { latitude longitude }
     bearing
-    updatedAt
+    recordedAtTime
   }
 }
 """
@@ -35,22 +35,22 @@ def main():
             return
 
         payload = resp.json()
-        vehicles = payload.get("data", {}).get("vehicles", [])
+        vehicles = payload.get("data", {}).get("vehicleActivity", [])
 
         cleaned = [
             {
-                "id": v.get("id"),
+                "id": v.get("vehicleRef"),
                 "mode": v.get("mode"),
                 "line": {
-                    "publicCode": v.get("line", {}).get("publicCode"),
-                    "name": v.get("line", {}).get("name")
+                    "publicCode": v.get("lineRef"),  # vehicleActivity gir lineRef, ikke line{}
+                    "name": None
                 },
-                "lat": v.get("latitude"),
-                "lon": v.get("longitude"),
+                "lat": v.get("location", {}).get("latitude"),
+                "lon": v.get("location", {}).get("longitude"),
                 "bearing": v.get("bearing"),
-                "updatedAt": v.get("updatedAt")
+                "updatedAt": v.get("recordedAtTime")
             }
-            for v in vehicles if v.get("latitude") and v.get("longitude")
+            for v in vehicles if v.get("location", {}).get("latitude") and v.get("location", {}).get("longitude")
         ]
 
         result = {
