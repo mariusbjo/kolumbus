@@ -1,6 +1,6 @@
 // assets/script.js
 import { ENTUR_URL, CLIENT_NAME, UPDATE_INTERVAL } from './config.js';
-import { haversine, getSpeedLimit } from './utils.js';
+import { haversine, loadSpeedLimits, getCachedSpeedLimit } from './utils.js';
 import { busIcon, speedIcon } from './icons.js';
 
 const map = L.map('map').setView([58.97, 5.73], 9);
@@ -15,6 +15,9 @@ let history = {};
 let followBusId = null;
 let routeLayer = null;
 let speedMarkers = [];
+
+// Last inn fartsgrense-cache ved oppstart
+await loadSpeedLimits();
 
 async function loadKolumbusLive() {
   try {
@@ -44,7 +47,6 @@ async function loadKolumbusLive() {
       const code = v.line?.publicCode ?? '—';
 
       if (!markers[id]) {
-        // Opprett ny markør første gang
         const popup = `
           <strong>Linje ${code}</strong><br>
           ID: ${id}<br>
@@ -54,7 +56,6 @@ async function loadKolumbusLive() {
         `;
         markers[id] = L.marker(pos, { icon: busIcon }).bindPopup(popup).addTo(map);
       } else {
-        // Flytt eksisterende markør
         markers[id].setLatLng(pos);
       }
 
@@ -67,7 +68,7 @@ async function loadKolumbusLive() {
         const dist = haversine(prev.lat, prev.lon, pos[0], pos[1]);
         if (dt > 0) speed = (dist / dt) * 3.6;
       }
-      const speedLimit = await getSpeedLimit(pos[0], pos[1]);
+      const speedLimit = getCachedSpeedLimit(pos[0], pos[1]);
 
       history[id].push({ lat: pos[0], lon: pos[1], timestamp: now, speed, speedLimit });
       const cutoff = now - 30 * 60 * 1000;
