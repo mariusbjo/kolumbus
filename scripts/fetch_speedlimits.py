@@ -14,6 +14,7 @@ all_points = []
 url = BASE_URL
 while url:
     print(f"Henter: {url}")
+    # Bruk params kun på første kall, deretter følger vi href direkte
     res = requests.get(url, params=params if url == BASE_URL else None, headers=HEADERS_NVDB)
     if not res.ok:
         print("❌ Feil ved henting:", res.status_code, res.text)
@@ -40,9 +41,12 @@ while url:
                 all_points.append((lat, lon, verdi))
 
     # Neste side?
-    url = data.get("metadata", {}).get("neste")
-    if url:
-        time.sleep(0.5)  # rate control
+    neste = data.get("metadata", {}).get("neste")
+    if isinstance(neste, dict) and "href" in neste:
+        url = neste["href"]   # bruk kun href-strengen
+        time.sleep(0.5)       # rate control
+    else:
+        url = None
 
 print(f"Hentet {len(all_points)} fartsgrensepunkter fra NVDB")
 
