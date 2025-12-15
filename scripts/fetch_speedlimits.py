@@ -24,6 +24,7 @@ while url:
     if not objekter:
         break
 
+    added = 0
     for obj in objekter:
         verdi = None
         for e in obj.get("egenskaper", []):
@@ -31,27 +32,27 @@ while url:
                 verdi = e.get("verdi")
 
         if verdi is not None:
-            lok = obj.get("lokasjon", {})
-            geo = lok.get("geometri", {})
+            geo = obj.get("lokasjon", {}).get("geometri", {})
             punkt = geo.get("punkt")
             linje = geo.get("linje")
 
-            lat, lon = None, None
             if punkt:
                 lat = punkt.get("lat")
                 lon = punkt.get("lon")
-            elif linje:
-                coords = linje.get("koordinater", [])
-                if coords:
-                    mid = len(coords) // 2
-                    lon, lat = coords[mid]
-
-            if lat and lon:
                 key = f"{lat:.4f},{lon:.4f}"
                 speedlimits[key] = verdi
                 all_points.append((lat, lon, verdi))
+                added += 1
+            elif linje:
+                coords = linje.get("koordinater", [])
+                for lon, lat in coords:
+                    key = f"{lat:.4f},{lon:.4f}"
+                    speedlimits[key] = verdi
+                    all_points.append((lat, lon, verdi))
+                    added += 1
 
-    # Neste side?
+    print(f"  ➕ Lagret {added} punkter fra denne siden")
+
     neste = data.get("metadata", {}).get("neste")
     if isinstance(neste, dict) and "href" in neste:
         url = neste["href"]
@@ -59,36 +60,9 @@ while url:
     else:
         url = None
 
-print(f"Hentet {len(all_points)} fartsgrensepunkter fra NVDB")
+print(f"Hentet totalt {len(all_points)} fartsgrensepunkter fra NVDB")
 
-# Grid fallback
-lat_min, lat_max = 58.0, 59.0
-lon_min, lon_max = 5.0, 7.0
-step = 0.01
-
-def haversine(lat1, lon1, lat2, lon2):
-    R = 6371000
-    dLat = math.radians(lat2 - lat1)
-    dLon = math.radians(lon2 - lon1)
-    a = math.sin(dLat/2)**2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dLon/2)**2
-    return R * 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
-
-for lat in [lat_min + i*step for i in range(int((lat_max-lat_min)/step)+1)]:
-    for lon in [lon_min + j*step for j in range(int((lon_max-lon_min)/step)+1)]:
-        key = f"{lat:.4f},{lon:.4f}"
-        if key in speedlimits:
-            continue
-        nearest = None
-        nearest_dist = float("inf")
-        for plat, plon, limit in all_points:
-            dist = haversine(lat, lon, plat, plon)
-            if dist < nearest_dist:
-                nearest_dist = dist
-                nearest = limit
-        if nearest:
-            speedlimits[key] = nearest
-
-print(f"Totalt {len(speedlimits)} punkter lagret (inkl. grid fallback)")
-
+# Lagre til JSON
 with open("data/speedlimits.json", "w", encoding="utf-8") as f:
     json.dump(speedlimits, f, ensure_ascii=False, indent=2)
+print("✅ speedlimits.json skrevet med", len(speedlimits), "punkter")
