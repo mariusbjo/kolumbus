@@ -24,35 +24,27 @@ while url:
     if not objekter:
         break
 
-    # Logg første objekt for å se struktur
-    print("Eksempelobjekt:", json.dumps(objekter[0], indent=2, ensure_ascii=False))
-
     for obj in objekter:
         verdi = None
         for e in obj.get("egenskaper", []):
-            print("Egenskap:", e.get("id"), e.get("navn"), e.get("verdi"))
-            if e.get("navn") == "Fartsgrense":
+            if e.get("id") == 2021 or e.get("navn") == "Fartsgrense":
                 verdi = e.get("verdi")
 
-        if verdi:
+        if verdi is not None:
             lok = obj.get("lokasjon", {})
             geo = lok.get("geometri", {})
             punkt = geo.get("punkt")
             linje = geo.get("linje")
 
+            lat, lon = None, None
             if punkt:
                 lat = punkt.get("lat")
                 lon = punkt.get("lon")
             elif linje:
-                # Ta midtpunktet av linjen
                 coords = linje.get("koordinater", [])
                 if coords:
                     mid = len(coords) // 2
                     lon, lat = coords[mid]
-                else:
-                    lat, lon = None, None
-            else:
-                lat, lon = None, None
 
             if lat and lon:
                 key = f"{lat:.4f},{lon:.4f}"
