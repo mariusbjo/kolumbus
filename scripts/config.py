@@ -2,10 +2,10 @@
 import os
 
 # Unik identifikasjon for ditt prosjekt
-USER_AGENT = "Marius-sanntidskart/1.0 (https://mariusbjo.github.io/kolumbus/)"
+USER_AGENT = "marius-sanntidskart/1.0 (https://mariusbjo.github.io/kolumbus/; kontakt: marius.bjornor@gmail.com)"
 
 # Entur krever ET-Client-Name i tillegg
-ET_CLIENT_NAME = os.getenv("ET_CLIENT_NAME", "Marius-sanntidskart-demo")
+ET_CLIENT_NAME = os.getenv("ET_CLIENT_NAME", "marius-sanntidskart-demo")
 
 HEADERS_ENTUR = {
     "Content-Type": "application/json",
