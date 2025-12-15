@@ -1,6 +1,24 @@
 // assets/utils.js
 
-// Haversine for avstand (meter)
+let speedLimitsCache = {};
+
+export async function loadSpeedLimits() {
+  try {
+    const res = await fetch("data/speedlimits.json", { cache: "no-store" });
+    if (res.ok) {
+      speedLimitsCache = await res.json();
+    }
+  } catch (err) {
+    console.error("Kunne ikke laste speedlimits.json:", err);
+  }
+}
+
+export function getCachedSpeedLimit(lat, lon) {
+  // Bruk avrundet nøkkel (4 desimaler gir ca. 11 m presisjon)
+  const key = `${lat.toFixed(4)},${lon.toFixed(4)}`;
+  return speedLimitsCache[key] || null;
+}
+
 export function haversine(lat1, lon1, lat2, lon2) {
   const R = 6371000;
   const toRad = x => x * Math.PI / 180;
@@ -11,31 +29,3 @@ export function haversine(lat1, lon1, lat2, lon2) {
             Math.sin(dLon/2)**2;
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
-
-// Hent fartsgrense fra NVDB API
-export async function getSpeedLimit(lat, lon) {
-  const url = "https://nvdbapiles-v3.atlas.vegvesen.no/vegobjekter/105";
-  try {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Accept": "application/json" },
-      body: JSON.stringify({
-        lokasjon: {
-          srid: "wgs84",
-          punkt: { lat, lon },
-          radius: 50
-        }
-      })
-    });
-    if (!res.ok) return null;
-    const data = await res.json();
-    const obj = data.objekter?.[0];
-    if (!obj) return null;
-    const egenskap = obj.egenskaper?.find(e => e.id === 5962); // 5962 = fartsgrense
-    return egenskap?.verdi || null;
-  } catch (err) {
-    console.error("Feil ved henting av fartsgrense:", err);
-    return null;
-  }
-}
-
