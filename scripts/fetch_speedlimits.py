@@ -2,6 +2,7 @@
 import requests, json, math, time
 from config import HEADERS_NVDB
 
+# Vegobjekttype 105 = Fartsgrense
 BASE_URL = "https://nvdbapiles-v3.atlas.vegvesen.no/vegobjekter/105"
 params = {
     "inkluder": "egenskaper,lokasjon",
@@ -10,6 +11,17 @@ params = {
 
 speedlimits = {}
 all_points = []
+
+def fetch_veglenke_coords(veglenke_id):
+    """Slå opp veglenkesekvens og returner koordinater"""
+    url = f"https://nvdbapiles-v3.atlas.vegvesen.no/vegnett/veglenkesekvenser/{veglenke_id}"
+    res = requests.get(url, headers=HEADERS_NVDB)
+    if res.ok:
+        geo = res.json().get("geometri", {})
+        return geo.get("koordinater", [])
+    else:
+        print("❌ Feil ved henting av veglenkesekvens:", res.status_code)
+        return []
 
 url = BASE_URL
 while url:
@@ -34,7 +46,7 @@ while url:
         if verdi is not None:
             geo = obj.get("lokasjon", {}).get("geometri", {})
             punkt = geo.get("punkt")
-            linje = geo.get("linje")
+            linjeinfo = None
 
             if punkt:
                 lat = punkt.get("lat")
@@ -43,13 +55,20 @@ while url:
                 speedlimits[key] = verdi
                 all_points.append((lat, lon, verdi))
                 added += 1
-            elif linje:
-                coords = linje.get("koordinater", [])
-                for lon, lat in coords:
-                    key = f"{lat:.4f},{lon:.4f}"
-                    speedlimits[key] = verdi
-                    all_points.append((lat, lon, verdi))
-                    added += 1
+            else:
+                # Hent veglenkesekvensid fra egenskaper
+                for e in obj.get("egenskaper", []):
+                    if e.get("navn") == "Liste av lokasjonsattributt":
+                        innhold = e.get("innhold", [])
+                        for inn in innhold:
+                            veglenke_id = inn.get("veglenkesekvensid")
+                            if veglenke_id:
+                                coords = fetch_veglenke_coords(veglenke_id)
+                                for lon, lat in coords:
+                                    key = f"{lat:.4f},{lon:.4f}"
+                                    speedlimits[key] = verdi
+                                    all_points.append((lat, lon, verdi))
+                                    added += 1
 
     print(f"  ➕ Lagret {added} punkter fra denne siden")
 
