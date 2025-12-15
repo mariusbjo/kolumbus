@@ -10,7 +10,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // Tilpasset ikon for busser
 const busIcon = L.icon({
-  iconUrl: 'https://cdn-icons-png.flaticon.com/512/61/61231.png', // enkel buss-ikon
+  iconUrl: 'https://cdn-icons-png.flaticon.com/512/61/61231.png', // bussikon
   iconSize: [32, 32],
   iconAnchor: [16, 32],
   popupAnchor: [0, -32]
@@ -51,6 +51,6 @@ async function loadKolumbus() {
   }
 }
 
-// Last inn første gang og oppdater hvert minutt
+// Last inn første gang og oppdater hvert 10. sekund
 loadKolumbus();
-setInterval(loadKolumbus, 60000);
+setInterval(loadKolumbus, 10000);
