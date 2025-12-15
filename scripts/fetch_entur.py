@@ -5,7 +5,7 @@ URL = "https://api.entur.io/journey-planner/v3/graphql"
 HEADERS = {
     "Content-Type": "application/json",
     "ET-Client-Name": os.getenv("ET_CLIENT_NAME", "marius-kolumbus-demo"),
-    "User-Agent": "strand-postliste/1.0 (github-actions)"  # viktig for Entur/NVDB
+    "User-Agent": "kolumbus-sanntid/1.0 (https://mariusbjo.github.io/kolumbus/)"
 }
 
 QUERY = """
