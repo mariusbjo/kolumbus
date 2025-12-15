@@ -1,10 +1,9 @@
-# .github/workflows/kolumbus.yml
 name: Fetch Kolumbus static data and publish frontend
 
 on:
   schedule:
-    - cron: "0 * * * *"   # kjør hver hele time
-  workflow_dispatch:       # manuell trigger fra Actions-fanen
+    - cron: "0 * * * *"   # hver hele time
+  workflow_dispatch:
 
 jobs:
   fetch:
