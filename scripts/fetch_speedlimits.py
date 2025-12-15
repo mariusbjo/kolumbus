@@ -1,5 +1,5 @@
 # scripts/fetch_speedlimits.py
-import requests, json, math, time
+import requests, json, math, time, os
 from config import HEADERS_NVDB
 
 # Vegobjekttype 105 = Fartsgrense
@@ -8,6 +8,9 @@ params = {
     "inkluder": "egenskaper,lokasjon",
     "fylke": "11"  # Rogaland
 }
+
+OUT_PATH = "data/speedlimits.json"
+DEBUG_PATH = "data/debug_nvdb.json"
 
 speedlimits = {}
 all_points = []
@@ -27,11 +30,21 @@ url = BASE_URL
 while url:
     print(f"Henter: {url}")
     res = requests.get(url, params=params if url == BASE_URL else None, headers=HEADERS_NVDB)
+
+    # Lagre alltid rårespons til debug-fil
+    try:
+        payload = res.json()
+        os.makedirs(os.path.dirname(DEBUG_PATH), exist_ok=True)
+        with open(DEBUG_PATH, "w", encoding="utf-8") as f:
+            json.dump(payload, f, ensure_ascii=False, indent=2)
+    except Exception:
+        pass
+
     if not res.ok:
         print("❌ Feil ved henting:", res.status_code, res.text)
         break
 
-    data = res.json()
+    data = payload
     objekter = data.get("objekter", [])
     if not objekter:
         break
@@ -46,7 +59,6 @@ while url:
         if verdi is not None:
             geo = obj.get("lokasjon", {}).get("geometri", {})
             punkt = geo.get("punkt")
-            linjeinfo = None
 
             if punkt:
                 lat = punkt.get("lat")
@@ -82,6 +94,7 @@ while url:
 print(f"Hentet totalt {len(all_points)} fartsgrensepunkter fra NVDB")
 
 # Lagre til JSON
-with open("data/speedlimits.json", "w", encoding="utf-8") as f:
+os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
+with open(OUT_PATH, "w", encoding="utf-8") as f:
     json.dump(speedlimits, f, ensure_ascii=False, indent=2)
 print("✅ speedlimits.json skrevet med", len(speedlimits), "punkter")
