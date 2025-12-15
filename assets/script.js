@@ -1,6 +1,6 @@
 // assets/script.js
 import { ENTUR_URL, CLIENT_NAME, UPDATE_INTERVAL } from './config.js';
-import { haversine } from './utils.js';
+import { haversine, getSpeedLimit } from './utils.js';
 import { busIcon, speedIcon } from './icons.js';
 
 const map = L.map('map').setView([58.97, 5.73], 9);
@@ -41,13 +41,14 @@ async function loadKolumbusLive() {
     Object.values(markers).forEach(m => map.removeLayer(m));
     markers = {};
 
-    vehicles.forEach(v => {
+    for (const v of vehicles) {
       const code = v.line?.publicCode ?? '—';
       const popup = `
         <strong>Linje ${code}</strong><br>
         ID: ${v.vehicleId}<br>
         Oppdatert: ${v.lastUpdated}<br>
         <button onclick="followBus('${v.vehicleId}')">Følg denne bussen</button>
+        <button onclick="stopFollow()">Slutt å følg</button>
       `;
       const marker = L.marker(
         [v.location.latitude, v.location.longitude],
@@ -65,10 +66,18 @@ async function loadKolumbusLive() {
         const dist = haversine(prev.lat, prev.lon, v.location.latitude, v.location.longitude);
         if (dt > 0) speed = (dist / dt) * 3.6;
       }
-      history[v.vehicleId].push({ lat: v.location.latitude, lon: v.location.longitude, timestamp: now, speed });
+      const speedLimit = await getSpeedLimit(v.location.latitude, v.location.longitude);
+
+      history[v.vehicleId].push({
+        lat: v.location.latitude,
+        lon: v.location.longitude,
+        timestamp: now,
+        speed,
+        speedLimit
+      });
       const cutoff = now - 30 * 60 * 1000;
       history[v.vehicleId] = history[v.vehicleId].filter(p => p.timestamp >= cutoff);
-    });
+    }
 
     if (followBusId && history[followBusId]) {
       if (routeLayer) map.removeLayer(routeLayer);
@@ -80,7 +89,7 @@ async function loadKolumbusLive() {
 
       history[followBusId].forEach(p => {
         if (p.speed) {
-          const sm = L.marker([p.lat, p.lon], { icon: speedIcon(p.speed) });
+          const sm = L.marker([p.lat, p.lon], { icon: speedIcon(p.speed, p.speedLimit) });
           sm.addTo(map);
           speedMarkers.push(sm);
         }
@@ -98,7 +107,15 @@ async function loadKolumbusLive() {
 
 window.followBus = function(id) {
   followBusId = id;
-  alert(`Du følger nå buss ${id}. Klikk på en annen buss for å bytte.`);
+  alert(`Du følger nå buss ${id}. Klikk 'Slutt å følg' for å stoppe.`);
+};
+
+window.stopFollow = function() {
+  followBusId = null;
+  if (routeLayer) { map.removeLayer(routeLayer); routeLayer = null; }
+  speedMarkers.forEach(m => map.removeLayer(m));
+  speedMarkers = [];
+  alert("Du følger ikke lenger en buss.");
 };
 
 loadKolumbusLive();
