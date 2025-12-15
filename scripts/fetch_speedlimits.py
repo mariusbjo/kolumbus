@@ -11,10 +11,10 @@ params = {
 speedlimits = {}
 all_points = []
 
-page = 1
-while True:
-    print(f"Henter side {page}...")
-    res = requests.get(BASE_URL, params={**params, "side": page}, headers=HEADERS_NVDB)
+url = BASE_URL
+while url:
+    print(f"Henter: {url}")
+    res = requests.get(url, params=params if url == BASE_URL else None, headers=HEADERS_NVDB)
     if not res.ok:
         print("❌ Feil ved henting:", res.status_code, res.text)
         break
@@ -39,11 +39,10 @@ while True:
                 speedlimits[key] = verdi
                 all_points.append((lat, lon, verdi))
 
-    if "metadata" in data and data["metadata"].get("nesteSide"):
-        page += 1
+    # Neste side?
+    url = data.get("metadata", {}).get("neste")
+    if url:
         time.sleep(0.5)  # rate control
-    else:
-        break
 
 print(f"Hentet {len(all_points)} fartsgrensepunkter fra NVDB")
 
