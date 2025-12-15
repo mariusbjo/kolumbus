@@ -14,9 +14,19 @@ export function haversine(lat1, lon1, lat2, lon2) {
 
 // Hent fartsgrense fra NVDB API
 export async function getSpeedLimit(lat, lon) {
-  const url = `https://nvdbapiles-v3.atlas.vegvesen.no/vegobjekter/105?inkluder=egenskaper&srid=wgs84&lat=${lat}&lon=${lon}&radius=50`;
+  const url = "https://nvdbapiles-v3.atlas.vegvesen.no/vegobjekter/105";
   try {
-    const res = await fetch(url, { headers: { "Accept": "application/json" } });
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({
+        lokasjon: {
+          srid: "wgs84",
+          punkt: { lat, lon },
+          radius: 50
+        }
+      })
+    });
     if (!res.ok) return null;
     const data = await res.json();
     const obj = data.objekter?.[0];
@@ -28,3 +38,4 @@ export async function getSpeedLimit(lat, lon) {
     return null;
   }
 }
+
