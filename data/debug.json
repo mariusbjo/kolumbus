@@ -1,23 +1,11 @@
 {
   "errors": [
     {
-      "message": "Validation error (FieldUndefined@[vehicles/id]) : Field 'id' in type 'VehicleUpdate' is undefined",
+      "message": "Validation error (FieldUndefined@[vehicles]) : Field 'vehicles' in type 'QueryType' is undefined",
       "locations": [
         {
-          "line": 4,
-          "column": 5
-        }
-      ],
-      "extensions": {
-        "classification": "ValidationError"
-      }
-    },
-    {
-      "message": "Validation error (FieldUndefined@[vehicles/line/name]) : Field 'name' in type 'Line' is undefined",
-      "locations": [
-        {
-          "line": 7,
-          "column": 23
+          "line": 3,
+          "column": 3
         }
       ],
       "extensions": {
