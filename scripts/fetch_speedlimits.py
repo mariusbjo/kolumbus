@@ -1,17 +1,11 @@
 # scripts/fetch_speedlimits.py
-import requests
-import json
-import math
+import requests, json, math, time
+from config import HEADERS_NVDB
 
 BASE_URL = "https://nvdbapiles-v3.atlas.vegvesen.no/vegobjekter/105"
 params = {
     "inkluder": "egenskaper,lokasjon",
     "fylke": "11"  # Rogaland
-}
-
-headers = {
-    "Accept": "application/json",
-    "User-Agent": "kolumbus-sanntid/1.0 (https://mariusbjo.github.io/kolumbus/)"
 }
 
 speedlimits = {}
@@ -20,9 +14,9 @@ all_points = []
 page = 1
 while True:
     print(f"Henter side {page}...")
-    res = requests.get(BASE_URL, params={**params, "side": page}, headers=headers)
+    res = requests.get(BASE_URL, params={**params, "side": page}, headers=HEADERS_NVDB)
     if not res.ok:
-        print("Feil ved henting:", res.status_code, res.text)
+        print("❌ Feil ved henting:", res.status_code, res.text)
         break
 
     data = res.json()
@@ -47,12 +41,13 @@ while True:
 
     if "metadata" in data and data["metadata"].get("nesteSide"):
         page += 1
+        time.sleep(0.5)  # rate control
     else:
         break
 
 print(f"Hentet {len(all_points)} fartsgrensepunkter fra NVDB")
 
-# --- grid fallback som før ---
+# Grid fallback
 lat_min, lat_max = 58.0, 59.0
 lon_min, lon_max = 5.0, 7.0
 step = 0.01
