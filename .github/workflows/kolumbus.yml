@@ -1,4 +1,4 @@
-name: Fetch Kolumbus data and speed limits, publish frontend
+name: Fetch Kolumbus data and Rogaland speed limits, publish frontend
 
 on:
   schedule:
@@ -29,7 +29,7 @@ jobs:
       - name: Fetch Kolumbus static data
         run: python scripts/fetch_entur.py
 
-      - name: Fetch NVDB speed limits
+      - name: Fetch Rogaland speed limits
         run: python scripts/fetch_speedlimits.py
 
       - name: Configure git
@@ -53,7 +53,7 @@ jobs:
           if [ -n "$files" ]; then
             git add $files
             if ! git diff --cached --quiet; then
-              git commit -m "Update Kolumbus and speed limits data"
+              git commit -m "Update Kolumbus and Rogaland speed limits"
             else
               echo "No changes to commit."
             fi
