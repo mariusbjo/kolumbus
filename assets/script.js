@@ -1,6 +1,6 @@
 // assets/script.js
 
-// Sett opp kartet (sentrert på Rogaland)
+// Sett opp kartet (sentrert på Rogaland første gang)
 const map = L.map('map').setView([58.97, 5.73], 9);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -10,7 +10,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // Tilpasset ikon for busser
 const busIcon = L.icon({
-  iconUrl: 'https://cdn-icons-png.flaticon.com/512/61/61231.png', // bussikon
+  iconUrl: 'https://cdn-icons-png.flaticon.com/512/61/61231.png',
   iconSize: [32, 32],
   iconAnchor: [16, 32],
   popupAnchor: [0, -32]
@@ -42,10 +42,7 @@ async function loadKolumbus() {
       markers[v.vehicleId] = marker;
     });
 
-    if (vehicles.length) {
-      const group = L.featureGroup(Object.values(markers));
-      map.fitBounds(group.getBounds().pad(0.2));
-    }
+    // Merk: vi fjerner map.fitBounds() slik at kartet ikke nullstilles
   } catch (err) {
     console.error('Feil ved lasting av Kolumbus-data:', err);
   }
