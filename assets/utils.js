@@ -12,3 +12,19 @@ export function haversine(lat1, lon1, lat2, lon2) {
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
 
+// Hent fartsgrense fra NVDB API
+export async function getSpeedLimit(lat, lon) {
+  const url = `https://nvdbapiles-v3.atlas.vegvesen.no/vegobjekter/105?inkluder=egenskaper&srid=wgs84&lat=${lat}&lon=${lon}&radius=50`;
+  try {
+    const res = await fetch(url, { headers: { "Accept": "application/json" } });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const obj = data.objekter?.[0];
+    if (!obj) return null;
+    const egenskap = obj.egenskaper?.find(e => e.id === 5962); // 5962 = fartsgrense
+    return egenskap?.verdi || null;
+  } catch (err) {
+    console.error("Feil ved henting av fartsgrense:", err);
+    return null;
+  }
+}
