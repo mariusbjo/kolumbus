@@ -14,7 +14,6 @@ all_points = []
 url = BASE_URL
 while url:
     print(f"Henter: {url}")
-    # Bruk params kun på første kall, deretter følger vi href direkte
     res = requests.get(url, params=params if url == BASE_URL else None, headers=HEADERS_NVDB)
     if not res.ok:
         print("❌ Feil ved henting:", res.status_code, res.text)
@@ -25,21 +24,37 @@ while url:
     if not objekter:
         break
 
-    # Logg første objekt for å se struktur (kan fjernes senere)
+    # Logg første objekt for å se struktur
     print("Eksempelobjekt:", json.dumps(objekter[0], indent=2, ensure_ascii=False))
 
     for obj in objekter:
         verdi = None
-        # Sjekk alle egenskaper og finn fartsgrense-verdi
         for e in obj.get("egenskaper", []):
-            if e.get("navn") == "Fartsgrense" or e.get("id") == 5962:
+            print("Egenskap:", e.get("id"), e.get("navn"), e.get("verdi"))
+            if e.get("navn") == "Fartsgrense":
                 verdi = e.get("verdi")
+
         if verdi:
             lok = obj.get("lokasjon", {})
-            punkt = lok.get("geometri", {}).get("punkt")
+            geo = lok.get("geometri", {})
+            punkt = geo.get("punkt")
+            linje = geo.get("linje")
+
             if punkt:
                 lat = punkt.get("lat")
                 lon = punkt.get("lon")
+            elif linje:
+                # Ta midtpunktet av linjen
+                coords = linje.get("koordinater", [])
+                if coords:
+                    mid = len(coords) // 2
+                    lon, lat = coords[mid]
+                else:
+                    lat, lon = None, None
+            else:
+                lat, lon = None, None
+
+            if lat and lon:
                 key = f"{lat:.4f},{lon:.4f}"
                 speedlimits[key] = verdi
                 all_points.append((lat, lon, verdi))
@@ -47,8 +62,8 @@ while url:
     # Neste side?
     neste = data.get("metadata", {}).get("neste")
     if isinstance(neste, dict) and "href" in neste:
-        url = neste["href"]   # bruk kun href-strengen
-        time.sleep(0.5)       # rate control
+        url = neste["href"]
+        time.sleep(0.5)
     else:
         url = None
 
