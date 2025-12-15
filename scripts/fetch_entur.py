@@ -1,12 +1,9 @@
+# scripts/fetch_entur.py
 import os, json, requests
 from datetime import datetime, timezone
+from config import HEADERS_ENTUR
 
 URL = "https://api.entur.io/journey-planner/v3/graphql"
-HEADERS = {
-    "Content-Type": "application/json",
-    "ET-Client-Name": os.getenv("ET_CLIENT_NAME", "marius-kolumbus-demo"),
-    "User-Agent": "kolumbus-sanntid/1.0 (https://mariusbjo.github.io/kolumbus/)"
-}
 
 QUERY = """
 query KolumbusVehicles {
@@ -32,7 +29,7 @@ DEBUG_PATH = "data/debug.json"
 
 def main():
     try:
-        resp = requests.post(URL, headers=HEADERS, json={"query": QUERY}, timeout=30)
+        resp = requests.post(URL, headers=HEADERS_ENTUR, json={"query": QUERY}, timeout=30)
         if not resp.ok:
             print(f"❌ Feil fra Entur API: {resp.status_code} {resp.text}")
             return
@@ -70,7 +67,6 @@ def main():
             json.dump(result, f, ensure_ascii=False, indent=2)
 
         if len(cleaned) == 0:
-            # fallback: lagre hele råresponsen for feilsøking
             with open(DEBUG_PATH, "w", encoding="utf-8") as f:
                 json.dump(payload, f, ensure_ascii=False, indent=2)
             print(f"⚠️ Ingen kjøretøy funnet. Wrote {OUT_PATH} with 0 entries and saved raw response to {DEBUG_PATH}.")
