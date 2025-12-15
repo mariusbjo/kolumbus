@@ -25,10 +25,14 @@ while url:
     if not objekter:
         break
 
+    # Logg første objekt for å se struktur (kan fjernes senere)
+    print("Eksempelobjekt:", json.dumps(objekter[0], indent=2, ensure_ascii=False))
+
     for obj in objekter:
         verdi = None
+        # Sjekk alle egenskaper og finn fartsgrense-verdi
         for e in obj.get("egenskaper", []):
-            if e.get("id") == 5962:  # fartsgrense
+            if e.get("navn") == "Fartsgrense" or e.get("id") == 5962:
                 verdi = e.get("verdi")
         if verdi:
             lok = obj.get("lokasjon", {})
