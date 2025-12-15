@@ -14,7 +14,15 @@
   <style>
     html, body { height: 100%; margin: 0; }
     #map { height: 100vh; }
-    .meta { position: absolute; z-index: 999; background: rgba(255,255,255,0.9); padding: 6px 10px; margin: 8px; border-radius: 6px; font: 14px/1.4 system-ui, sans-serif; }
+    .meta {
+      position: absolute;
+      z-index: 999;
+      background: rgba(255,255,255,0.9);
+      padding: 6px 10px;
+      margin: 8px;
+      border-radius: 6px;
+      font: 14px/1.4 system-ui, sans-serif;
+    }
   </style>
 </head>
 <body>
@@ -29,6 +37,51 @@
     integrity="sha256-o9N1j7kPszwCwHkBsycd0zVbZL3rjZ9n+1G6ZV0rj0M="
     crossorigin=""
   ></script>
-  <script src="assets/script.js"></script>
+
+  <script>
+    // Opprett kart
+    const map = L.map('map').setView([58.97, 5.73], 10);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    let markers = {};
+
+    async function loadKolumbus() {
+      try {
+        const res = await fetch('data/kolumbus.json', { cache: 'no-store' });
+        const payload = await res.json();
+        const vehicles = payload.vehicles || [];
+
+        // Fjern gamle markører
+        Object.values(markers).forEach(m => map.removeLayer(m));
+        markers = {};
+
+        vehicles.forEach(v => {
+          const popup = `
+            <strong>Linje ${v.line.publicCode}</strong><br>
+            ID: ${v.vehicleId}<br>
+            Oppdatert: ${v.lastUpdated}
+          `;
+          const marker = L.marker([v.lat, v.lon]).bindPopup(popup);
+          marker.addTo(map);
+          markers[v.vehicleId] = marker;
+        });
+
+        if (vehicles.length) {
+          const group = L.featureGroup(Object.values(markers));
+          map.fitBounds(group.getBounds().pad(0.2));
+        }
+      } catch (err) {
+        console.error("Feil ved lasting av Kolumbus-data:", err);
+      }
+    }
+
+    // Last inn første gang og oppdater hvert minutt
+    loadKolumbus();
+    setInterval(loadKolumbus, 60000);
+  </script>
 </body>
 </html>
