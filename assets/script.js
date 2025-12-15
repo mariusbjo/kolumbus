@@ -8,7 +8,16 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
 
-// Hent og vis Kolumbus-busser
+// Tilpasset ikon for busser
+const busIcon = L.icon({
+  iconUrl: 'https://cdn-icons-png.flaticon.com/512/61/61231.png', // enkel buss-ikon
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -32]
+});
+
+let markers = {};
+
 async function loadKolumbus() {
   try {
     const res = await fetch('data/kolumbus.json', { cache: 'no-store' });
@@ -16,23 +25,25 @@ async function loadKolumbus() {
     const payload = await res.json();
 
     const vehicles = payload.vehicles || [];
-    const markers = [];
+
+    // Fjern gamle markører
+    Object.values(markers).forEach(m => map.removeLayer(m));
+    markers = {};
 
     vehicles.forEach(v => {
       const code = v.line?.publicCode ?? '—';
-      const name = v.line?.name ?? '';
       const popup = `
-        <strong>${code}</strong> ${name}<br>
-        Oppdatert: ${v.updatedAt ?? '—'}
+        <strong>Linje ${code}</strong><br>
+        ID: ${v.vehicleId}<br>
+        Oppdatert: ${v.lastUpdated ?? '—'}
       `;
-      const marker = L.marker([v.lat, v.lon]);
-      marker.bindPopup(popup);
+      const marker = L.marker([v.lat, v.lon], { icon: busIcon }).bindPopup(popup);
       marker.addTo(map);
-      markers.push(marker);
+      markers[v.vehicleId] = marker;
     });
 
-    if (markers.length) {
-      const group = L.featureGroup(markers);
+    if (vehicles.length) {
+      const group = L.featureGroup(Object.values(markers));
       map.fitBounds(group.getBounds().pad(0.2));
     }
   } catch (err) {
@@ -40,4 +51,6 @@ async function loadKolumbus() {
   }
 }
 
+// Last inn første gang og oppdater hvert minutt
 loadKolumbus();
+setInterval(loadKolumbus, 60000);
