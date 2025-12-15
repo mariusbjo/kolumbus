@@ -1,8 +1,8 @@
 # scripts/config.py
 import os
 
-# Unik identifikasjon for ditt prosjekt
-USER_AGENT = "marius-sanntidskart/1.0 (https://mariusbjo.github.io/kolumbus/; kontakt: marius.bjornor@gmail.com)"
+# Gyldig User-Agent med prosjektidentifikasjon, URL og kontaktinfo
+USER_AGENT = "Mozilla/5.0 (compatible; marius-sanntidskart/1.0; +https://mariusbjo.github.io/kolumbus/; kontakt: marius.bjornor@gmail.com)"
 
 # Entur krever ET-Client-Name i tillegg
 ET_CLIENT_NAME = os.getenv("ET_CLIENT_NAME", "marius-sanntidskart-demo")
