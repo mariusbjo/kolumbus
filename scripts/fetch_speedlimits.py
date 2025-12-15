@@ -2,7 +2,6 @@
 import requests, json, math, time, os
 from config import HEADERS_NVDB
 
-# Vegobjekttype 105 = Fartsgrense
 BASE_URL = "https://nvdbapiles-v3.atlas.vegvesen.no/vegobjekter/105"
 params = {
     "inkluder": "egenskaper,lokasjon",
@@ -10,35 +9,51 @@ params = {
 }
 
 OUT_PATH = "data/speedlimits.json"
-DEBUG_PATH = "data/debug_nvdb.json"
+DEBUG_DIR = "data/debug_nvdb"
 
-speedlimits = {}
+# Last inn eksisterende data hvis det finnes
+if os.path.exists(OUT_PATH):
+    with open(OUT_PATH, "r", encoding="utf-8") as f:
+        speedlimits = json.load(f)
+else:
+    speedlimits = {}
+
 all_points = []
+veglenke_cache = {}
 
 def fetch_veglenke_coords(veglenke_id):
-    """Slå opp veglenkesekvens og returner koordinater"""
+    """Slå opp veglenkesekvens og returner koordinater (med cache)."""
+    if veglenke_id in veglenke_cache:
+        return veglenke_cache[veglenke_id]
+
     url = f"https://nvdbapiles-v3.atlas.vegvesen.no/vegnett/veglenkesekvenser/{veglenke_id}"
     res = requests.get(url, headers=HEADERS_NVDB)
     if res.ok:
         geo = res.json().get("geometri", {})
-        return geo.get("koordinater", [])
+        coords = geo.get("koordinater", [])
+        veglenke_cache[veglenke_id] = coords
+        return coords
     else:
         print("❌ Feil ved henting av veglenkesekvens:", res.status_code)
+        veglenke_cache[veglenke_id] = []
         return []
 
 url = BASE_URL
-while url:
-    print(f"Henter: {url}")
+page_count = 0
+max_pages = 5  # begrens til 5 sider i testmodus
+
+os.makedirs(DEBUG_DIR, exist_ok=True)
+
+while url and page_count < max_pages:
+    print(f"Henter side {page_count+1}: {url}")
     res = requests.get(url, params=params if url == BASE_URL else None, headers=HEADERS_NVDB)
 
-    # Lagre alltid rårespons til debug-fil
     try:
         payload = res.json()
-        os.makedirs(os.path.dirname(DEBUG_PATH), exist_ok=True)
-        with open(DEBUG_PATH, "w", encoding="utf-8") as f:
+        with open(f"{DEBUG_DIR}/page_{page_count+1}.json", "w", encoding="utf-8") as f:
             json.dump(payload, f, ensure_ascii=False, indent=2)
     except Exception:
-        pass
+        payload = {}
 
     if not res.ok:
         print("❌ Feil ved henting:", res.status_code, res.text)
@@ -46,6 +61,8 @@ while url:
 
     data = payload
     objekter = data.get("objekter", [])
+    print("Fant", len(objekter), "objekter på denne siden")
+
     if not objekter:
         break
 
@@ -64,11 +81,11 @@ while url:
                 lat = punkt.get("lat")
                 lon = punkt.get("lon")
                 key = f"{lat:.4f},{lon:.4f}"
-                speedlimits[key] = verdi
-                all_points.append((lat, lon, verdi))
-                added += 1
+                if key not in speedlimits:  # hopp over eksisterende
+                    speedlimits[key] = verdi
+                    all_points.append((lat, lon, verdi))
+                    added += 1
             else:
-                # Hent veglenkesekvensid fra egenskaper
                 for e in obj.get("egenskaper", []):
                     if e.get("navn") == "Liste av lokasjonsattributt":
                         innhold = e.get("innhold", [])
@@ -78,11 +95,12 @@ while url:
                                 coords = fetch_veglenke_coords(veglenke_id)
                                 for lon, lat in coords:
                                     key = f"{lat:.4f},{lon:.4f}"
-                                    speedlimits[key] = verdi
-                                    all_points.append((lat, lon, verdi))
-                                    added += 1
+                                    if key not in speedlimits:  # hopp over eksisterende
+                                        speedlimits[key] = verdi
+                                        all_points.append((lat, lon, verdi))
+                                        added += 1
 
-    print(f"  ➕ Lagret {added} punkter fra denne siden")
+    print(f"  ➕ Lagret {added} nye punkter fra denne siden")
 
     neste = data.get("metadata", {}).get("neste")
     if isinstance(neste, dict) and "href" in neste:
@@ -91,10 +109,11 @@ while url:
     else:
         url = None
 
-print(f"Hentet totalt {len(all_points)} fartsgrensepunkter fra NVDB")
+    page_count += 1
 
-# Lagre til JSON
+print(f"Hentet totalt {len(all_points)} nye fartsgrensepunkter fra NVDB")
+
 os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
 with open(OUT_PATH, "w", encoding="utf-8") as f:
     json.dump(speedlimits, f, ensure_ascii=False, indent=2)
-print("✅ speedlimits.json skrevet med", len(speedlimits), "punkter")
+print("✅ speedlimits.json skrevet med", len(speedlimits), "punkter totalt")
