@@ -1,4 +1,4 @@
-name: Fetch Kolumbus static data and publish frontend
+name: Fetch Kolumbus data and speed limits, publish frontend
 
 on:
   schedule:
@@ -29,44 +29,13 @@ jobs:
       - name: Fetch Kolumbus static data
         run: python scripts/fetch_entur.py
 
+      - name: Fetch NVDB speed limits
+        run: python scripts/fetch_speedlimits.py
+
       - name: Configure git
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
 
-      - name: Commit changes safely (kolumbus.json + debug.json)
-        run: |
-          files=""
-          if [ -f data/kolumbus.json ]; then
-            files="$files data/kolumbus.json"
-          fi
-          if [ -f data/debug.json ]; then
-            files="$files data/debug.json"
-          fi
-
-          if [ -n "$files" ]; then
-            git add $files
-            if ! git diff --cached --quiet; then
-              git commit -m "Update Kolumbus static data"
-            else
-              echo "No changes to commit."
-            fi
-          fi
-
-      - name: Rebase and push
-        run: |
-          git pull --rebase
-          git push
-
-  publish:
-    runs-on: ubuntu-latest
-    needs: fetch
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
+      - name: Commit changes safely (kolumbus.json + speedlimits.json + debug.json)
+        run:
