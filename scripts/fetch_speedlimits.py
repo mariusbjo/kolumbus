@@ -11,7 +11,7 @@ params = {
 
 headers = {
     "Accept": "application/json",
-    "User-Agent": "strand-postliste/1.0 (github-actions)"
+    "User-Agent": "kolumbus-sanntid/1.0 (https://mariusbjo.github.io/kolumbus/)"
 }
 
 speedlimits = {}
