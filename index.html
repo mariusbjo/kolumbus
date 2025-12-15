@@ -5,12 +5,10 @@
   <meta charset="utf-8">
   <title>Kolumbus sanntid (Entur)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4QJmfG/4YkN2v2Z3F1uBf3iQbC1pK3eT1LhQ6ZbMkU="
-    crossorigin=""
-  />
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
   <style>
     html, body { height: 100%; margin: 0; }
     #map { height: 100vh; }
@@ -32,56 +30,10 @@
   </div>
   <div id="map"></div>
 
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-o9N1j7kPszwCwHkBsycd0zVbZL3rjZ9n+1G6ZV0rj0M="
-    crossorigin=""
-  ></script>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <script>
-    // Opprett kart
-    const map = L.map('map').setView([58.97, 5.73], 10);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-
-    let markers = {};
-
-    async function loadKolumbus() {
-      try {
-        const res = await fetch('data/kolumbus.json', { cache: 'no-store' });
-        const payload = await res.json();
-        const vehicles = payload.vehicles || [];
-
-        // Fjern gamle markører
-        Object.values(markers).forEach(m => map.removeLayer(m));
-        markers = {};
-
-        vehicles.forEach(v => {
-          const popup = `
-            <strong>Linje ${v.line.publicCode}</strong><br>
-            ID: ${v.vehicleId}<br>
-            Oppdatert: ${v.lastUpdated}
-          `;
-          const marker = L.marker([v.lat, v.lon]).bindPopup(popup);
-          marker.addTo(map);
-          markers[v.vehicleId] = marker;
-        });
-
-        if (vehicles.length) {
-          const group = L.featureGroup(Object.values(markers));
-          map.fitBounds(group.getBounds().pad(0.2));
-        }
-      } catch (err) {
-        console.error("Feil ved lasting av Kolumbus-data:", err);
-      }
-    }
-
-    // Last inn første gang og oppdater hvert minutt
-    loadKolumbus();
-    setInterval(loadKolumbus, 60000);
-  </script>
+  <!-- Eget script -->
+  <script src="assets/script.js"></script>
 </body>
 </html>
