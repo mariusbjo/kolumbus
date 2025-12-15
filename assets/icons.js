@@ -7,12 +7,13 @@ export const busIcon = L.icon({
   popupAnchor: [0, -32]
 });
 
-export function speedIcon(speed) {
+export function speedIcon(speed, limit) {
+  const over = limit && speed > limit;
+  const className = over ? 'speed-icon over' : 'speed-icon';
   return L.divIcon({
-    className: 'speed-icon',
+    className,
     html: `<div>${Math.round(speed)}</div>`,
     iconSize: [32, 32],
     iconAnchor: [16, 16]
   });
 }
-
