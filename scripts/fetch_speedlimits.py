@@ -1,6 +1,7 @@
 # scripts/fetch_speedlimits.py
 import requests
 import json
+import math
 
 BASE_URL = "https://nvdbapiles-v3.atlas.vegvesen.no/vegobjekter/105"
 params = {
@@ -10,7 +11,9 @@ params = {
 
 speedlimits = {}
 
+# --- 1. Hent alle fartsgrenseobjekter fra NVDB ---
 page = 1
+all_points = []
 while True:
     print(f"Henter side {page}...")
     res = requests.get(BASE_URL, params={**params, "side": page}, headers={"Accept": "application/json"})
@@ -29,7 +32,6 @@ while True:
             if e.get("id") == 5962:  # fartsgrense
                 verdi = e.get("verdi")
         if verdi:
-            # Bruk midtpunkt av geometri som nøkkel
             lok = obj.get("lokasjon", {})
             punkt = lok.get("geometri", {}).get("punkt")
             if punkt:
@@ -37,14 +39,47 @@ while True:
                 lon = punkt.get("lon")
                 key = f"{lat:.4f},{lon:.4f}"
                 speedlimits[key] = verdi
+                all_points.append((lat, lon, verdi))
 
-    # Sjekk om det finnes flere sider
     if "metadata" in data and data["metadata"].get("nesteSide"):
         page += 1
     else:
         break
 
+print(f"Hentet {len(all_points)} fartsgrensepunkter fra NVDB")
+
+# --- 2. Lag et grid over Rogaland (ca. bounding box) ---
+# Rogaland ca. lat 58.0–59.0, lon 5.0–7.0
+lat_min, lat_max = 58.0, 59.0
+lon_min, lon_max = 5.0, 7.0
+step = 0.01  # ~1 km grid
+
+def haversine(lat1, lon1, lat2, lon2):
+    R = 6371000
+    dLat = math.radians(lat2 - lat1)
+    dLon = math.radians(lon2 - lon1)
+    a = math.sin(dLat/2)**2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dLon/2)**2
+    return R * 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+
+# --- 3. Fyll inn gridpunkter med nærmeste fartsgrense ---
+for lat in [lat_min + i*step for i in range(int((lat_max-lat_min)/step)+1)]:
+    for lon in [lon_min + j*step for j in range(int((lon_max-lon_min)/step)+1)]:
+        key = f"{lat:.4f},{lon:.4f}"
+        if key in speedlimits:
+            continue
+        # Finn nærmeste NVDB‑punkt
+        nearest = None
+        nearest_dist = float("inf")
+        for plat, plon, limit in all_points:
+            dist = haversine(lat, lon, plat, plon)
+            if dist < nearest_dist:
+                nearest_dist = dist
+                nearest = limit
+        if nearest:
+            speedlimits[key] = nearest
+
+print(f"Totalt {len(speedlimits)} punkter lagret (inkl. grid fallback)")
+
+# --- 4. Lagre til JSON ---
 with open("data/speedlimits.json", "w", encoding="utf-8") as f:
     json.dump(speedlimits, f, ensure_ascii=False, indent=2)
-
-print(f"Lagret {len(speedlimits)} fartsgrenser til data/speedlimits.json")
