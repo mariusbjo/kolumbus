@@ -17,6 +17,7 @@ const busIcon = L.icon({
 });
 
 let markers = {};
+let followBusId = null; // ID til bussen vi følger
 
 async function loadKolumbus() {
   try {
@@ -35,17 +36,28 @@ async function loadKolumbus() {
       const popup = `
         <strong>Linje ${code}</strong><br>
         ID: ${v.vehicleId}<br>
-        Oppdatert: ${v.lastUpdated ?? '—'}
+        Oppdatert: ${v.lastUpdated ?? '—'}<br>
+        <button onclick="followBus('${v.vehicleId}')">Følg denne bussen</button>
       `;
       const marker = L.marker([v.lat, v.lon], { icon: busIcon }).bindPopup(popup);
       marker.addTo(map);
       markers[v.vehicleId] = marker;
     });
 
-    // Merk: vi fjerner map.fitBounds() slik at kartet ikke nullstilles
+    // Hvis vi følger en buss, oppdater kartet til den
+    if (followBusId && markers[followBusId]) {
+      const pos = markers[followBusId].getLatLng();
+      map.setView(pos, map.getZoom());
+    }
   } catch (err) {
     console.error('Feil ved lasting av Kolumbus-data:', err);
   }
+}
+
+// Funksjon for å aktivere "følg buss"
+function followBus(id) {
+  followBusId = id;
+  alert(`Du følger nå buss ${id}. Klikk på en annen buss for å bytte.`);
 }
 
 // Last inn første gang og oppdater hvert 10. sekund
