@@ -38,45 +38,40 @@ async function loadKolumbusLive() {
     const payload = await res.json();
     const vehicles = payload.data?.vehicles || [];
 
-    Object.values(markers).forEach(m => map.removeLayer(m));
-    markers = {};
-
     for (const v of vehicles) {
+      const id = v.vehicleId;
+      const pos = [v.location.latitude, v.location.longitude];
       const code = v.line?.publicCode ?? '—';
-      const popup = `
-        <strong>Linje ${code}</strong><br>
-        ID: ${v.vehicleId}<br>
-        Oppdatert: ${v.lastUpdated}<br>
-        <button onclick="followBus('${v.vehicleId}')">Følg denne bussen</button>
-        <button onclick="stopFollow()">Slutt å følg</button>
-      `;
-      const marker = L.marker(
-        [v.location.latitude, v.location.longitude],
-        { icon: busIcon }
-      ).bindPopup(popup);
-      marker.addTo(map);
-      markers[v.vehicleId] = marker;
+
+      if (!markers[id]) {
+        // Opprett ny markør første gang
+        const popup = `
+          <strong>Linje ${code}</strong><br>
+          ID: ${id}<br>
+          Oppdatert: ${v.lastUpdated}<br>
+          <button onclick="followBus('${id}')">Følg denne bussen</button>
+          <button onclick="stopFollow()">Slutt å følg</button>
+        `;
+        markers[id] = L.marker(pos, { icon: busIcon }).bindPopup(popup).addTo(map);
+      } else {
+        // Flytt eksisterende markør
+        markers[id].setLatLng(pos);
+      }
 
       const now = new Date(v.lastUpdated).getTime();
-      if (!history[v.vehicleId]) history[v.vehicleId] = [];
-      const prev = history[v.vehicleId].slice(-1)[0];
+      if (!history[id]) history[id] = [];
+      const prev = history[id].slice(-1)[0];
       let speed = null;
       if (prev) {
         const dt = (now - prev.timestamp) / 1000;
-        const dist = haversine(prev.lat, prev.lon, v.location.latitude, v.location.longitude);
+        const dist = haversine(prev.lat, prev.lon, pos[0], pos[1]);
         if (dt > 0) speed = (dist / dt) * 3.6;
       }
-      const speedLimit = await getSpeedLimit(v.location.latitude, v.location.longitude);
+      const speedLimit = await getSpeedLimit(pos[0], pos[1]);
 
-      history[v.vehicleId].push({
-        lat: v.location.latitude,
-        lon: v.location.longitude,
-        timestamp: now,
-        speed,
-        speedLimit
-      });
+      history[id].push({ lat: pos[0], lon: pos[1], timestamp: now, speed, speedLimit });
       const cutoff = now - 30 * 60 * 1000;
-      history[v.vehicleId] = history[v.vehicleId].filter(p => p.timestamp >= cutoff);
+      history[id] = history[id].filter(p => p.timestamp >= cutoff);
     }
 
     if (followBusId && history[followBusId]) {
