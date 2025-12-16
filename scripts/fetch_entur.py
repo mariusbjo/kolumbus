@@ -1,3 +1,4 @@
+# scripts/fetch_entur.py
 import requests, json, os
 
 OUT_PATH = "data/kolumbus.json"
@@ -8,6 +9,7 @@ headers = {
     "ET-Client-Name": "marius-kolumbus-demo"
 }
 
+# GraphQL-spørring med Kolumbus-filter
 query = """
 query {
   vehicles(codespaceId:"KOL") {
@@ -22,6 +24,10 @@ query {
 
 print("Henter sanntidsdata fra Entur (Kolumbus)…")
 res = requests.post(url, json={"query": query}, headers=headers)
+
+if not res.ok:
+    print("❌ Entur svarte med feil:", res.status_code, res.text)
+    exit(1)
 
 data = res.json()
 with open(DEBUG_PATH, "w", encoding="utf-8") as f:
