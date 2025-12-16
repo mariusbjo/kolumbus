@@ -18,7 +18,6 @@ if os.path.exists(OUT_PATH):
 else:
     speedlimits = {}
 
-all_points = []
 veglenke_cache = {}
 
 def fetch_veglenke_coords(veglenke_id):
@@ -40,7 +39,7 @@ def fetch_veglenke_coords(veglenke_id):
 
 url = BASE_URL
 page_count = 0
-max_pages = 3  # begrens til 3 sider i testmodus
+max_pages = 3  # testmodus: hent maks 3 sider
 
 os.makedirs(DEBUG_DIR, exist_ok=True)
 
@@ -59,8 +58,7 @@ while url and page_count < max_pages:
         print("❌ Feil ved henting:", res.status_code, res.text)
         break
 
-    data = payload
-    objekter = data.get("objekter", [])
+    objekter = payload.get("objekter", [])
     print("Fant", len(objekter), "objekter på denne siden")
 
     if not objekter:
@@ -68,6 +66,7 @@ while url and page_count < max_pages:
 
     added = 0
     for obj in objekter:
+        # Finn fartsgrenseverdi
         verdi = None
         for e in obj.get("egenskaper", []):
             if e.get("id") == 2021 or e.get("navn") == "Fartsgrense":
@@ -78,15 +77,14 @@ while url and page_count < max_pages:
             if veglenke_id:
                 coords = fetch_veglenke_coords(veglenke_id)
                 for lon, lat in coords:
-                    key = f"{lat:.4f},{lon:.4f}"
+                    key = f"{lat:.5f},{lon:.5f}"
                     if key not in speedlimits:  # hopp over eksisterende
                         speedlimits[key] = verdi
-                        all_points.append((lat, lon, verdi))
                         added += 1
 
     print(f"  ➕ Lagret {added} nye punkter fra denne siden")
 
-    neste = data.get("metadata", {}).get("neste")
+    neste = payload.get("metadata", {}).get("neste")
     if isinstance(neste, dict) and "href" in neste:
         url = neste["href"]
         time.sleep(0.5)
@@ -95,7 +93,7 @@ while url and page_count < max_pages:
 
     page_count += 1
 
-print(f"Hentet totalt {len(all_points)} nye fartsgrensepunkter fra NVDB")
+print(f"Hentet totalt {len(speedlimits)} fartsgrensepunkter fra NVDB")
 
 os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
 with open(OUT_PATH, "w", encoding="utf-8") as f:
