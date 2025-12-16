@@ -34,6 +34,7 @@ for v in vehicles:
     loc = v.get("location", {})
     if loc:
         entries.append({
+            "id": v.get("id"),  # <- legg til kjøretøy-ID
             "lineRef": v.get("line", {}).get("lineRef"),
             "lat": loc.get("latitude"),
             "lon": loc.get("longitude"),
