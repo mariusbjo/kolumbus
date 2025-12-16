@@ -1,87 +1,56 @@
 # scripts/fetch_entur.py
-import os, json, requests
-from datetime import datetime, timezone
-from config import HEADERS_ENTUR
-
-URL = "https://api.entur.io/journey-planner/v3/graphql"
-
-# Ny spørring: vehicleActivity i stedet for vehicles
-QUERY = """
-query KolumbusVehicles {
-  vehicleActivity(modes: [bus, coach], bbox: {
-    minLat: 58.20,
-    minLon: 4.80,
-    maxLat: 59.60,
-    maxLon: 6.60
-  }) {
-    vehicleRef
-    lineRef
-    mode
-    location { latitude longitude }
-    bearing
-    recordedAtTime
-  }
-}
-"""
+import requests, json, os
 
 OUT_PATH = "data/kolumbus.json"
 DEBUG_PATH = "data/debug_entur.json"
 
-def main():
-    try:
-        resp = requests.post(URL, headers=HEADERS_ENTUR, json={"query": QUERY}, timeout=30)
-        payload = resp.json()
+url = "https://api.entur.io/journey-planner/v3/graphql"
+headers = {
+    "ET-Client-Name": "marius-kolumbus-demo"
+}
 
-        # Lagre alltid rårespons til debug.json
-        os.makedirs(os.path.dirname(DEBUG_PATH), exist_ok=True)
-        with open(DEBUG_PATH, "w", encoding="utf-8") as f:
-            json.dump(payload, f, ensure_ascii=False, indent=2)
+# GraphQL-spørring for sanntids kjøretøyposisjoner
+query = """
+query {
+  vehicles {
+    id
+    bearing
+    line { id publicCode name }
+    serviceJourney { id line { name } }
+    location { latitude longitude }
+  }
+}
+"""
 
-        if not resp.ok:
-            print(f"❌ Feil fra Entur API: {resp.status_code} {resp.text}")
-            return
+print("Henter sanntidsdata fra Entur…")
+res = requests.post(url, json={"query": query}, headers=headers)
 
-        if "errors" in payload:
-            print("⚠️ Entur svarte med feil:", payload["errors"])
+if not res.ok:
+    print("❌ Entur svarte med feil:", res.status_code, res.text)
+    exit(1)
 
-        vehicles = payload.get("data", {}).get("vehicleActivity", [])
+data = res.json()
+with open(DEBUG_PATH, "w", encoding="utf-8") as f:
+    json.dump(data, f, ensure_ascii=False, indent=2)
 
-        cleaned = [
-            {
-                "id": v.get("vehicleRef"),
-                "mode": v.get("mode"),
-                "line": {
-                    "publicCode": v.get("lineRef"),
-                    "name": None
-                },
-                "lat": v.get("location", {}).get("latitude"),
-                "lon": v.get("location", {}).get("longitude"),
-                "bearing": v.get("bearing"),
-                "updatedAt": v.get("recordedAtTime")
-            }
-            for v in vehicles if v.get("location", {}).get("latitude") and v.get("location", {}).get("longitude")
-        ]
+vehicles = data.get("data", {}).get("vehicles", [])
+print("Fant", len(vehicles), "kjøretøy")
 
-        result = {
-            "meta": {
-                "source": "Entur API – Kolumbus busser",
-                "generatedAt": datetime.now(timezone.utc).isoformat(),
-                "count": len(cleaned)
-            },
-            "vehicles": cleaned
-        }
+entries = []
+for v in vehicles:
+    loc = v.get("location", {})
+    if loc:
+        entries.append({
+            "id": v.get("id"),
+            "line": v.get("line", {}).get("publicCode"),
+            "lineName": v.get("line", {}).get("name"),
+            "lat": loc.get("latitude"),
+            "lon": loc.get("longitude"),
+            "bearing": v.get("bearing")
+        })
 
-        os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
-        with open(OUT_PATH, "w", encoding="utf-8") as f:
-            json.dump(result, f, ensure_ascii=False, indent=2)
+os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
+with open(OUT_PATH, "w", encoding="utf-8") as f:
+    json.dump(entries, f, ensure_ascii=False, indent=2)
 
-        if len(cleaned) == 0:
-            print(f"⚠️ Ingen kjøretøy funnet. Wrote {OUT_PATH} with 0 entries. Se {DEBUG_PATH} for detaljer.")
-        else:
-            print(f"✅ Wrote {OUT_PATH} with {len(cleaned)} Kolumbus vehicles. Første ID: {cleaned[0]['id']}")
-
-    except Exception as e:
-        print("❌ Uventet feil:", e)
-
-if __name__ == "__main__":
-    main()
+print("✅ kolumbus.json skrevet med", len(entries), "kjøretøy")
