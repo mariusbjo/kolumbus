@@ -1,0 +1,31 @@
+{
+  "request": {
+    "url": "https://api.entur.io/journey-planner/v3/graphql",
+    "headers": {
+      "User-Agent": "python-requests/2.32.5",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept": "*/*",
+      "Connection": "keep-alive",
+      "ET-Client-Name": "marius-kolumbus-demo",
+      "Content-Length": "137",
+      "Content-Type": "application/json"
+    },
+    "body": "{\"query\": \"\\n{\\n  vehicles(codespaceId:\\\"KOL\\\") {\\n    line { lineRef }\\n    lastUpdated\\n    location { latitude longitude }\\n  }\\n}\\n\"}"
+  },
+  "response": {
+    "errors": [
+      {
+        "message": "Validation error (FieldUndefined@[vehicles]) : Field 'vehicles' in type 'QueryType' is undefined",
+        "locations": [
+          {
+            "line": 3,
+            "column": 3
+          }
+        ],
+        "extensions": {
+          "classification": "ValidationError"
+        }
+      }
+    ]
+  }
+}
