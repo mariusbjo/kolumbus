@@ -4,8 +4,9 @@ from config import HEADERS_NVDB
 
 BASE_URL = "https://nvdbapiles-v3.atlas.vegvesen.no/vegobjekter/105"
 params = {
-    "inkluder": "egenskaper,lokasjon",
-    "fylke": "11"  # Rogaland
+    "fylke": "11",  # Rogaland
+    "inkluder": "egenskaper",
+    "format": "geojson"
 }
 
 OUT_PATH = "data/speedlimits.json"
@@ -18,30 +19,11 @@ if os.path.exists(OUT_PATH):
 else:
     speedlimits = {}
 
-veglenke_cache = {}
-
-def fetch_veglenke_coords(veglenke_id):
-    """Slå opp veglenkesekvens og returner koordinater (med cache)."""
-    if veglenke_id in veglenke_cache:
-        return veglenke_cache[veglenke_id]
-
-    url = f"https://nvdbapiles-v3.atlas.vegvesen.no/vegnett/veglenkesekvenser/{veglenke_id}"
-    res = requests.get(url, headers=HEADERS_NVDB)
-    if res.ok:
-        geo = res.json().get("geometri", {})
-        coords = geo.get("koordinater", [])
-        veglenke_cache[veglenke_id] = coords
-        return coords
-    else:
-        print("❌ Feil ved henting av veglenkesekvens:", res.status_code)
-        veglenke_cache[veglenke_id] = []
-        return []
+os.makedirs(DEBUG_DIR, exist_ok=True)
 
 url = BASE_URL
 page_count = 0
 max_pages = 3  # testmodus: hent maks 3 sider
-
-os.makedirs(DEBUG_DIR, exist_ok=True)
 
 while url and page_count < max_pages:
     print(f"Henter side {page_count+1}: {url}")
@@ -58,27 +40,32 @@ while url and page_count < max_pages:
         print("❌ Feil ved henting:", res.status_code, res.text)
         break
 
-    objekter = payload.get("objekter", [])
-    print("Fant", len(objekter), "objekter på denne siden")
-
-    if not objekter:
-        break
+    features = payload.get("features", [])
+    print("Fant", len(features), "features på denne siden")
 
     added = 0
-    for obj in objekter:
-        # Finn fartsgrenseverdi
+    for feat in features:
+        props = feat.get("properties", {})
         verdi = None
-        for e in obj.get("egenskaper", []):
+        for e in props.get("egenskaper", []):
             if e.get("id") == 2021 or e.get("navn") == "Fartsgrense":
                 verdi = e.get("verdi")
 
         if verdi is not None:
-            veglenke_id = obj.get("lokasjon", {}).get("veglenkesekvensid")
-            if veglenke_id:
-                coords = fetch_veglenke_coords(veglenke_id)
+            geom = feat.get("geometry", {})
+            coords = geom.get("coordinates", [])
+            geom_type = geom.get("type")
+
+            if geom_type == "Point":
+                lon, lat = coords
+                key = f"{lat:.5f},{lon:.5f}"
+                if key not in speedlimits:
+                    speedlimits[key] = verdi
+                    added += 1
+            elif geom_type == "LineString":
                 for lon, lat in coords:
                     key = f"{lat:.5f},{lon:.5f}"
-                    if key not in speedlimits:  # hopp over eksisterende
+                    if key not in speedlimits:
                         speedlimits[key] = verdi
                         added += 1
 
