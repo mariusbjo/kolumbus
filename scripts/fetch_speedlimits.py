@@ -34,6 +34,7 @@ os.makedirs(DEBUG_DIR, exist_ok=True)
 url = BASE_URL
 page_count = 0
 total_objects = None
+new_count = 0
 
 while url:
     print(f"Henter side {page_count+1}: {url}")
@@ -48,8 +49,8 @@ while url:
     if page_count == 0:
         total_objects = payload.get("metadata", {}).get("totaltAntall")
         if total_objects:
-            print(f"Totalt antall objekter i Rogaland: {total_objects}")
             total_pages = (total_objects // int(params["antall"])) + 1
+            print(f"Totalt antall objekter i Rogaland: {total_objects}")
             print(f"Forventet antall sider: {total_pages}")
             if total_objects > 20000:
                 print("❌ Avbryter: totaltAntall overstiger 20 000")
@@ -78,6 +79,9 @@ while url:
             "speed_limit": limit
         })
         existing_ids.add(obj_id)
+        new_count += 1
+
+    print(f"➡️ Totalt nye objekter lagt til så langt: {new_count}")
 
     neste = payload.get("metadata", {}).get("neste")
     if isinstance(neste, dict) and "href" in neste:
@@ -93,4 +97,5 @@ os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
 with open(OUT_PATH, "w", encoding="utf-8") as f:
     json.dump(speedlimits, f, ensure_ascii=False, indent=2)
 
-print("✅ speedlimits.json skrevet med", len(speedlimits), "objekter totalt")
+print(f"✅ speedlimits.json skrevet med {len(speedlimits)} objekter totalt")
+print(f"➕ Nye objekter lagt til denne kjøringen: {new_count}")
