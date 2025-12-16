@@ -17,7 +17,7 @@ headers = {
     "Accept": "application/vnd.geo+json"
 }
 
-speedlimits = {}
+speedlimits = []
 os.makedirs(DEBUG_DIR, exist_ok=True)
 
 url = BASE_URL
@@ -37,7 +37,27 @@ while url:
     features = payload.get("features", [])
     print("Fant", len(features), "features på denne siden")
 
-    # ... samme loop som før for å lagre punkter ...
+    for feat in features:
+        geom = feat.get("geometry", {})
+        props = feat.get("properties", {})
+        egenskaper = props.get("egenskaper", [])
+
+        # Finn fartsgrenseverdi i egenskaper
+        limit = None
+        for e in egenskaper:
+            if e.get("navn") == "Fartsgrense":
+                limit = e.get("verdi")
+                break
+
+        speedlimits.append({
+            "id": props.get("id"),
+            "geometry": geom,
+            "speed_limit": limit,
+            "metadata": {
+                "startdato": props.get("startdato"),
+                "sluttdato": props.get("sluttdato")
+            }
+        })
 
     neste = payload.get("metadata", {}).get("neste")
     if isinstance(neste, dict) and "href" in neste:
@@ -47,5 +67,10 @@ while url:
         url = None
 
     page_count += 1
+
+# Lagre samlet resultat
+os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
+with open(OUT_PATH, "w", encoding="utf-8") as f:
+    json.dump(speedlimits, f, ensure_ascii=False, indent=2)
 
 print("✅ speedlimits.json skrevet med", len(speedlimits), "punkter totalt")
