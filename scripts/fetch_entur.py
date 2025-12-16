@@ -9,6 +9,7 @@ headers = {
     "ET-Client-Name": os.getenv("ET_CLIENT_NAME", "marius-kolumbus-demo")
 }
 
+# Kun Kolumbus-spørring, ingen speedlimits
 query = """
 {
   vehicles(codespaceId:"KOL") {
@@ -19,10 +20,14 @@ query = """
 }
 """
 
-payload = {"query": query}
-
 print("Henter sanntidsdata fra Entur (Kolumbus)…")
-res = requests.post(url, json=payload, headers=headers)
+res = requests.post(url, json={"query": query}, headers=headers)
+
+if not res.ok:
+    print("❌ Entur svarte med feil:", res.status_code, res.text)
+    exit(1)
+
+data = res.json()
 
 # Lagre både request og response til debug-fil
 debug_info = {
@@ -31,14 +36,13 @@ debug_info = {
         "headers": dict(res.request.headers),
         "body": res.request.body.decode("utf-8") if res.request.body else None
     },
-    "response": res.json()
+    "response": data
 }
 
 os.makedirs(os.path.dirname(DEBUG_PATH), exist_ok=True)
 with open(DEBUG_PATH, "w", encoding="utf-8") as f:
     json.dump(debug_info, f, ensure_ascii=False, indent=2)
 
-data = debug_info["response"]
 vehicles = data.get("data", {}).get("vehicles", [])
 print("Fant", len(vehicles), "kjøretøy")
 
