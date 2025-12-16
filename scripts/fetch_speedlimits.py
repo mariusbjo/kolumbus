@@ -1,5 +1,5 @@
 # scripts/fetch_speedlimits.py
-import requests, json, math, time, os
+import requests, json, time, os
 from config import HEADERS_NVDB
 
 BASE_URL = "https://nvdbapiles-v3.atlas.vegvesen.no/vegobjekter/105"
@@ -40,7 +40,7 @@ def fetch_veglenke_coords(veglenke_id):
 
 url = BASE_URL
 page_count = 0
-max_pages = 5  # begrens til 5 sider i testmodus
+max_pages = 3  # begrens til 3 sider i testmodus
 
 os.makedirs(DEBUG_DIR, exist_ok=True)
 
@@ -74,31 +74,15 @@ while url and page_count < max_pages:
                 verdi = e.get("verdi")
 
         if verdi is not None:
-            geo = obj.get("lokasjon", {}).get("geometri", {})
-            punkt = geo.get("punkt")
-
-            if punkt:
-                lat = punkt.get("lat")
-                lon = punkt.get("lon")
-                key = f"{lat:.4f},{lon:.4f}"
-                if key not in speedlimits:  # hopp over eksisterende
-                    speedlimits[key] = verdi
-                    all_points.append((lat, lon, verdi))
-                    added += 1
-            else:
-                for e in obj.get("egenskaper", []):
-                    if e.get("navn") == "Liste av lokasjonsattributt":
-                        innhold = e.get("innhold", [])
-                        for inn in innhold:
-                            veglenke_id = inn.get("veglenkesekvensid")
-                            if veglenke_id:
-                                coords = fetch_veglenke_coords(veglenke_id)
-                                for lon, lat in coords:
-                                    key = f"{lat:.4f},{lon:.4f}"
-                                    if key not in speedlimits:  # hopp over eksisterende
-                                        speedlimits[key] = verdi
-                                        all_points.append((lat, lon, verdi))
-                                        added += 1
+            veglenke_id = obj.get("lokasjon", {}).get("veglenkesekvensid")
+            if veglenke_id:
+                coords = fetch_veglenke_coords(veglenke_id)
+                for lon, lat in coords:
+                    key = f"{lat:.4f},{lon:.4f}"
+                    if key not in speedlimits:  # hopp over eksisterende
+                        speedlimits[key] = verdi
+                        all_points.append((lat, lon, verdi))
+                        added += 1
 
     print(f"  ➕ Lagret {added} nye punkter fra denne siden")
 
