@@ -1,4 +1,5 @@
 import requests, json, os, time, math
+from datetime import datetime
 
 OUT_PATH = "data/speedlimits.json"
 DEBUG_DIR = "data/debug_nvdb"
@@ -23,12 +24,15 @@ speedlimits = []
 if os.path.exists(OUT_PATH):
     with open(OUT_PATH, "r", encoding="utf-8") as f:
         try:
-            speedlimits = json.load(f)
-            existing_ids = {str(item.get("id")) for item in speedlimits if "id" in item}
-            print(f"Fant {len(existing_ids)} eksisterende oppføringer, hopper over disse.")
+            loaded = json.load(f)
+            if isinstance(loaded, list):
+                speedlimits = loaded
+                existing_ids = {str(item.get("id")) for item in speedlimits if "id" in item}
+                print(f"Fant {len(existing_ids)} eksisterende oppføringer, hopper over disse.")
+            else:
+                print("⚠️ speedlimits.json var ikke en liste, starter på nytt.")
         except Exception:
             print("Kunne ikke lese eksisterende speedlimits.json, starter på nytt.")
-            speedlimits = []
 
 os.makedirs(DEBUG_DIR, exist_ok=True)
 os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
@@ -41,10 +45,12 @@ avg_time = None
 total_pages = None
 
 def log_message(msg):
-    """Skriv melding både til terminal og loggfil"""
-    print(msg)
+    """Skriv melding både til terminal og loggfil med tidsstempel"""
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    line = f"[{timestamp}] {msg}"
+    print(line)
     with open(LOG_PATH, "a", encoding="utf-8") as logf:
-        logf.write(msg + "\n")
+        logf.write(line + "\n")
 
 def print_progress(current_page, total_pages, est_remaining):
     bar_length = 40
@@ -56,7 +62,7 @@ def print_progress(current_page, total_pages, est_remaining):
 
 while url:
     start_time = time.time()
-    log_message(f"\nHenter side {page_count+1}: {url}")
+    log_message(f"Henter side {page_count+1}: {url}")
     res = requests.get(url, params=params if url == BASE_URL else None, headers=headers)
     if not res.ok:
         log_message(f"❌ Feil ved henting: {res.status_code} {res.text}")
@@ -127,5 +133,5 @@ os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
 with open(OUT_PATH, "w", encoding="utf-8") as f:
     json.dump(speedlimits, f, ensure_ascii=False, indent=2)
 
-log_message(f"\n✅ speedlimits.json skrevet med {len(speedlimits)} objekter totalt")
+log_message(f"✅ speedlimits.json skrevet med {len(speedlimits)} objekter totalt")
 log_message(f"➕ Nye objekter lagt til denne kjøringen: {new_count}")
