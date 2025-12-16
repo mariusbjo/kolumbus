@@ -10,16 +10,17 @@ headers = {
 
 query = """
 query {
-  vehicles(authorities: ["KOL"]) {
+  vehicles(codespaceId:"KOL") {
     id
-    bearing
-    line { id publicCode name }
+    lastUpdated
+    line { lineRef publicCode name }
     location { latitude longitude }
+    bearing
   }
 }
 """
 
-print("Henter sanntidsdata fra Entur…")
+print("Henter sanntidsdata fra Entur (Kolumbus)…")
 res = requests.post(url, json={"query": query}, headers=headers)
 
 data = res.json()
@@ -35,11 +36,13 @@ for v in vehicles:
     if loc:
         entries.append({
             "id": v.get("id"),
+            "lineRef": v.get("line", {}).get("lineRef"),
             "line": v.get("line", {}).get("publicCode"),
             "lineName": v.get("line", {}).get("name"),
             "lat": loc.get("latitude"),
             "lon": loc.get("longitude"),
-            "bearing": v.get("bearing")
+            "bearing": v.get("bearing"),
+            "lastUpdated": v.get("lastUpdated")
         })
 
 os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
