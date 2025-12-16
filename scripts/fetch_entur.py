@@ -1,4 +1,3 @@
-# scripts/fetch_entur.py
 import requests, json, os
 
 OUT_PATH = "data/kolumbus.json"
@@ -6,18 +5,15 @@ DEBUG_PATH = "data/debug_entur.json"
 
 url = "https://api.entur.io/journey-planner/v3/graphql"
 headers = {
-    "ET-Client-Name": "marius-kolumbus-demo"
+    "ET-Client-Name": os.getenv("ET_CLIENT_NAME", "marius-kolumbus-demo")
 }
 
-# GraphQL-spørring med Kolumbus-filter
 query = """
-query {
+{
   vehicles(codespaceId:"KOL") {
-    id
+    line { lineRef }
     lastUpdated
-    line { lineRef publicCode name }
     location { latitude longitude }
-    bearing
   }
 }
 """
@@ -41,13 +37,9 @@ for v in vehicles:
     loc = v.get("location", {})
     if loc:
         entries.append({
-            "id": v.get("id"),
             "lineRef": v.get("line", {}).get("lineRef"),
-            "line": v.get("line", {}).get("publicCode"),
-            "lineName": v.get("line", {}).get("name"),
             "lat": loc.get("latitude"),
             "lon": loc.get("longitude"),
-            "bearing": v.get("bearing"),
             "lastUpdated": v.get("lastUpdated")
         })
 
