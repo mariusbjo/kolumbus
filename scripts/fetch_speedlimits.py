@@ -37,7 +37,19 @@ if os.path.exists(OUT_PATH):
 os.makedirs(DEBUG_DIR, exist_ok=True)
 os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
 
-url = BASE_URL
+# Resume: finn siste neste.href fra loggfilen
+resume_url = None
+if os.path.exists(LOG_PATH):
+    with open(LOG_PATH, "r", encoding="utf-8") as logf:
+        for line in logf:
+            if "Neste URL:" in line:
+                resume_url = line.split("Neste URL:")[1].strip()
+if resume_url:
+    print(f"▶️ Starter videre fra lagret URL: {resume_url}")
+    url = resume_url
+else:
+    url = BASE_URL
+
 page_count = 0
 total_objects = None
 new_count = 0
@@ -71,7 +83,7 @@ while url:
     payload = res.json()
 
     # Sjekk totalt antall på første side
-    if page_count == 0:
+    if page_count == 0 and total_objects is None:
         total_objects = payload.get("metadata", {}).get("totaltAntall")
         if total_objects:
             total_pages = math.ceil(total_objects / int(params["antall"]))
@@ -122,6 +134,7 @@ while url:
     neste = payload.get("metadata", {}).get("neste")
     if isinstance(neste, dict) and "href" in neste:
         url = neste["href"]
+        log_message(f"Neste URL: {url}")  # lagre neste.href i loggfilen
         time.sleep(0.5)
     else:
         url = None
