@@ -3,18 +3,18 @@ import requests, json, os, time
 OUT_PATH = "data/speedlimits.json"
 DEBUG_DIR = "data/debug_nvdb"
 
-BASE_URL = "https://nvdbapiles.atlas.vegvesen.no/vegobjekter/api/v4/vegobjekter/105"
+BASE_URL = "https://nvdbapiles.atlas.vegvesen.no/vegobjekter/105"
 
+# Minimal spørring: kun fylke og srid
 params = {
-    "fylke": "11",          # Rogaland
-    "inkluder": "alle",
-    "segmentering": "true",
-    "srid": "4326"
+    "fylke": "11",   # Rogaland
+    "srid": "4326",
+    "antall": "10"   # hent bare 10 objekter for test
 }
 
 headers = {
     "X-Client": "marius-kolumbus-demo",
-    "Accept": "application/vnd.geo+json"
+    "Accept": "application/json"   # enklere å debugge enn GeoJSON først
 }
 
 speedlimits = []
@@ -34,15 +34,11 @@ while url:
     with open(f"{DEBUG_DIR}/page_{page_count+1}.json", "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
 
-    features = payload.get("features", [])
-    print("Fant", len(features), "features på denne siden")
+    features = payload.get("objekter", [])  # i standard JSON heter det "objekter"
+    print("Fant", len(features), "objekter på denne siden")
 
     for feat in features:
-        geom = feat.get("geometry", {})
-        props = feat.get("properties", {})
-        egenskaper = props.get("egenskaper", [])
-
-        # Finn fartsgrenseverdi i egenskaper
+        egenskaper = feat.get("egenskaper", [])
         limit = None
         for e in egenskaper:
             if e.get("navn") == "Fartsgrense":
@@ -50,13 +46,9 @@ while url:
                 break
 
         speedlimits.append({
-            "id": props.get("id"),
-            "geometry": geom,
-            "speed_limit": limit,
-            "metadata": {
-                "startdato": props.get("startdato"),
-                "sluttdato": props.get("sluttdato")
-            }
+            "id": feat.get("id"),
+            "geometry": feat.get("geometri"),
+            "speed_limit": limit
         })
 
     neste = payload.get("metadata", {}).get("neste")
@@ -73,4 +65,4 @@ os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
 with open(OUT_PATH, "w", encoding="utf-8") as f:
     json.dump(speedlimits, f, ensure_ascii=False, indent=2)
 
-print("✅ speedlimits.json skrevet med", len(speedlimits), "punkter totalt")
+print("✅ speedlimits.json skrevet med", len(speedlimits), "objekter totalt")
