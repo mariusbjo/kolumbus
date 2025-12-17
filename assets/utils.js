@@ -10,7 +10,9 @@ export async function loadSpeedLimits() {
     const res = await fetch("data/speedlimits.json", { cache: "no-store" });
     if (res.ok) {
       speedLimitsCache = await res.json();
-      console.log(`Speedlimits lastet: ${speedLimitsCache.length} segmenter`);
+      console.log(`Speedlimits lastet: ${Array.isArray(speedLimitsCache) ? speedLimitsCache.length : 0} segmenter`);
+    } else {
+      console.error(`Kunne ikke laste speedlimits.json: ${res.status} ${res.statusText}`);
     }
   } catch (err) {
     console.error("Kunne ikke laste speedlimits.json:", err);
@@ -33,28 +35,37 @@ export function haversine(lat1, lon1, lat2, lon2) {
 
 /**
  * Finn gjeldende fartsgrense for en posisjon ved å sjekke nærmeste segment
- * Bruker global turf fra CDN
+ * Bruker global window.turf med eksplisitt eksport (point, lineString, pointToLineDistance)
  */
 export function getSpeedLimitForPosition(lat, lon) {
+  // Grunnsjekker
   if (!Array.isArray(speedLimitsCache) || speedLimitsCache.length === 0) return null;
-  if (typeof turf === "undefined") {
-    console.error("Turf er ikke lastet inn!");
+  if (!window.turf || typeof window.turf.point !== "function" || typeof window.turf.lineString !== "function") {
+    console.error("Turf er ikke tilgjengelig eller feil eksportert. Forventet window.turf = { point, lineString, pointToLineDistance }.");
     return null;
   }
 
-  // bruk helpers fra turf v6
-  const pt = turf.helpers.point([lon, lat]);
+  const { point, lineString, pointToLineDistance } = window.turf;
+
+  const pt = point([lon, lat]);
   let nearest = null;
   let nearestDist = Infinity;
 
   for (const seg of speedLimitsCache) {
-    if (!seg.geometry || !seg.geometry.coordinates) continue;
-    const line = turf.helpers.lineString(seg.geometry.coordinates);
-    const dist = turf.pointToLineDistance(pt, line);
-    if (dist < nearestDist) {
-      nearestDist = dist;
-      nearest = seg;
+    if (!seg || !seg.geometry || !Array.isArray(seg.geometry.coordinates)) continue;
+
+    try {
+      const line = lineString(seg.geometry.coordinates);
+      const dist = pointToLineDistance(pt, line); // standard Turf-avstand i grader/meters basert på default
+      if (dist < nearestDist) {
+        nearestDist = dist;
+        nearest = seg;
+      }
+    } catch (e) {
+      // Skip segmenter med ugyldig geometri
+      continue;
     }
   }
-  return nearest ? nearest.speed_limit : null;
+
+  return (nearest && typeof nearest.speed_limit === "number") ? nearest.speed_limit : null;
 }
