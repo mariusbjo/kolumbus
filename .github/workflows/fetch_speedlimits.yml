@@ -1,9 +1,7 @@
 name: Fetch Rogaland speed limits and publish frontend
 
 on:
-  schedule:
-    - cron: "30 * * * *"   # hver halvtime
-  workflow_dispatch:
+  workflow_dispatch:   # kun manuell trigger
 
 jobs:
   fetch:
