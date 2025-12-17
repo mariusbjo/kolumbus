@@ -17,3 +17,13 @@ export function speedIcon(speed, limit) {
     iconAnchor: [16, 16]
   });
 }
+
+export const busIcon = L.icon({
+  iconUrl: 'icons/bus-green.png',
+  iconSize: [25, 25]
+});
+
+export const busIconOverLimit = L.icon({
+  iconUrl: 'icons/bus-red.png',
+  iconSize: [25, 25]
+});
