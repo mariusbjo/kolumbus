@@ -2,8 +2,8 @@ name: Fetch Kolumbus data and publish frontend
 
 on:
   schedule:
-    - cron: "0 * * * *"   # hver hele time
-  workflow_dispatch:
+    - cron: "0 2 * * *"   # hver dag kl 02:00 UTC = 03:00 norsk tid
+  workflow_dispatch:       # fortsatt mulig å trigge manuelt
 
 jobs:
   fetch:
