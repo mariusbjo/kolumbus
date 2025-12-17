@@ -10,7 +10,7 @@ BASE_URL = "https://nvdbapiles.atlas.vegvesen.no/vegobjekter/105"
 params = {
     "fylke": "11",   # Rogaland
     "srid": "4326",
-    "antall": "100"  # hent 100 per side for effektivitet
+    "antall": "100"  # hent 100 per side
 }
 
 headers = {
@@ -55,6 +55,10 @@ total_objects = None
 new_count = 0
 avg_time = None
 total_pages = None
+empty_streak = 0
+
+MAX_PAGES = 500
+EMPTY_LIMIT = 10
 
 def log_message(msg):
     """Skriv melding både til terminal og loggfil med tidsstempel"""
@@ -72,7 +76,7 @@ def print_progress(current_page, total_pages, est_remaining):
     msg = f"[{bar}] {progress*100:.1f}% | Estimert gjenværende tid: {est_remaining/60:.1f} min"
     log_message(msg)
 
-while url:
+while url and page_count < MAX_PAGES:
     start_time = time.time()
     log_message(f"Henter side {page_count+1}: {url}")
     res = requests.get(url, params=params if url == BASE_URL else None, headers=headers)
@@ -99,10 +103,18 @@ while url:
     objekter = payload.get("objekter", [])
     log_message(f"Fant {len(objekter)} objekter på denne siden")
 
+    if len(objekter) == 0:
+        empty_streak += 1
+        if empty_streak >= EMPTY_LIMIT:
+            log_message(f"❌ Avbryter: {empty_streak} tomme sider på rad")
+            break
+    else:
+        empty_streak = 0
+
     for obj in objekter:
         obj_id = str(obj.get("id"))
         if obj_id in existing_ids:
-            continue  # hopp over allerede lagret
+            continue
         egenskaper = obj.get("egenskaper", [])
         limit = None
         for e in egenskaper:
@@ -124,7 +136,6 @@ while url:
     else:
         avg_time = (avg_time * page_count + elapsed) / (page_count + 1)
 
-    # Estimer gjenværende tid og print progress‑bar
     if total_pages:
         remaining_pages = total_pages - (page_count + 1)
         est_remaining = remaining_pages * avg_time
@@ -134,14 +145,20 @@ while url:
     neste = payload.get("metadata", {}).get("neste")
     if isinstance(neste, dict) and "href" in neste:
         url = neste["href"]
-        log_message(f"Neste URL: {url}")  # lagre neste.href i loggfilen
+        log_message(f"Neste URL: {url}")
         time.sleep(0.5)
     else:
         url = None
 
     page_count += 1
 
-# Lagre samlet resultat
+    # Lagre hver 10. side
+    if page_count % 10 == 0:
+        with open(OUT_PATH, "w", encoding="utf-8") as f:
+            json.dump(speedlimits, f, ensure_ascii=False, indent=2)
+        log_message(f"💾 Lagret midlertidig etter {page_count} sider, totalt {len(speedlimits)} objekter")
+
+# Lagre til slutt
 os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
 with open(OUT_PATH, "w", encoding="utf-8") as f:
     json.dump(speedlimits, f, ensure_ascii=False, indent=2)
