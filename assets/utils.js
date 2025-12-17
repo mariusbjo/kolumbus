@@ -10,18 +10,11 @@ export async function loadSpeedLimits() {
     const res = await fetch("data/speedlimits.json", { cache: "no-store" });
     if (res.ok) {
       speedLimitsCache = await res.json();
+      console.log(`Speedlimits lastet: ${speedLimitsCache.length} segmenter`);
     }
   } catch (err) {
     console.error("Kunne ikke laste speedlimits.json:", err);
   }
-}
-
-/**
- * Returnerer fartsgrense basert på avrundet posisjon (grov cache)
- */
-export function getCachedSpeedLimit(lat, lon) {
-  const key = `${lat.toFixed(4)},${lon.toFixed(4)}`;
-  return speedLimitsCache[key] || null;
 }
 
 /**
@@ -43,7 +36,11 @@ export function haversine(lat1, lon1, lat2, lon2) {
  * Bruker global turf fra CDN
  */
 export function getSpeedLimitForPosition(lat, lon) {
-  if (!speedLimitsCache || !Array.isArray(speedLimitsCache)) return null;
+  if (!Array.isArray(speedLimitsCache) || speedLimitsCache.length === 0) return null;
+  if (typeof turf === "undefined") {
+    console.error("Turf er ikke lastet inn!");
+    return null;
+  }
 
   const pt = turf.point([lon, lat]);
   let nearest = null;
