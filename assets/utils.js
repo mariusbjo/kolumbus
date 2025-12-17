@@ -2,9 +2,6 @@
 
 let speedLimitsCache = [];
 
-/**
- * Laster inn speedlimits.json og legger det i cache
- */
 export async function loadSpeedLimits() {
   try {
     const res = await fetch("data/speedlimits.json", { cache: "no-store" });
@@ -17,9 +14,6 @@ export async function loadSpeedLimits() {
   }
 }
 
-/**
- * Beregner avstand mellom to koordinater (meter)
- */
 export function haversine(lat1, lon1, lat2, lon2) {
   const R = 6371000;
   const toRad = x => x * Math.PI / 180;
@@ -31,10 +25,6 @@ export function haversine(lat1, lon1, lat2, lon2) {
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
 
-/**
- * Finn gjeldende fartsgrense for en posisjon ved å sjekke nærmeste segment
- * Bruker global turf fra CDN
- */
 export function getSpeedLimitForPosition(lat, lon) {
   if (!Array.isArray(speedLimitsCache) || speedLimitsCache.length === 0) return null;
   if (typeof turf === "undefined") {
@@ -42,7 +32,7 @@ export function getSpeedLimitForPosition(lat, lon) {
     return null;
   }
 
-  const pt = turf.point([lon, lat]);
+  const pt = turf.point([lon, lat]); // fungerer hvis du importerte turf som modul
   let nearest = null;
   let nearestDist = Infinity;
 
