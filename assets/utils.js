@@ -27,10 +27,10 @@ export function haversine(lat1, lon1, lat2, lon2) {
   const toRad = x => x * Math.PI / 180;
   const dLat = toRad(lat2 - lat1);
   const dLon = toRad(lon2 - lon1);
-  const a = Math.sin(dLat/2)**2 +
+  const a = Math.sin(dLat / 2) ** 2 +
             Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-            Math.sin(dLon/2)**2;
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
 /**
@@ -52,7 +52,7 @@ export function getSpeedLimitForPosition(lat, lon) {
     if (!seg.geometry || !seg.geometry.coordinates) continue;
     try {
       const line = turf.lineString(seg.geometry.coordinates);
-      const dist = turf.pointToLineDistance(pt, line);
+      const dist = turf.pointToLineDistance(pt, line, { units: "meters" });
       if (dist < nearestDist) {
         nearestDist = dist;
         nearest = seg;
@@ -63,5 +63,9 @@ export function getSpeedLimitForPosition(lat, lon) {
     }
   }
 
-  return (nearest && typeof nearest.speed_limit === "number") ? nearest.speed_limit : null;
+  if (nearest) {
+    console.log(`Nærmeste segment: avstand=${nearestDist.toFixed(1)}m, limit=${nearest.speed_limit}`);
+    return nearest.speed_limit;
+  }
+  return null;
 }
