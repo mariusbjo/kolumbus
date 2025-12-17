@@ -1,7 +1,5 @@
 // assets/utils.js
 
-import * as turf from '@turf/turf';
-
 let speedLimitsCache = [];
 
 /**
@@ -42,6 +40,7 @@ export function haversine(lat1, lon1, lat2, lon2) {
 
 /**
  * Finn gjeldende fartsgrense for en posisjon ved å sjekke nærmeste segment
+ * Bruker global turf fra CDN
  */
 export function getSpeedLimitForPosition(lat, lon) {
   if (!speedLimitsCache || !Array.isArray(speedLimitsCache)) return null;
