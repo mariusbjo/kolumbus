@@ -1,0 +1,4 @@
+# Ignorer genererte NVDB-data
+data/speedlimits.json
+data/debug_nvdb/
+data/speedlimits.log
