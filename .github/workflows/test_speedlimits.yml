@@ -22,4 +22,5 @@ jobs:
         run: pip install requests
 
       - name: Kjør test_fetch_speedlimits.py
-        run: python test_fetch_speedlimits.py
+        run: python scripts/test_fetch_speedlimits.py
+
