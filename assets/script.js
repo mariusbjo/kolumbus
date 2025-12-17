@@ -68,8 +68,11 @@ async function loadKolumbusLive() {
 
       // Velg ikon basert på fartsgrense
       let icon = busIcon;
-      if (speed && speedLimit && speed > speedLimit) {
+      if (typeof speed === "number" && typeof speedLimit === "number" && speed > speedLimit) {
         icon = busIconOverLimit;
+        console.log(`Bus ${id} over limit: speed=${speed.toFixed(1)} km/t, limit=${speedLimit} km/t`);
+      } else {
+        console.log(`Bus ${id}: speed=${speed?.toFixed(1) ?? "?"}, limit=${speedLimit ?? "?"}`);
       }
 
       if (!markers[id]) {
