@@ -1,7 +1,7 @@
 // assets/script.js
 import { ENTUR_URL, CLIENT_NAME, UPDATE_INTERVAL } from './config.js';
-import { haversine, loadSpeedLimits, getCachedSpeedLimit } from './utils.js';
-import { busIcon, speedIcon } from './icons.js';
+import { haversine, loadSpeedLimits, getCachedSpeedLimit, getSpeedLimitForPosition } from './utils.js';
+import { busIcon, busIconOverLimit, speedIcon } from './icons.js';
 
 const map = L.map('map').setView([58.97, 5.73], 9);
 
@@ -46,19 +46,6 @@ async function loadKolumbusLive() {
       const pos = [v.location.latitude, v.location.longitude];
       const code = v.line?.publicCode ?? '—';
 
-      if (!markers[id]) {
-        const popup = `
-          <strong>Linje ${code}</strong><br>
-          ID: ${id}<br>
-          Oppdatert: ${v.lastUpdated}<br>
-          <button onclick="followBus('${id}')">Følg denne bussen</button>
-          <button onclick="stopFollow()">Slutt å følg</button>
-        `;
-        markers[id] = L.marker(pos, { icon: busIcon }).bindPopup(popup).addTo(map);
-      } else {
-        markers[id].setLatLng(pos);
-      }
-
       const now = new Date(v.lastUpdated).getTime();
       if (!history[id]) history[id] = [];
       const prev = history[id].slice(-1)[0];
@@ -68,11 +55,36 @@ async function loadKolumbusLive() {
         const dist = haversine(prev.lat, prev.lon, pos[0], pos[1]);
         if (dt > 0) speed = (dist / dt) * 3.6;
       }
-      const speedLimit = getCachedSpeedLimit(pos[0], pos[1]);
+
+      // Finn fartsgrense (fra cache eller geometri)
+      let speedLimit = getCachedSpeedLimit(pos[0], pos[1]);
+      if (!speedLimit) {
+        speedLimit = getSpeedLimitForPosition(pos[0], pos[1]);
+      }
 
       history[id].push({ lat: pos[0], lon: pos[1], timestamp: now, speed, speedLimit });
       const cutoff = now - 30 * 60 * 1000;
       history[id] = history[id].filter(p => p.timestamp >= cutoff);
+
+      // Velg ikon basert på fartsgrense
+      let icon = busIcon;
+      if (speed && speedLimit && speed > speedLimit) {
+        icon = busIconOverLimit;
+      }
+
+      if (!markers[id]) {
+        const popup = `
+          <strong>Linje ${code}</strong><br>
+          ID: ${id}<br>
+          Oppdatert: ${v.lastUpdated}<br>
+          <button onclick="followBus('${id}')">Følg denne bussen</button>
+          <button onclick="stopFollow()">Slutt å følg</button>
+        `;
+        markers[id] = L.marker(pos, { icon }).bindPopup(popup).addTo(map);
+      } else {
+        markers[id].setLatLng(pos);
+        markers[id].setIcon(icon);
+      }
     }
 
     if (followBusId && history[followBusId]) {
