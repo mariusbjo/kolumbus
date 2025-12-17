@@ -10,7 +10,8 @@ BASE_URL = "https://nvdbapiles.atlas.vegvesen.no/vegobjekter/105"
 params = {
     "fylke": "11",   # Rogaland
     "srid": "4326",
-    "antall": "100"  # hent 100 per side
+    "antall": "100",  # hent 100 per side
+    "inkluder": "geometri,egenskaper"
 }
 
 headers = {
