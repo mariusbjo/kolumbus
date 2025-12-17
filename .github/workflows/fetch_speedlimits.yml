@@ -9,8 +9,6 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -25,34 +23,11 @@ jobs:
       - name: Fetch Rogaland speed limits
         run: python scripts/fetch_speedlimits.py
 
-      - name: Configure git
-        run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-
-      - name: Commit changes safely (speedlimits.json + debug_nvdb.json)
-        run: |
-          files=""
-          if [ -f data/speedlimits.json ]; then
-            files="$files data/speedlimits.json"
-          fi
-          if [ -f data/debug_nvdb.json ]; then
-            files="$files data/debug_nvdb.json"
-          fi
-
-          if [ -n "$files" ]; then
-            git add $files
-            if ! git diff --cached --quiet; then
-              git commit -m "Update Rogaland speed limits"
-            else
-              echo "No changes to commit."
-            fi
-          fi
-
-      - name: Rebase and push
-        run: |
-          git pull --rebase
-          git push
+      - name: Upload speedlimits.json as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: speedlimits-data
+          path: data/speedlimits.json
 
   publish:
     runs-on: ubuntu-latest
