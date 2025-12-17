@@ -1,7 +1,7 @@
 name: Fetch Rogaland speed limits and publish frontend
 
 on:
-  workflow_dispatch:   # kun manuell trigger
+  workflow_dispatch:
 
 jobs:
   fetch:
@@ -41,6 +41,33 @@ jobs:
         with:
           name: speedlimits-data
           path: public/data   # legg artefakten i en mappe som skal publiseres
+
+      - name: Add test index.html
+        run: |
+          mkdir -p public
+          cat > public/index.html <<'EOF'
+          <!DOCTYPE html>
+          <html lang="no">
+          <head><meta charset="UTF-8"><title>Speedlimits Demo</title></head>
+          <body>
+            <h1>Test av speedlimits.json</h1>
+            <p id="status">Laster data...</p>
+            <pre id="output"></pre>
+            <script>
+              fetch("data/speedlimits.json")
+                .then(r => r.json())
+                .then(d => {
+                  document.getElementById("status").textContent = "Data lastet!";
+                  document.getElementById("output").textContent =
+                    JSON.stringify(d[0], null, 2);
+                })
+                .catch(err => {
+                  document.getElementById("status").textContent = "Feil: " + err.message;
+                });
+            </script>
+          </body>
+          </html>
+          EOF
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
