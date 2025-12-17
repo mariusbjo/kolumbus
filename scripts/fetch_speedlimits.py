@@ -1,5 +1,6 @@
 import requests, json, os, time, math
 from datetime import datetime
+from shapely import wkt
 
 OUT_PATH = "data/speedlimits.json"
 DEBUG_DIR = "data/debug_nvdb"
@@ -77,6 +78,15 @@ def print_progress(current_page, total_pages, est_remaining):
     msg = f"[{bar}] {progress*100:.1f}% | Estimert gjenværende tid: {est_remaining/60:.1f} min"
     log_message(msg)
 
+def convert_wkt_to_geojson(wkt_str):
+    """Konverter NVDB WKT til GeoJSON LineString"""
+    try:
+        geom = wkt.loads(wkt_str)
+        coords = [(x, y) for x, y, *_ in geom.coords]  # ignorer Z
+        return {"type": "LineString", "coordinates": coords}
+    except Exception:
+        return None
+
 while url and page_count < MAX_PAGES:
     start_time = time.time()
     log_message(f"Henter side {page_count+1}: {url}")
@@ -123,9 +133,14 @@ while url and page_count < MAX_PAGES:
                 limit = e.get("verdi")
                 break
 
+        geojson_geom = None
+        geom_obj = obj.get("geometri")
+        if geom_obj and "wkt" in geom_obj:
+            geojson_geom = convert_wkt_to_geojson(geom_obj["wkt"])
+
         speedlimits.append({
             "id": obj_id,
-            "geometry": obj.get("geometri"),
+            "geometry": geojson_geom,
             "speed_limit": limit
         })
         existing_ids.add(obj_id)
