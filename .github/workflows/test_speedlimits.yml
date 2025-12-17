@@ -1,0 +1,25 @@
+name: Test NVDB speedlimits
+
+on:
+  workflow_dispatch:   # du kan trigge manuelt fra GitHub
+  push:
+    paths:
+      - test_fetch_speedlimits.py
+
+jobs:
+  run-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sjekk ut repo
+        uses: actions/checkout@v4
+
+      - name: Sett opp Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Installer requests
+        run: pip install requests
+
+      - name: Kjør test_fetch_speedlimits.py
+        run: python test_fetch_speedlimits.py
