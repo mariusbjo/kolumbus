@@ -1,6 +1,6 @@
 // assets/script.js
 import { ENTUR_URL, CLIENT_NAME, UPDATE_INTERVAL } from './config.js';
-import { haversine, loadSpeedLimits, getCachedSpeedLimit, getSpeedLimitForPosition } from './utils.js';
+import { haversine, loadSpeedLimits, getSpeedLimitForPosition } from './utils.js';
 import { busIcon, busIconOverLimit, speedIcon } from './icons.js';
 
 const map = L.map('map').setView([58.97, 5.73], 9);
@@ -56,11 +56,8 @@ async function loadKolumbusLive() {
         if (dt > 0) speed = (dist / dt) * 3.6;
       }
 
-      // Finn fartsgrense (fra cache eller geometri)
-      let speedLimit = getCachedSpeedLimit(pos[0], pos[1]);
-      if (!speedLimit) {
-        speedLimit = getSpeedLimitForPosition(pos[0], pos[1]);
-      }
+      // Finn fartsgrense
+      const speedLimit = getSpeedLimitForPosition(pos[0], pos[1]);
 
       history[id].push({ lat: pos[0], lon: pos[1], timestamp: now, speed, speedLimit });
       const cutoff = now - 30 * 60 * 1000;
@@ -70,7 +67,7 @@ async function loadKolumbusLive() {
       let icon = busIcon;
       if (typeof speed === "number" && typeof speedLimit === "number" && speed > speedLimit) {
         icon = busIconOverLimit;
-        console.log(`Bus ${id} over limit: speed=${speed.toFixed(1)} km/t, limit=${speedLimit} km/t`);
+        console.log(`Bus ${id} OVER limit: speed=${speed.toFixed(1)} km/t, limit=${speedLimit} km/t`);
       } else {
         console.log(`Bus ${id}: speed=${speed?.toFixed(1) ?? "?"}, limit=${speedLimit ?? "?"}`);
       }
