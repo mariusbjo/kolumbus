@@ -1,6 +1,7 @@
+# scripts/fetch_speedlimits.py
 import requests, json, os, time, math
-from datetime import datetime
-from shapely import wkt
+from utils.geometry_utils import convert_wkt_to_geojson
+from utils.logger import log_message, print_progress
 
 OUT_PATH = "data/speedlimits.json"
 DEBUG_DIR = "data/debug_nvdb"
@@ -61,31 +62,6 @@ empty_streak = 0
 
 MAX_PAGES = 500
 EMPTY_LIMIT = 10
-
-def log_message(msg):
-    """Skriv melding både til terminal og loggfil med tidsstempel"""
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    line = f"[{timestamp}] {msg}"
-    print(line)
-    with open(LOG_PATH, "a", encoding="utf-8") as logf:
-        logf.write(line + "\n")
-
-def print_progress(current_page, total_pages, est_remaining):
-    bar_length = 40
-    progress = current_page / total_pages
-    filled = int(bar_length * progress)
-    bar = "#" * filled + "-" * (bar_length - filled)
-    msg = f"[{bar}] {progress*100:.1f}% | Estimert gjenværende tid: {est_remaining/60:.1f} min"
-    log_message(msg)
-
-def convert_wkt_to_geojson(wkt_str):
-    """Konverter NVDB WKT til GeoJSON LineString"""
-    try:
-        geom = wkt.loads(wkt_str)
-        coords = [(x, y) for x, y, *_ in geom.coords]  # ignorer Z
-        return {"type": "LineString", "coordinates": coords}
-    except Exception:
-        return None
 
 while url and page_count < MAX_PAGES:
     start_time = time.time()
