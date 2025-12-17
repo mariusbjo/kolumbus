@@ -21,12 +21,12 @@
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <!-- Turf.js via CDN -->
+  <!-- Turf.js via CDN som modul -->
   <script type="module">
-  import * as turf from "https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js";
-  window.turf = turf;
+    import * as turfModule from "https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js";
+    // eksporter turf til globalt scope slik at utils.js kan bruke det
+    window.turf = turfModule;
   </script>
-
 
   <!-- Modulene våre -->
   <script type="module" src="assets/config.js"></script>
