@@ -23,11 +23,11 @@ jobs:
       - name: Fetch Rogaland speed limits
         run: python scripts/fetch_speedlimits.py
 
-      - name: Upload speedlimits.json as artifact
+      - name: Upload parts as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: speedlimits-data
-          path: data/speedlimits.json
+          name: speedlimits-parts
+          path: data/parts/*.json   # alle del-filer lastes opp
 
   publish:
     runs-on: ubuntu-latest
@@ -39,8 +39,36 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: speedlimits-data
+          name: speedlimits-parts
           path: public/data   # artefakten legges her
+
+      - name: Add test index.html
+        run: |
+          mkdir -p public
+          cat > public/index.html <<'EOF'
+          <!DOCTYPE html>
+          <html lang="no">
+          <head><meta charset="UTF-8"><title>Speedlimits Demo</title></head>
+          <body>
+            <h1>Speedlimits Parts Demo</h1>
+            <p id="status">Laster data...</p>
+            <pre id="output"></pre>
+            <script>
+              // Hent første del-fil som test
+              fetch("data/speedlimits_part1.json")
+                .then(r => r.json())
+                .then(d => {
+                  document.getElementById("status").textContent = "Data lastet!";
+                  document.getElementById("output").textContent =
+                    JSON.stringify(d[0], null, 2);
+                })
+                .catch(err => {
+                  document.getElementById("status").textContent = "Feil: " + err.message;
+                });
+            </script>
+          </body>
+          </html>
+          EOF
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
