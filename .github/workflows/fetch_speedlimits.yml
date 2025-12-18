@@ -1,7 +1,7 @@
 name: Fetch Rogaland speed limits and publish frontend
 
 on:
-  workflow_dispatch:
+  workflow_dispatch
 
 jobs:
   fetch:
@@ -29,7 +29,7 @@ jobs:
           name: speedlimits-parts
           path: data/parts/*.json   # alle del-filer lastes opp
 
-   publish:
+  publish:
     runs-on: ubuntu-latest
     needs: fetch
     steps:
