@@ -3,7 +3,7 @@ import requests, json, os, time, math
 from utils.geometry_utils import convert_wkt_to_geojson
 from utils.logger import log_message, print_progress
 
-OUT_PATH = "data/speedlimits.json"
+OUT_DIR = "data/parts"   # ny mappe for del-filer
 DEBUG_DIR = "data/debug_nvdb"
 LOG_PATH = "data/speedlimits.log"
 
@@ -21,24 +21,23 @@ headers = {
     "Accept": "application/json"
 }
 
-# Last inn eksisterende oppføringer hvis filen finnes
+# Last inn eksisterende oppføringer fra tidligere parts
 existing_ids = set()
-speedlimits = []
-if os.path.exists(OUT_PATH):
-    with open(OUT_PATH, "r", encoding="utf-8") as f:
-        try:
-            loaded = json.load(f)
-            if isinstance(loaded, list):
-                speedlimits = loaded
-                existing_ids = {str(item.get("id")) for item in speedlimits if "id" in item}
-                print(f"Fant {len(existing_ids)} eksisterende oppføringer, hopper over disse.")
-            else:
-                print("⚠️ speedlimits.json var ikke en liste, starter på nytt.")
-        except Exception:
-            print("Kunne ikke lese eksisterende speedlimits.json, starter på nytt.")
+if os.path.exists(OUT_DIR):
+    for fn in os.listdir(OUT_DIR):
+        if fn.endswith(".json"):
+            with open(os.path.join(OUT_DIR, fn), "r", encoding="utf-8") as f:
+                try:
+                    data = json.load(f)
+                    for item in data:
+                        existing_ids.add(str(item.get("id")))
+                except Exception:
+                    pass
+    print(f"Fant {len(existing_ids)} eksisterende oppføringer, hopper over disse.")
 
 os.makedirs(DEBUG_DIR, exist_ok=True)
 os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
+os.makedirs(OUT_DIR, exist_ok=True)
 
 # Resume: finn siste neste.href fra loggfilen
 resume_url = None
@@ -62,6 +61,14 @@ empty_streak = 0
 
 MAX_PAGES = 500
 EMPTY_LIMIT = 10
+CHUNK_SIZE = 10000   # antall objekter per del-fil
+buffer = []
+
+def save_chunk(buffer, part_index):
+    out_file = os.path.join(OUT_DIR, f"speedlimits_part{part_index}.json")
+    with open(out_file, "w", encoding="utf-8") as f:
+        json.dump(buffer, f, ensure_ascii=False, indent=2)
+    log_message(f"💾 Lagret {len(buffer)} objekter til {out_file}")
 
 while url and page_count < MAX_PAGES:
     start_time = time.time()
@@ -114,7 +121,7 @@ while url and page_count < MAX_PAGES:
         if geom_obj and "wkt" in geom_obj:
             geojson_geom = convert_wkt_to_geojson(geom_obj["wkt"])
 
-        speedlimits.append({
+        buffer.append({
             "id": obj_id,
             "geometry": geojson_geom,
             "speed_limit": limit
@@ -122,11 +129,14 @@ while url and page_count < MAX_PAGES:
         existing_ids.add(obj_id)
         new_count += 1
 
+        # Skriv chunk når buffer er full
+        if len(buffer) >= CHUNK_SIZE:
+            part_index = len([fn for fn in os.listdir(OUT_DIR) if fn.endswith(".json")]) + 1
+            save_chunk(buffer, part_index)
+            buffer = []
+
     elapsed = time.time() - start_time
-    if avg_time is None:
-        avg_time = elapsed
-    else:
-        avg_time = (avg_time * page_count + elapsed) / (page_count + 1)
+    avg_time = elapsed if avg_time is None else (avg_time * page_count + elapsed) / (page_count + 1)
 
     if total_pages:
         remaining_pages = total_pages - (page_count + 1)
@@ -144,16 +154,9 @@ while url and page_count < MAX_PAGES:
 
     page_count += 1
 
-    # Lagre hver 10. side
-    if page_count % 10 == 0:
-        with open(OUT_PATH, "w", encoding="utf-8") as f:
-            json.dump(speedlimits, f, ensure_ascii=False, indent=2)
-        log_message(f"💾 Lagret midlertidig etter {page_count} sider, totalt {len(speedlimits)} objekter")
+# Lagre resterende buffer
+if buffer:
+    part_index = len([fn for fn in os.listdir(OUT_DIR) if fn.endswith(".json")]) + 1
+    save_chunk(buffer, part_index)
 
-# Lagre til slutt
-os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
-with open(OUT_PATH, "w", encoding="utf-8") as f:
-    json.dump(speedlimits, f, ensure_ascii=False, indent=2)
-
-log_message(f"✅ speedlimits.json skrevet med {len(speedlimits)} objekter totalt")
-log_message(f"➕ Nye objekter lagt til denne kjøringen: {new_count}")
+log_message(f"✅ Ferdig. Totalt nye objekter lagt til: {new_count}")
