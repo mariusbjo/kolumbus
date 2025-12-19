@@ -1,0 +1,48 @@
+name: Deploy frontend to GitHub Pages
+
+on:
+  workflow_run:
+    workflows: ["Fetch Rogaland speed limits and publish", "Fetch Kolumbus data"]
+    types: [completed]
+
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Create public folder
+        run: mkdir -p public/data
+
+      - name: Download speedlimits parts (if available)
+        uses: actions/download-artifact@v4
+        with:
+          name: speedlimits-parts
+          path: public/data
+        continue-on-error: true
+
+      - name: Copy Kolumbus data from main
+        run: |
+          if [ -f data/kolumbus.json ]; then cp data/kolumbus.json public/data/; fi
+          if [ -f data/debug_entur.json ]; then cp data/debug_entur.json public/data/; fi
+
+      - name: Copy frontend files
+        run: |
+          cp index.html public/
+          cp -r assets public/
+          cp -r web public/
+
+      - name: Debug public folder
+        run: |
+          echo "Innhold i public/:"
+          ls -R public
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: public
