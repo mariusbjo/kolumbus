@@ -42,8 +42,6 @@ jobs:
             --jq '.[] | select(.conclusion=="success") | .databaseId' \
             | head -n 1)
           echo "id=$SL" >> $GITHUB_OUTPUT
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get latest kolumbus run ID
         id: ko_run
@@ -55,8 +53,6 @@ jobs:
             --jq '.[] | select(.conclusion=="success") | .databaseId' \
             | head -n 1)
           echo "id=$KO" >> $GITHUB_OUTPUT
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # ---------------------------------------------------------
       # 3) 3-TIMERS KRAV
@@ -101,8 +97,6 @@ jobs:
           gh run download ${{ steps.sl_run.outputs.id }} \
             --name speedlimits-parts \
             --dir .cache/speedlimits
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Save speedlimits cache
         uses: actions/cache@v4
