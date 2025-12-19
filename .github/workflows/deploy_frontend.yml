@@ -10,6 +10,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
+    # ✅ GH_TOKEN tilgjengelig for ALLE steps som bruker gh CLI
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -160,7 +162,7 @@ jobs:
           fi
 
       # ---------------------------------------------------------
-      # 10) GENERER VERSJONERING + STATUS-SIDE
+      # 10) GENERER VERSJONERING (status-siden fjernet)
       # ---------------------------------------------------------
       - name: Write version metadata
         run: |
@@ -168,35 +170,6 @@ jobs:
           echo "{ \"updated\": \"$NOW\" }" > public/meta/version.json
           date -u +%s > public/meta/last_deploy.txt
           echo "${{ steps.hash.outputs.hash }}" > public/meta/last_hash.txt
-
-      - name: Generate status page
-        run: |
-          cat > public/status.html <<'EOF'
-          <!DOCTYPE html>
-          <html lang="no">
-          <head>
-            <meta charset="UTF-8">
-            <title>Status</title>
-            <style>
-              body { font-family: Arial; padding: 20px; }
-              pre { background: #eee; padding: 10px; }
-            </style>
-          </head>
-          <body>
-            <h1>Status for datasett</h1>
-            <p>Oppdateringstidspunkt og hash for siste deploy:</p>
-            <pre id="meta">Laster...</pre>
-            <script>
-              fetch("meta/version.json")
-                .then(r => r.json())
-                .then(d => {
-                  document.getElementById("meta").textContent =
-                    JSON.stringify(d, null, 2);
-                });
-            </script>
-          </body>
-          </html>
-          EOF
 
       # ---------------------------------------------------------
       # 11) KOPIER FRONTEND
@@ -223,4 +196,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: public
-
