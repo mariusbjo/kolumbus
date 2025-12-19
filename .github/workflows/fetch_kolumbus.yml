@@ -1,9 +1,9 @@
-name: Fetch Kolumbus data and publish frontend
+name: Fetch Kolumbus data
 
 on:
   schedule:
-    - cron: "0 2 * * *"   # hver dag kl 02:00 UTC = 03:00 norsk tid
-  workflow_dispatch:       # fortsatt mulig å trigge manuelt
+    - cron: "0 2 * * *"
+  workflow_dispatch:
 
 jobs:
   fetch:
@@ -32,7 +32,7 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
 
-      - name: Commit changes safely (kolumbus.json + debug_entur.json)
+      - name: Commit changes safely
         run: |
           files=""
           if [ -f data/kolumbus.json ]; then
@@ -55,16 +55,3 @@ jobs:
         run: |
           git pull --rebase
           git push
-
-  publish:
-    runs-on: ubuntu-latest
-    needs: fetch
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
