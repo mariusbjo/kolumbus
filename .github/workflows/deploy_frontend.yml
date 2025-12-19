@@ -1,6 +1,10 @@
 name: Deploy frontend to GitHub Pages
 
 on:
+  workflow_run:
+    workflows: ["Fetch Rogaland speed limits and publish", "Fetch Kolumbus data"]
+    types: [completed]
+
   workflow_dispatch:
 
 jobs:
@@ -14,29 +18,69 @@ jobs:
       - name: Create public folder
         run: mkdir -p public/data
 
-      - name: Download speedlimits parts (if available)
-        uses: actions/download-artifact@v4
-        with:
-          name: speedlimits-parts
-          path: public/data
-        continue-on-error: true
+      # ---------------------------------------------------------
+      # 1) Finn siste vellykkede run av fetch_speedlimits.yml
+      # ---------------------------------------------------------
+      - name: Get latest speedlimits run ID
+        id: get_run
+        run: |
+          RUN_ID=$(gh run list \
+            --workflow="Fetch Rogaland speed limits and publish" \
+            --branch=main \
+            --json databaseId,status,conclusion \
+            --jq '.[] | select(.conclusion=="success") | .databaseId' \
+            | head -n 1)
 
-      - name: Copy Kolumbus data from main
+          if [ -z "$RUN_ID" ]; then
+            echo "Fant ingen vellykket speedlimits-run"
+            echo "run_id=" >> $GITHUB_OUTPUT
+          else
+            echo "Fant speedlimits-run: $RUN_ID"
+            echo "run_id=$RUN_ID" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # ---------------------------------------------------------
+      # 2) Last ned speedlimits-artefakten fra det run’et
+      # ---------------------------------------------------------
+      - name: Download speedlimits artifact
+        if: steps.get_run.outputs.run_id != ''
+        run: |
+          gh run download ${{ steps.get_run.outputs.run_id }} \
+            --name speedlimits-parts \
+            --dir public/data
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # ---------------------------------------------------------
+      # 3) Kopier Kolumbus-data fra repoet (main)
+      # ---------------------------------------------------------
+      - name: Copy Kolumbus data
         run: |
           if [ -f data/kolumbus.json ]; then cp data/kolumbus.json public/data/; fi
           if [ -f data/debug_entur.json ]; then cp data/debug_entur.json public/data/; fi
 
+      # ---------------------------------------------------------
+      # 4) Kopier frontend-filer
+      # ---------------------------------------------------------
       - name: Copy frontend files
         run: |
           cp index.html public/
           cp -r assets public/
           cp -r web public/
 
+      # ---------------------------------------------------------
+      # 5) Debug public-folder
+      # ---------------------------------------------------------
       - name: Debug public folder
         run: |
           echo "Innhold i public/:"
           ls -R public
 
+      # ---------------------------------------------------------
+      # 6) Deploy til gh-pages
+      # ---------------------------------------------------------
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
