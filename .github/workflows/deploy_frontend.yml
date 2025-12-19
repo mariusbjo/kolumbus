@@ -38,7 +38,7 @@ jobs:
         id: sl_run
         run: |
           SL=$(gh run list \
-            --workflow="Fetch Rogaland speed limits and publish" \
+            --workflow="Fetch Rogaland speed limits and publish frontend" \
             --branch=main \
             --json databaseId,conclusion \
             --jq '.[] | select(.conclusion=="success") | .databaseId' \
@@ -55,6 +55,22 @@ jobs:
             --jq '.[] | select(.conclusion=="success") | .databaseId' \
             | head -n 1)
           echo "id=$KO" >> $GITHUB_OUTPUT
+
+      # ---------------------------------------------------------
+      # 2b) ROBUST ID-SJEKK
+      # ---------------------------------------------------------
+      - name: Validate run IDs
+        run: |
+          if [ -z "${{ steps.sl_run.outputs.id }}" ]; then
+            echo "Fant ingen vellykket speedlimits-run. Avbryter."
+            exit 0
+          fi
+
+          if [ -z "${{ steps.ko_run.outputs.id }}" ]; then
+            echo "Fant ingen vellykket kolumbus-run. Avbryter."
+            exit 0
+          fi
+
 
       # ---------------------------------------------------------
       # 3) 3-TIMERS KRAV
