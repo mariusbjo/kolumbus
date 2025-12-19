@@ -22,7 +22,6 @@ jobs:
       - name: Generate enterprise dashboard
         run: |
           cat > public/status.html <<'EOF'
-          <!-- ENTERPRISE DASHBOARD HTML START -->
           <!DOCTYPE html>
           <html lang="no">
           <head>
@@ -791,8 +790,6 @@ jobs:
             </script>
           </body>
           </html>
-
-          <!-- ENTERPRISE DASHBOARD HTML END -->
           EOF
 
       # ---------------------------------------------------------
