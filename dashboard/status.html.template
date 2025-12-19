@@ -1,768 +1,170 @@
 <!DOCTYPE html>
-          <html lang="no">
-          <head>
-            <meta charset="UTF-8" />
-            <title>Datasett-status – Kolumbus / Rogaland</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
-          
-            <style>
-              :root {
-                --bg: #0f172a;
-                --bg-elevated: #020617;
-                --card: #020617;
-                --card-soft: #0b1220;
-                --accent: #38bdf8;
-                --accent-soft: rgba(56, 189, 248, 0.1);
-                --accent-alt: #22c55e;
-                --danger: #f97373;
-                --warn: #eab308;
-                --text: #e5e7eb;
-                --muted: #9ca3af;
-                --border: #1f2937;
-                --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.8);
-                --radius-lg: 14px;
-                --radius-md: 9px;
-                --radius-pill: 999px;
-              }
-          
-              * {
-                box-sizing: border-box;
-              }
-          
-              body {
-                margin: 0;
-                font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-                  sans-serif;
-                background: radial-gradient(circle at top left, #1e293b 0, #020617 55%);
-                color: var(--text);
-                min-height: 100vh;
-                display: flex;
-                flex-direction: column;
-              }
-          
-              .page {
-                max-width: 1180px;
-                margin: 0 auto;
-                padding: 24px 16px 40px;
-              }
-          
-              header {
-                display: flex;
-                flex-wrap: wrap;
-                align-items: flex-end;
-                justify-content: space-between;
-                gap: 16px;
-                margin-bottom: 24px;
-              }
-          
-              .title-wrap {
-                display: flex;
-                flex-direction: column;
-                gap: 6px;
-              }
-          
-              h1 {
-                margin: 0;
-                font-size: 1.8rem;
-                letter-spacing: 0.02em;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-              }
-          
-              .pill {
-                font-size: 0.75rem;
-                text-transform: uppercase;
-                letter-spacing: 0.1em;
-                padding: 3px 10px;
-                border-radius: var(--radius-pill);
-                border: 1px solid rgba(148, 163, 184, 0.4);
-                color: var(--muted);
-                display: inline-flex;
-                align-items: center;
-                gap: 6px;
-              }
-          
-              .pill-dot {
-                width: 8px;
-                height: 8px;
-                border-radius: 999px;
-                background: radial-gradient(circle at 30% 30%, #bbf7d0 0, #16a34a 40%, #052e16 100%);
-                box-shadow: 0 0 6px rgba(34, 197, 94, 0.9);
-              }
-          
-              .subtitle {
-                margin: 0;
-                font-size: 0.9rem;
-                color: var(--muted);
-              }
-          
-              .header-meta {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 8px;
-                align-items: center;
-                justify-content: flex-end;
-                color: var(--muted);
-                font-size: 0.8rem;
-              }
-          
-              .header-meta span {
-                display: inline-flex;
-                align-items: center;
-                gap: 6px;
-                padding: 3px 9px;
-                border-radius: var(--radius-pill);
-                background: rgba(15, 23, 42, 0.85);
-                border: 1px solid rgba(31, 41, 55, 0.8);
-              }
-          
-              .header-meta .dot {
-                width: 7px;
-                height: 7px;
-                border-radius: 999px;
-                background: #22c55e;
-                box-shadow: 0 0 6px rgba(34, 197, 94, 0.9);
-              }
-          
-              .header-meta .dot-warn {
-                background: #eab308;
-                box-shadow: 0 0 6px rgba(234, 179, 8, 0.9);
-              }
-          
-              .header-meta .dot-off {
-                background: #64748b;
-                box-shadow: none;
-              }
-          
-              main {
-                display: flex;
-                flex-direction: column;
-                gap: 18px;
-              }
-          
-              .grid {
-                display: grid;
-                grid-template-columns: minmax(0, 2fr) minmax(0, 1.6fr);
-                gap: 16px;
-              }
-          
-              @media (max-width: 900px) {
-                .grid {
-                  grid-template-columns: minmax(0, 1fr);
-                }
-              }
-          
-              .card {
-                background: radial-gradient(circle at top left, #111827 0, #020617 58%);
-                border-radius: var(--radius-lg);
-                border: 1px solid rgba(31, 41, 55, 0.9);
-                padding: 14px 16px 14px;
-                box-shadow: var(--shadow-soft);
-                position: relative;
-                overflow: hidden;
-              }
-          
-              .card::before {
-                content: "";
-                position: absolute;
-                inset: -60px;
-                background:
-                  radial-gradient(circle at top left, rgba(56, 189, 248, 0.08) 0, transparent 55%),
-                  radial-gradient(circle at bottom right, rgba(34, 197, 94, 0.09) 0, transparent 55%);
-                opacity: 0.8;
-                pointer-events: none;
-              }
-          
-              .card-inner {
-                position: relative;
-                z-index: 1;
-              }
-          
-              .card-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: baseline;
-                margin-bottom: 8px;
-                gap: 8px;
-              }
-          
-              .card-header h2 {
-                margin: 0;
-                font-size: 1rem;
-                letter-spacing: 0.06em;
-                text-transform: uppercase;
-                color: #e5e7eb;
-              }
-          
-              .card-header .badge {
-                font-size: 0.7rem;
-                padding: 3px 10px;
-                border-radius: var(--radius-pill);
-                border: 1px solid rgba(148, 163, 184, 0.4);
-                color: var(--muted);
-                display: inline-flex;
-                align-items: center;
-                gap: 6px;
-                background: rgba(15, 23, 42, 0.9);
-              }
-          
-              .badge-dot {
-                width: 7px;
-                height: 7px;
-                border-radius: 999px;
-                background: #22c55e;
-              }
-              .badge-dot-warn {
-                background: #eab308;
-              }
-              .badge-dot-err {
-                background: #f97373;
-              }
-          
-              .card-body {
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-                font-size: 0.88rem;
-                color: var(--muted);
-              }
-          
-              .kpi-row {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-              }
-          
-              .kpi {
-                background: rgba(15, 23, 42, 0.95);
-                border-radius: var(--radius-md);
-                padding: 8px 10px;
-                border: 1px solid rgba(31, 41, 55, 0.85);
-                min-width: 130px;
-                flex: 1 1 110px;
-                display: flex;
-                flex-direction: column;
-                gap: 4px;
-              }
-          
-              .kpi-label {
-                font-size: 0.72rem;
-                text-transform: uppercase;
-                letter-spacing: 0.08em;
-                color: #9ca3af;
-              }
-          
-              .kpi-value {
-                font-size: 1.1rem;
-                color: #e5e7eb;
-                font-weight: 500;
-              }
-          
-              .kpi-sub {
-                font-size: 0.72rem;
-                color: #9ca3af;
-              }
-          
-              .status-tag {
-                display: inline-flex;
-                align-items: center;
-                gap: 6px;
-                border-radius: var(--radius-pill);
-                padding: 3px 9px;
-                background: rgba(15, 23, 42, 0.9);
-                border: 1px solid rgba(31, 41, 55, 0.9);
-                font-size: 0.78rem;
-                color: var(--muted);
-              }
-          
-              .status-dot {
-                width: 8px;
-                height: 8px;
-                border-radius: 999px;
-                background: #22c55e;
-                box-shadow: 0 0 6px rgba(34, 197, 94, 0.9);
-              }
-              .status-dot-warn {
-                background: #eab308;
-                box-shadow: 0 0 6px rgba(234, 179, 8, 0.9);
-              }
-              .status-dot-err {
-                background: #f97373;
-                box-shadow: 0 0 6px rgba(239, 68, 68, 0.9);
-              }
-          
-              .muted {
-                color: var(--muted);
-              }
-          
-              .mono {
-                font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-                  "Liberation Mono", "Courier New", monospace;
-                font-size: 0.8rem;
-              }
-          
-              .hash-box {
-                background: rgba(15, 23, 42, 0.95);
-                border-radius: var(--radius-md);
-                padding: 8px 10px;
-                border: 1px dashed rgba(55, 65, 81, 0.9);
-                overflow-wrap: anywhere;
-              }
-          
-              .log {
-                background: rgba(15, 23, 42, 0.95);
-                border-radius: var(--radius-md);
-                border: 1px solid rgba(31, 41, 55, 0.9);
-                padding: 8px 10px;
-                max-height: 220px;
-                overflow: auto;
-                font-size: 0.78rem;
-                font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-                  "Liberation Mono", "Courier New", monospace;
-                color: #9ca3af;
-                white-space: pre-wrap;
-              }
-          
-              .log-line {
-                margin: 0;
-              }
-          
-              .log-line span.time {
-                color: #6b7280;
-              }
-          
-              .log-line span.level-ok {
-                color: #22c55e;
-              }
-          
-              .log-line span.level-warn {
-                color: #eab308;
-              }
-          
-              .log-line span.level-err {
-                color: #f97373;
-              }
-          
-              .legend {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 8px;
-                font-size: 0.75rem;
-                color: var(--muted);
-                margin-top: 6px;
-              }
-          
-              .legend span {
-                display: inline-flex;
-                align-items: center;
-                gap: 6px;
-              }
-          
-              footer {
-                margin-top: 24px;
-                font-size: 0.75rem;
-                color: #6b7280;
-                display: flex;
-                justify-content: space-between;
-                flex-wrap: wrap;
-                gap: 8px;
-                border-top: 1px solid rgba(31, 41, 55, 0.9);
-                padding-top: 10px;
-              }
-          
-              a {
-                color: var(--accent);
-                text-decoration: none;
-              }
-              a:hover {
-                text-decoration: underline;
-              }
-            </style>
-          </head>
-          <body>
-            <div class="page">
-              <header>
-                <div class="title-wrap">
-                  <div class="pill">
-                    <span class="pill-dot"></span>
-                    LIVE DATA PIPELINE
-                  </div>
-                  <h1>
-                    Status – Kolumbus &amp; Rogaland speed limits
-                  </h1>
-                  <p class="subtitle">
-                    Oversikt over siste oppdateringer, datamengde og deploy-status for frontend og datasett.
-                  </p>
-                </div>
-                <div class="header-meta">
-                  <span>
-                    <span class="dot" id="global-status-dot"></span>
-                    <span id="global-status-text">Leser status…</span>
-                  </span>
-                  <span>
-                    ⏱️ Siste deploy:
-                    <span id="last-deploy-human">–</span>
-                  </span>
-                </div>
-              </header>
-          
-              <main>
-                <section class="grid">
-                  <!-- Venstre side: Datasett -->
-                  <article class="card">
-                    <div class="card-inner">
-                      <div class="card-header">
-                        <h2>Datasett-oversikt</h2>
-                        <div class="badge">
-                          <span class="badge-dot" id="datasets-badge-dot"></span>
-                          <span id="datasets-badge-text">Init…</span>
-                        </div>
-                      </div>
-                      <div class="card-body">
-                        <div class="kpi-row">
-                          <div class="kpi">
-                            <div class="kpi-label">Speedlimits</div>
-                            <div class="kpi-value" id="sl-files">–</div>
-                            <div class="kpi-sub" id="sl-size">Filer / størrelse ukjent</div>
-                          </div>
-                          <div class="kpi">
-                            <div class="kpi-label">Kolumbus realtime</div>
-                            <div class="kpi-value" id="ko-count">–</div>
-                            <div class="kpi-sub" id="ko-updated">Sist oppdatert: –</div>
-                          </div>
-                          <div class="kpi">
-                            <div class="kpi-label">Siste data-hash</div>
-                            <div class="kpi-value mono" id="hash-short">–</div>
-                            <div class="kpi-sub" id="hash-sub">full hash vises under</div>
-                          </div>
-                        </div>
-          
-                        <div class="status-tag" id="freshness-tag">
-                          <span class="status-dot" id="freshness-dot"></span>
-                          <span id="freshness-text">Sjekker samtidighet mellom datasett…</span>
-                        </div>
-          
-                        <div class="hash-box mono" id="hash-full">
-                          Leser meta/last_hash.txt…
-                        </div>
-                      </div>
-                    </div>
-                  </article>
-          
-                  <!-- Høyre side: Historikk / logger / meta -->
-                  <article class="card">
-                    <div class="card-inner">
-                      <div class="card-header">
-                        <h2>Deploy &amp; pipeline-status</h2>
-                        <div class="badge">
-                          <span class="badge-dot" id="deploy-badge-dot"></span>
-                          <span id="deploy-badge-text">Init…</span>
-                        </div>
-                      </div>
-                      <div class="card-body">
-                        <div class="kpi-row">
-                          <div class="kpi">
-                            <div class="kpi-label">Siste deploy</div>
-                            <div class="kpi-value" id="deploy-time">–</div>
-                            <div class="kpi-sub" id="deploy-age">–</div>
-                          </div>
-                          <div class="kpi">
-                            <div class="kpi-label">Pipeline-status</div>
-                            <div class="kpi-value" id="pipeline-state">–</div>
-                            <div class="kpi-sub" id="pipeline-detail">–</div>
-                          </div>
-                        </div>
-          
-                        <div class="log" id="log">
-                          [init] Venter på data…
-                        </div>
-          
-                        <div class="legend">
-                          <span><span class="status-dot"></span> OK</span>
-                          <span><span class="status-dot status-dot-warn"></span> Varsel</span>
-                          <span><span class="status-dot status-dot-err"></span> Feil</span>
-                        </div>
-                      </div>
-                    </div>
-                  </article>
-                </section>
-          
-                <!-- Nederste rad: Systemdetaljer -->
-                <section class="card">
-                  <div class="card-inner">
-                    <div class="card-header">
-                      <h2>Systemdetaljer</h2>
-                    </div>
-                    <div class="card-body">
-                      <p class="muted">
-                        Denne siden leser direkte fra de genererte filene i <span class="mono">/data</span> og
-                        <span class="mono">/meta</span>, og reflekterer derfor den faktiske tilstanden på GitHub Pages – ikke bare
-                        GitHub Actions-loggene.
-                      </p>
-                      <p class="muted">
-                        Bruk dashboardet til å bekrefte at:
-                      </p>
-                      <ul class="muted">
-                        <li>Speedlimits-delfiler finnes og har rimelig størrelse.</li>
-                        <li>Kolumbus-data er nylig oppdatert.</li>
-                        <li>Siste deploy ikke er eldre enn forventet.</li>
-                        <li>Datahash endrer seg når nye data publiseres.</li>
-                      </ul>
-                    </div>
-                  </div>
-                </section>
-              </main>
-          
-              <footer>
-                <span>Bygget fra live data via GitHub Actions &amp; NVDB / Entur.</span>
-                <span>Frontend status-dashboard – versjon 1.0</span>
-              </footer>
+<html lang="no" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <title>Datasett-status – Kolumbus / Rogaland</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="dashboard-version" content="{{VERSION}}" />
+  <meta name="dashboard-hash" content="{{HASH}}" />
+
+  <link rel="stylesheet" href="dashboard/assets/dashboard.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="title-wrap">
+        <div class="pill pill-live kpi-animate">
+          <span class="pill-dot"></span>
+          LIVE DATA PIPELINE
+        </div>
+        <h1 class="page-title kpi-animate">
+          Status – Kolumbus &amp; Rogaland speed limits
+        </h1>
+        <p class="subtitle">
+          Oversikt over siste oppdateringer, datamengde og deploy-status for frontend og datasett.
+        </p>
+      </div>
+
+      <div class="header-controls">
+        <div class="header-meta kpi-animate">
+          <span>
+            <span class="dot" id="global-status-dot"></span>
+            <span id="global-status-text">Leser status…</span>
+          </span>
+          <span>
+            ⏱️ Siste deploy:
+            <span id="last-deploy-human">–</span>
+          </span>
+          <span>
+            🔁 Auto-refresh:
+            <span id="refresh-countdown">–</span>
+          </span>
+        </div>
+
+        <button class="btn-toggle-theme" id="theme-toggle" type="button">
+          <span class="theme-icon theme-icon-dark">🌙</span>
+          <span class="theme-icon theme-icon-light">☀️</span>
+          <span class="theme-label">Tema</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="grid">
+        <!-- Venstre: Datasett -->
+        <article class="card card-datasets kpi-animate">
+          <div class="card-inner">
+            <div class="card-header">
+              <h2>Datasett-oversikt</h2>
+              <div class="badge" id="datasets-badge">
+                <span class="badge-dot" id="datasets-badge-dot"></span>
+                <span id="datasets-badge-text">Init…</span>
+              </div>
             </div>
-          
-            <script>
-              const logEl = document.getElementById("log");
-          
-              function log(level, msg) {
-                const p = document.createElement("p");
-                p.className = "log-line";
-                const t = new Date().toISOString().slice(11, 19);
-                const spanTime = document.createElement("span");
-                spanTime.className = "time";
-                spanTime.textContent = `[${t}] `;
-                const spanMsg = document.createElement("span");
-                if (level === "ok") spanMsg.className = "level-ok";
-                else if (level === "warn") spanMsg.className = "level-warn";
-                else if (level === "err") spanMsg.className = "level-err";
-                spanMsg.textContent = msg;
-                p.appendChild(spanTime);
-                p.appendChild(spanMsg);
-                logEl.appendChild(p);
-                logEl.scrollTop = logEl.scrollHeight;
-              }
-          
-              function humanAgo(date) {
-                if (!date) return "ukjent";
-                const diffMs = Date.now() - date.getTime();
-                const diffSec = Math.floor(diffMs / 1000);
-                if (diffSec < 60) return "for mindre enn ett minutt siden";
-                const diffMin = Math.floor(diffSec / 60);
-                if (diffMin < 60) return `for ${diffMin} min siden`;
-                const diffH = Math.floor(diffMin / 60);
-                if (diffH < 24) return `for ${diffH} t siden`;
-                const diffD = Math.floor(diffH / 24);
-                return `for ${diffD} d siden`;
-              }
-          
-              async function fetchText(url) {
-                const res = await fetch(url);
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                return res.text();
-              }
-          
-              async function fetchJson(url) {
-                const res = await fetch(url);
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                return res.json();
-              }
-          
-              async function loadMetaAndHash() {
-                const hashFullEl = document.getElementById("hash-full");
-                const hashShortEl = document.getElementById("hash-short");
-                const globalStatusDot = document.getElementById("global-status-dot");
-                const globalStatusText = document.getElementById("global-status-text");
-                const deployTimeEl = document.getElementById("deploy-time");
-                const deployAgeEl = document.getElementById("deploy-age");
-                const lastDeployHumanEl = document.getElementById("last-deploy-human");
-          
-                let ok = true;
-          
-                try {
-                  const hash = await fetchText("meta/last_hash.txt");
-                  const trimmed = hash.trim();
-                  hashFullEl.textContent = trimmed || "(tom hash)";
-                  hashShortEl.textContent = trimmed ? trimmed.slice(0, 8) + "…" : "–";
-                  log("ok", "Leste data-hash fra meta/last_hash.txt.");
-                } catch (e) {
-                  hashFullEl.textContent =
-                    "Fant ikke meta/last_hash.txt – har deploy-workflowet kjørt med hash-støtte?";
-                  hashShortEl.textContent = "–";
-                  log("warn", "Klarte ikke å lese meta/last_hash.txt.");
-                  ok = false;
-                }
-          
-                try {
-                  const txt = await fetchText("meta/last_deploy.txt");
-                  const epoch = parseInt(txt.trim(), 10);
-                  if (!isNaN(epoch)) {
-                    const date = new Date(epoch * 1000);
-                    const iso = date.toISOString().replace("T", " ").replace("Z", " UTC");
-                    deployTimeEl.textContent = iso;
-                    deployAgeEl.textContent = humanAgo(date);
-                    lastDeployHumanEl.textContent = humanAgo(date);
-                    log("ok", `Siste deploy: ${iso}.`);
-                  } else {
-                    deployTimeEl.textContent = "ukjent";
-                    deployAgeEl.textContent = "ukjent alder";
-                    log("warn", "meta/last_deploy.txt inneholder ikke gyldig epoch.");
-                    ok = false;
-                  }
-                } catch (e) {
-                  deployTimeEl.textContent = "ukjent";
-                  deployAgeEl.textContent = "ukjent alder";
-                  lastDeployHumanEl.textContent = "ukjent";
-                  log("warn", "Fant ikke meta/last_deploy.txt.");
-                  ok = false;
-                }
-          
-                try {
-                  const v = await fetchJson("meta/version.json");
-                  if (v && v.updated) {
-                    const d = new Date(v.updated);
-                    document.getElementById("pipeline-state").textContent = "OK";
-                    document.getElementById("pipeline-detail").textContent =
-                      "Versjonsmetadata lest fra meta/version.json.";
-                    log("ok", "Leste meta/version.json.");
-                  }
-                } catch (e) {
-                  log("warn", "Klarte ikke å lese meta/version.json.");
-                }
-          
-                if (ok) {
-                  globalStatusDot.style.background = "#22c55e";
-                  globalStatusText.textContent = "Datastrøm normal";
-                } else {
-                  globalStatusDot.style.background = "#eab308";
-                  globalStatusText.textContent = "Delvis status – sjekk logg";
-                }
-              }
-          
-              async function loadKolumbus() {
-                const koCountEl = document.getElementById("ko-count");
-                const koUpdatedEl = document.getElementById("ko-updated");
-          
-                try {
-                  const data = await fetchJson("data/kolumbus.json");
-                  const count = Array.isArray(data) ? data.length : (data && data.features ? data.features.length : 0);
-                  koCountEl.textContent = count || "0";
-                  koUpdatedEl.textContent = "kilde: data/kolumbus.json";
-                  log("ok", `Leste Kolumbus-data (${count} objekter).`);
-                  return { ok: true, count };
-                } catch (e) {
-                  koCountEl.textContent = "–";
-                  koUpdatedEl.textContent = "fant ikke data/kolumbus.json";
-                  log("warn", "Klarte ikke å lese data/kolumbus.json.");
-                  return { ok: false, count: 0 };
-                }
-              }
-          
-              async function loadSpeedlimits() {
-                const slFilesEl = document.getElementById("sl-files");
-                const slSizeEl = document.getElementById("sl-size");
-          
-                let part = 1;
-                let files = 0;
-                let totalBytes = 0;
-          
-                while (true) {
-                  const url = `data/speedlimits_part${part}.json`;
-                  try {
-                    const res = await fetch(url);
-                    if (!res.ok) break;
-                    const text = await res.text();
-                    files++;
-                    totalBytes += new Blob([text]).size;
-                    part++;
-                  } catch (e) {
-                    break;
-                  }
-                  if (part > 200) break; // sanity
-                }
-          
-                if (files === 0) {
-                  slFilesEl.textContent = "0";
-                  slSizeEl.textContent = "Ingen delfiler funnet i /data.";
-                  log("warn", "Fant ingen speedlimits_partX.json i /data.");
-                  return { ok: false, files: 0, totalBytes: 0 };
-                }
-          
-                const mb = totalBytes / (1024 * 1024);
-                slFilesEl.textContent = `${files}`;
-                slSizeEl.textContent = `${files} filer – ca. ${mb.toFixed(1)} MB`;
-                log("ok", `Leste ${files} speedlimits-delfiler (~${mb.toFixed(1)} MB).`);
-          
-                return { ok: true, files, totalBytes };
-              }
-          
-              function updateDatasetBadge(okSl, okKo) {
-                const dot = document.getElementById("datasets-badge-dot");
-                const text = document.getElementById("datasets-badge-text");
-                if (okSl && okKo) {
-                  dot.className = "badge-dot";
-                  text.textContent = "Begge datasett tilgjengelige";
-                } else if (okSl || okKo) {
-                  dot.className = "badge-dot badge-dot-warn";
-                  text.textContent = "Delvis tilgjengelig";
-                } else {
-                  dot.className = "badge-dot badge-dot-err";
-                  text.textContent = "Ingen datasett tilgjengelig";
-                }
-              }
-          
-              function updateDeployBadge() {
-                const dot = document.getElementById("deploy-badge-dot");
-                const text = document.getElementById("deploy-badge-text");
-                const deployAgeEl = document.getElementById("deploy-age");
-                const ageText = deployAgeEl.textContent || "";
-                if (ageText.includes("t siden") || ageText.includes("d siden")) {
-                  dot.className = "badge-dot badge-dot-warn";
-                  text.textContent = "Deploy kan være utdatert";
-                } else if (ageText === "ukjent alder") {
-                  dot.className = "badge-dot badge-dot-warn";
-                  text.textContent = "Deploy-ukjent";
-                } else {
-                  dot.className = "badge-dot";
-                  text.textContent = "Deploy ok";
-                }
-              }
-          
-              function updateFreshnessIndicator() {
-                const tag = document.getElementById("freshness-tag");
-                const dot = document.getElementById("freshness-dot");
-                const text = document.getElementById("freshness-text");
-          
-                // Her har vi ikke direkte info om run-tider, så vi gjør en enkel tolkning:
-                // hvis deploy er nylig (<= 3t) sier vi at pipeline er "synkron".
-                const deployAgeEl = document.getElementById("deploy-age");
-                const age = deployAgeEl.textContent || "";
-                if (age.includes("t siden") || age.includes("d siden") || age === "ukjent alder") {
-                  dot.className = "status-dot status-dot-warn";
-                  text.textContent =
-                    "Datastrøm kan være eldre enn 3 timer – sjekk workflow-runner ved behov.";
-                } else {
-                  dot.className = "status-dot";
-                  text.textContent = "Datastrøm er synkron og nyere enn ~3 timer.";
-                }
-              }
-          
-              async function init() {
-                log("ok", "Starter lesing av metadata og datasett…");
-                await loadMetaAndHash();
-                const sl = await loadSpeedlimits();
-                const ko = await loadKolumbus();
-                updateDatasetBadge(sl.ok, ko.ok);
-                updateDeployBadge();
-                updateFreshnessIndicator();
-                if (!sl.ok || !ko.ok) {
-                  document.getElementById("pipeline-state").textContent = "Varsel";
-                  document.getElementById("pipeline-detail").textContent =
-                    "Ett eller flere datasett mangler – se logg over.";
-                }
-              }
-          
-              init().catch((e) => {
-                log("err", "Uventet feil i dashboard-logikken: " + e.message);
-              });
-            </script>
-          </body>
-          </html>
+            <div class="card-body">
+              <div class="kpi-row">
+                <div class="kpi">
+                  <div class="kpi-label">Speedlimits</div>
+                  <div class="kpi-value" id="sl-files">–</div>
+                  <div class="kpi-sub" id="sl-size">Filer / størrelse ukjent</div>
+                </div>
+                <div class="kpi">
+                  <div class="kpi-label">Kolumbus realtime</div>
+                  <div class="kpi-value" id="ko-count">–</div>
+                  <div class="kpi-sub" id="ko-updated">Sist oppdatert: –</div>
+                </div>
+                <div class="kpi">
+                  <div class="kpi-label">Siste data-hash</div>
+                  <div class="kpi-value mono" id="hash-short">–</div>
+                  <div class="kpi-sub" id="hash-sub">full hash vises under</div>
+                </div>
+              </div>
+
+              <div class="status-tag" id="freshness-tag">
+                <span class="status-dot" id="freshness-dot"></span>
+                <span id="freshness-text">Sjekker samtidighet mellom datasett…</span>
+              </div>
+
+              <div class="hash-box mono" id="hash-full">
+                Leser meta/last_hash.txt…
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Høyre: Pipeline / logg -->
+        <article class="card card-pipeline kpi-animate">
+          <div class="card-inner">
+            <div class="card-header">
+              <h2>Deploy &amp; pipeline-status</h2>
+              <div class="badge" id="deploy-badge">
+                <span class="badge-dot" id="deploy-badge-dot"></span>
+                <span id="deploy-badge-text">Init…</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="kpi-row">
+                <div class="kpi">
+                  <div class="kpi-label">Siste deploy</div>
+                  <div class="kpi-value" id="deploy-time">–</div>
+                  <div class="kpi-sub" id="deploy-age">–</div>
+                </div>
+                <div class="kpi">
+                  <div class="kpi-label">Pipeline-status</div>
+                  <div class="kpi-value" id="pipeline-state">–</div>
+                  <div class="kpi-sub" id="pipeline-detail">–</div>
+                </div>
+              </div>
+
+              <div class="log" id="log">
+                [init] Venter på data…
+              </div>
+
+              <div class="legend">
+                <span><span class="status-dot"></span> OK</span>
+                <span><span class="status-dot status-dot-warn"></span> Varsel</span>
+                <span><span class="status-dot status-dot-err"></span> Feil</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- Nederste rad -->
+      <section class="card card-system kpi-animate">
+        <div class="card-inner">
+          <div class="card-header">
+            <h2>Systemdetaljer</h2>
+          </div>
+          <div class="card-body">
+            <p class="muted">
+              Denne siden leser direkte fra filene i <span class="mono">/data</span> og
+              <span class="mono">/meta</span> på GitHub Pages, og viser derfor faktisk publisert tilstand –
+              ikke bare Actions-loggene.
+            </p>
+            <p class="muted">
+              Bruk dashboardet til å bekrefte at:
+            </p>
+            <ul class="muted">
+              <li>Speedlimits-delfiler finnes og har rimelig størrelse.</li>
+              <li>Kolumbus-data er nylig oppdatert.</li>
+              <li>Siste deploy ikke er eldre enn forventet.</li>
+              <li>Datahash endrer seg når nye data publiseres.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>
+        Dashboard versjon <span id="dashboard-version">{{VERSION}}</span>
+        &nbsp;•&nbsp; hash <span class="mono" id="dashboard-hash">{{HASH}}</span>
+      </span>
+      <span>Bygget fra live data via GitHub Actions &amp; NVDB / Entur.</span>
+    </footer>
+  </div>
+
+  <script src="dashboard/assets/dashboard.js"></script>
+</body>
+</html>
