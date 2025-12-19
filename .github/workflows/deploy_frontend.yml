@@ -16,53 +16,194 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Create public folder
-        run: mkdir -p public/data
+        run: mkdir -p public/data public/meta .cache/speedlimits
 
       # ---------------------------------------------------------
-      # 1) Finn siste vellykkede run av fetch_speedlimits.yml
+      # 1) BLOCK MANUAL TRIGGERS (feilsøking)
+      # ---------------------------------------------------------
+      - name: Block manual triggers
+        if: ${{ github.event.workflow_run.event == 'workflow_dispatch' }}
+        run: |
+          echo "Manuell kjøring oppdaget – deploy avbrytes."
+          exit 0
+
+      # ---------------------------------------------------------
+      # 2) FINN SISTE RUN AV BEGGE WORKFLOWS
       # ---------------------------------------------------------
       - name: Get latest speedlimits run ID
-        id: get_run
+        id: sl_run
         run: |
-          RUN_ID=$(gh run list \
+          SL=$(gh run list \
             --workflow="Fetch Rogaland speed limits and publish" \
             --branch=main \
-            --json databaseId,status,conclusion \
+            --json databaseId,conclusion \
             --jq '.[] | select(.conclusion=="success") | .databaseId' \
             | head -n 1)
+          echo "id=$SL" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-          if [ -z "$RUN_ID" ]; then
-            echo "Fant ingen vellykket speedlimits-run"
-            echo "run_id=" >> $GITHUB_OUTPUT
-          else
-            echo "Fant speedlimits-run: $RUN_ID"
-            echo "run_id=$RUN_ID" >> $GITHUB_OUTPUT
-          fi
+      - name: Get latest kolumbus run ID
+        id: ko_run
+        run: |
+          KO=$(gh run list \
+            --workflow="Fetch Kolumbus data" \
+            --branch=main \
+            --json databaseId,conclusion \
+            --jq '.[] | select(.conclusion=="success") | .databaseId' \
+            | head -n 1)
+          echo "id=$KO" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # ---------------------------------------------------------
-      # 2) Last ned speedlimits-artefakten fra det run’et
+      # 3) 3-TIMERS KRAV
+      # ---------------------------------------------------------
+      - name: Check freshness (3-hour window)
+        run: |
+          NOW=$(date -u +%s)
+
+          SL_TIME=$(gh run view ${{ steps.sl_run.outputs.id }} --json createdAt --jq '.createdAt')
+          KO_TIME=$(gh run view ${{ steps.ko_run.outputs.id }} --json createdAt --jq '.createdAt')
+
+          SL_EPOCH=$(date -d "$SL_TIME" +%s)
+          KO_EPOCH=$(date -d "$KO_TIME" +%s)
+
+          if [ $((NOW - SL_EPOCH)) -gt 10800 ]; then
+            echo "Speedlimits-run er eldre enn 3 timer – avbryter deploy."
+            exit 0
+          fi
+
+          if [ $((NOW - KO_EPOCH)) -gt 10800 ]; then
+            echo "Kolumbus-run er eldre enn 3 timer – avbryter deploy."
+            exit 0
+          fi
+
+      # ---------------------------------------------------------
+      # 4) RESTORE CACHE
+      # ---------------------------------------------------------
+      - name: Restore speedlimits cache
+        id: cache_restore
+        uses: actions/cache@v4
+        with:
+          path: .cache/speedlimits
+          key: speedlimits-cache
+
+      # ---------------------------------------------------------
+      # 5) LAST NED SPEEDLIMITS-ARTEFAKT (Løsning A)
       # ---------------------------------------------------------
       - name: Download speedlimits artifact
-        if: steps.get_run.outputs.run_id != ''
+        if: steps.sl_run.outputs.id != ''
         run: |
-          gh run download ${{ steps.get_run.outputs.run_id }} \
+          rm -rf .cache/speedlimits/*
+          gh run download ${{ steps.sl_run.outputs.id }} \
             --name speedlimits-parts \
-            --dir public/data
+            --dir .cache/speedlimits
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # ---------------------------------------------------------
-      # 3) Kopier Kolumbus-data fra repoet (main)
-      # ---------------------------------------------------------
-      - name: Copy Kolumbus data
-        run: |
-          if [ -f data/kolumbus.json ]; then cp data/kolumbus.json public/data/; fi
-          if [ -f data/debug_entur.json ]; then cp data/debug_entur.json public/data/; fi
+      - name: Save speedlimits cache
+        uses: actions/cache@v4
+        with:
+          path: .cache/speedlimits
+          key: speedlimits-cache
 
       # ---------------------------------------------------------
-      # 4) Kopier frontend-filer
+      # 6) FALLBACK: STOPP HVIS SPEEDLIMITS MANGLER
+      # ---------------------------------------------------------
+      - name: Validate speedlimits data
+        run: |
+          if [ -z "$(ls -A .cache/speedlimits)" ]; then
+            echo "Ingen speedlimits-data tilgjengelig – avbryter deploy."
+            exit 1
+          fi
+
+      # ---------------------------------------------------------
+      # 7) KOPIER DATA TIL PUBLIC/
+      # ---------------------------------------------------------
+      - name: Copy speedlimits data
+        run: cp .cache/speedlimits/*.json public/data/
+
+      - name: Copy Kolumbus data
+        run: |
+          cp data/kolumbus.json public/data/ || true
+          cp data/debug_entur.json public/data/ || true
+
+      # ---------------------------------------------------------
+      # 8) COOLDOWN (maks én deploy per 30 min)
+      # ---------------------------------------------------------
+      - name: Check cooldown
+        run: |
+          if [ -f public/meta/last_deploy.txt ]; then
+            LAST=$(cat public/meta/last_deploy.txt)
+            NOW=$(date -u +%s)
+            DIFF=$((NOW - LAST))
+            if [ $DIFF -lt 1800 ]; then
+              echo "Cooldown aktiv – avbryter deploy."
+              exit 0
+            fi
+          fi
+
+      # ---------------------------------------------------------
+      # 9) HASH-BASERT ENDRINGSDETEKSJON
+      # ---------------------------------------------------------
+      - name: Compute data hash
+        id: hash
+        run: |
+          HASH=$(find public/data -type f -exec sha256sum {} \; | sha256sum | awk '{print $1}')
+          echo "hash=$HASH" >> $GITHUB_OUTPUT
+
+      - name: Compare with previous hash
+        run: |
+          if [ -f public/meta/last_hash.txt ]; then
+            OLD=$(cat public/meta/last_hash.txt)
+            if [ "$OLD" = "${{ steps.hash.outputs.hash }}" ]; then
+              echo "Ingen endringer i data – avbryter deploy."
+              exit 0
+            fi
+          fi
+
+      # ---------------------------------------------------------
+      # 10) GENERER VERSJONERING + STATUS-SIDE
+      # ---------------------------------------------------------
+      - name: Write version metadata
+        run: |
+          NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          echo "{ \"updated\": \"$NOW\" }" > public/meta/version.json
+          date -u +%s > public/meta/last_deploy.txt
+          echo "${{ steps.hash.outputs.hash }}" > public/meta/last_hash.txt
+
+      - name: Generate status page
+        run: |
+          cat > public/status.html <<'EOF'
+          <!DOCTYPE html>
+          <html lang="no">
+          <head>
+            <meta charset="UTF-8">
+            <title>Status</title>
+            <style>
+              body { font-family: Arial; padding: 20px; }
+              pre { background: #eee; padding: 10px; }
+            </style>
+          </head>
+          <body>
+            <h1>Status for datasett</h1>
+            <p>Oppdateringstidspunkt og hash for siste deploy:</p>
+            <pre id="meta">Laster...</pre>
+            <script>
+              fetch("meta/version.json")
+                .then(r => r.json())
+                .then(d => {
+                  document.getElementById("meta").textContent =
+                    JSON.stringify(d, null, 2);
+                });
+            </script>
+          </body>
+          </html>
+          EOF
+
+      # ---------------------------------------------------------
+      # 11) KOPIER FRONTEND
       # ---------------------------------------------------------
       - name: Copy frontend files
         run: |
@@ -71,7 +212,7 @@ jobs:
           cp -r web public/
 
       # ---------------------------------------------------------
-      # 5) Debug public-folder
+      # 12) DEBUG: VIS INNHOLD I public/
       # ---------------------------------------------------------
       - name: Debug public folder
         run: |
@@ -79,10 +220,11 @@ jobs:
           ls -R public
 
       # ---------------------------------------------------------
-      # 6) Deploy til gh-pages
+      # 13) DEPLOY
       # ---------------------------------------------------------
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: public
+
