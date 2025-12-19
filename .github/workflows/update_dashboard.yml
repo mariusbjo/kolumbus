@@ -1,0 +1,97 @@
+name: Update Enterprise Dashboard
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"   # hver 30. minutt
+
+jobs:
+  update-dashboard:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo (main)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Prepare public folder
+        run: mkdir -p public/dashboard public/dashboard/assets
+
+      # ---------------------------------------------------------
+      # 1) BYGG DASHBOARD FRA TEMPLATE
+      # ---------------------------------------------------------
+      - name: Build dashboard from template
+        id: build
+        run: |
+          VERSION=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          HASH=$(sha256sum dashboard/status.html.template | awk '{print $1}')
+
+          # Lag ferdig status.html
+          sed \
+            -e "s|{{VERSION}}|$VERSION|g" \
+            -e "s|{{HASH}}|$HASH|g" \
+            dashboard/status.html.template \
+            > public/dashboard/status.html
+
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "hash=$HASH" >> $GITHUB_OUTPUT
+
+      # ---------------------------------------------------------
+      # 2) GENERER dashboard.json
+      # ---------------------------------------------------------
+      - name: Generate dashboard metadata
+        run: |
+          cat > public/dashboard/dashboard.json <<EOF
+          {
+            "version": "${{ steps.build.outputs.version }}",
+            "hash": "${{ steps.build.outputs.hash }}",
+            "generated": "${{ steps.build.outputs.version }}"
+          }
+          EOF
+
+      # ---------------------------------------------------------
+      # 3) KOPIER DASHBOARD-ASSETS
+      # ---------------------------------------------------------
+      - name: Copy dashboard assets
+        run: |
+          cp dashboard/assets/* public/dashboard/assets/
+
+      # ---------------------------------------------------------
+      # 4) SJEKK OM DASHBOARDET HAR ENDRET SEG
+      # ---------------------------------------------------------
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: ghp
+
+      - name: Compare dashboard with existing version
+        id: diff
+        run: |
+          if [ -f ghp/dashboard/status.html ]; then
+            if diff -q public/dashboard/status.html ghp/dashboard/status.html > /dev/null; then
+              echo "changed=false" >> $GITHUB_OUTPUT
+              exit 0
+            fi
+          fi
+          echo "changed=true" >> $GITHUB_OUTPUT
+
+      # ---------------------------------------------------------
+      # 5) STOPP HVIS INGEN ENDRING
+      # ---------------------------------------------------------
+      - name: Stop if no changes
+        if: steps.diff.outputs.changed == 'false'
+        run: |
+          echo "Ingen endringer i dashboardet – avbryter deploy."
+          exit 0
+
+      # ---------------------------------------------------------
+      # 6) DEPLOY KUN DASHBOARD (keep_files: true)
+      # ---------------------------------------------------------
+      - name: Deploy updated dashboard
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: public
+          keep_files: true
