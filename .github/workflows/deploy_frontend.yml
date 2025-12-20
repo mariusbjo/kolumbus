@@ -195,6 +195,7 @@ jobs:
           cp index.html public/
           cp -r assets public/
           cp -r web public/
+          cp -r script public/script
 
       # ---------------------------------------------------------
       # 12) DEBUG: VIS INNHOLD I public/
