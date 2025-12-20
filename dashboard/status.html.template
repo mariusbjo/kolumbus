@@ -8,7 +8,7 @@
   <meta name="dashboard-version" content="{{VERSION}}" />
   <meta name="dashboard-hash" content="{{HASH}}" />
 
-  <link rel="stylesheet" href="dashboard/assets/dashboard.css" />
+  <link rel="stylesheet" href="./assets/dashboard.css" />
 </head>
 
 <body>
@@ -100,6 +100,6 @@
     <span>Hash <span class="mono" id="dashboard-hash">{{HASH}}</span></span>
   </footer>
 
-  <script src="dashboard/assets/dashboard.js"></script>
+  <script src="./assets/dashboard.js"></script>
 </body>
 </html>
