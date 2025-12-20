@@ -8,6 +8,7 @@
   <meta name="dashboard-version" content="{{VERSION}}" />
   <meta name="dashboard-hash" content="{{HASH}}" />
 
+  <!-- ✅ RIKTIG PATH -->
   <link rel="stylesheet" href="./assets/dashboard.css" />
 </head>
 
@@ -100,6 +101,7 @@
     <span>Hash <span class="mono" id="dashboard-hash">{{HASH}}</span></span>
   </footer>
 
+  <!-- ✅ RIKTIG PATH -->
   <script src="./assets/dashboard.js"></script>
 </body>
 </html>
