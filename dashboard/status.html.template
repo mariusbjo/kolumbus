@@ -2,168 +2,103 @@
 <html lang="no" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
-  <title>Datasett-status – Kolumbus / Rogaland</title>
+  <title>Systemstatus – Kolumbus & Rogaland</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <meta name="dashboard-version" content="{{VERSION}}" />
   <meta name="dashboard-hash" content="{{HASH}}" />
 
   <link rel="stylesheet" href="dashboard/assets/dashboard.css" />
 </head>
+
 <body>
-  <div class="page">
-    <header class="header">
-      <div class="title-wrap">
-        <div class="pill pill-live kpi-animate">
-          <span class="pill-dot"></span>
-          LIVE DATA PIPELINE
-        </div>
-        <h1 class="page-title kpi-animate">
-          Status – Kolumbus &amp; Rogaland speed limits
-        </h1>
-        <p class="subtitle">
-          Oversikt over siste oppdateringer, datamengde og deploy-status for frontend og datasett.
-        </p>
+  <header class="topbar">
+    <div class="topbar-left">
+      <h1 class="title">Systemstatus</h1>
+      <p class="subtitle">Kolumbus realtime • Rogaland speedlimits • Frontend deploy</p>
+    </div>
+
+    <div class="topbar-right">
+      <button id="theme-toggle" class="theme-toggle">🌓</button>
+      <div class="refresh-indicator">
+        Auto-refresh: <span id="refresh-countdown">–</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="content">
+
+    <!-- KPI GRID -->
+    <section class="kpi-grid">
+
+      <!-- Speedlimits -->
+      <div class="kpi-card" id="kpi-speedlimits">
+        <div class="kpi-icon">🚧</div>
+        <div class="kpi-title">Speedlimits</div>
+        <div class="kpi-value" id="sl-files">–</div>
+        <div class="kpi-sub" id="sl-size">Laster…</div>
+        <div class="kpi-status" id="sl-status">–</div>
       </div>
 
-      <div class="header-controls">
-        <div class="header-meta kpi-animate">
-          <span>
-            <span class="dot" id="global-status-dot"></span>
-            <span id="global-status-text">Leser status…</span>
-          </span>
-          <span>
-            ⏱️ Siste deploy:
-            <span id="last-deploy-human">–</span>
-          </span>
-          <span>
-            🔁 Auto-refresh:
-            <span id="refresh-countdown">–</span>
-          </span>
-        </div>
-
-        <button class="btn-toggle-theme" id="theme-toggle" type="button">
-          <span class="theme-icon theme-icon-dark">🌙</span>
-          <span class="theme-icon theme-icon-light">☀️</span>
-          <span class="theme-label">Tema</span>
-        </button>
+      <!-- Kolumbus -->
+      <div class="kpi-card" id="kpi-kolumbus">
+        <div class="kpi-icon">🚌</div>
+        <div class="kpi-title">Kolumbus realtime</div>
+        <div class="kpi-value" id="ko-count">–</div>
+        <div class="kpi-sub" id="ko-updated">Laster…</div>
+        <div class="kpi-status" id="ko-status">–</div>
       </div>
-    </header>
 
-    <main class="main">
-      <section class="grid">
-        <!-- Venstre: Datasett -->
-        <article class="card card-datasets kpi-animate">
-          <div class="card-inner">
-            <div class="card-header">
-              <h2>Datasett-oversikt</h2>
-              <div class="badge" id="datasets-badge">
-                <span class="badge-dot" id="datasets-badge-dot"></span>
-                <span id="datasets-badge-text">Init…</span>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="kpi-row">
-                <div class="kpi">
-                  <div class="kpi-label">Speedlimits</div>
-                  <div class="kpi-value" id="sl-files">–</div>
-                  <div class="kpi-sub" id="sl-size">Filer / størrelse ukjent</div>
-                </div>
-                <div class="kpi">
-                  <div class="kpi-label">Kolumbus realtime</div>
-                  <div class="kpi-value" id="ko-count">–</div>
-                  <div class="kpi-sub" id="ko-updated">Sist oppdatert: –</div>
-                </div>
-                <div class="kpi">
-                  <div class="kpi-label">Siste data-hash</div>
-                  <div class="kpi-value mono" id="hash-short">–</div>
-                  <div class="kpi-sub" id="hash-sub">full hash vises under</div>
-                </div>
-              </div>
+      <!-- Deploy -->
+      <div class="kpi-card" id="kpi-deploy">
+        <div class="kpi-icon">⚙️</div>
+        <div class="kpi-title">Frontend deploy</div>
+        <div class="kpi-value" id="deploy-age">–</div>
+        <div class="kpi-sub" id="deploy-time">Laster…</div>
+        <div class="kpi-status" id="deploy-status">–</div>
+      </div>
 
-              <div class="status-tag" id="freshness-tag">
-                <span class="status-dot" id="freshness-dot"></span>
-                <span id="freshness-text">Sjekker samtidighet mellom datasett…</span>
-              </div>
+      <!-- Hash -->
+      <div class="kpi-card" id="kpi-hash">
+        <div class="kpi-icon">🔑</div>
+        <div class="kpi-title">Datahash</div>
+        <div class="kpi-value mono" id="hash-short">–</div>
+        <div class="kpi-sub" id="hash-sub">Full hash under</div>
+        <div class="kpi-status" id="hash-status">–</div>
+      </div>
 
-              <div class="hash-box mono" id="hash-full">
-                Leser meta/last_hash.txt…
-              </div>
-            </div>
-          </div>
-        </article>
+    </section>
 
-        <!-- Høyre: Pipeline / logg -->
-        <article class="card card-pipeline kpi-animate">
-          <div class="card-inner">
-            <div class="card-header">
-              <h2>Deploy &amp; pipeline-status</h2>
-              <div class="badge" id="deploy-badge">
-                <span class="badge-dot" id="deploy-badge-dot"></span>
-                <span id="deploy-badge-text">Init…</span>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="kpi-row">
-                <div class="kpi">
-                  <div class="kpi-label">Siste deploy</div>
-                  <div class="kpi-value" id="deploy-time">–</div>
-                  <div class="kpi-sub" id="deploy-age">–</div>
-                </div>
-                <div class="kpi">
-                  <div class="kpi-label">Pipeline-status</div>
-                  <div class="kpi-value" id="pipeline-state">–</div>
-                  <div class="kpi-sub" id="pipeline-detail">–</div>
-                </div>
-              </div>
+    <!-- HASH BOX -->
+    <section class="hash-section">
+      <h2>Full datahash</h2>
+      <pre class="hash-box mono" id="hash-full">Laster…</pre>
+    </section>
 
-              <div class="log" id="log">
-                [init] Venter på data…
-              </div>
+    <!-- LOGG -->
+    <section class="log-section">
+      <h2>Logg</h2>
+      <div id="log" class="log">[init] Starter dashboard…</div>
+    </section>
 
-              <div class="legend">
-                <span><span class="status-dot"></span> OK</span>
-                <span><span class="status-dot status-dot-warn"></span> Varsel</span>
-                <span><span class="status-dot status-dot-err"></span> Feil</span>
-              </div>
-            </div>
-          </div>
-        </article>
-      </section>
+    <!-- SYSTEMINFO -->
+    <section class="system-section">
+      <h2>Systeminformasjon</h2>
+      <p class="muted">
+        Dashboardet leser direkte fra publiserte filer i <span class="mono">/data</span> og
+        <span class="mono">/meta</span> på GitHub Pages.
+      </p>
+      <p class="muted">
+        Dette gir en sanntidsindikasjon på om datastrømmen fungerer som forventet.
+      </p>
+    </section>
 
-      <!-- Nederste rad -->
-      <section class="card card-system kpi-animate">
-        <div class="card-inner">
-          <div class="card-header">
-            <h2>Systemdetaljer</h2>
-          </div>
-          <div class="card-body">
-            <p class="muted">
-              Denne siden leser direkte fra filene i <span class="mono">/data</span> og
-              <span class="mono">/meta</span> på GitHub Pages, og viser derfor faktisk publisert tilstand –
-              ikke bare Actions-loggene.
-            </p>
-            <p class="muted">
-              Bruk dashboardet til å bekrefte at:
-            </p>
-            <ul class="muted">
-              <li>Speedlimits-delfiler finnes og har rimelig størrelse.</li>
-              <li>Kolumbus-data er nylig oppdatert.</li>
-              <li>Siste deploy ikke er eldre enn forventet.</li>
-              <li>Datahash endrer seg når nye data publiseres.</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-    </main>
+  </main>
 
-    <footer class="footer">
-      <span>
-        Dashboard versjon <span id="dashboard-version">{{VERSION}}</span>
-        &nbsp;•&nbsp; hash <span class="mono" id="dashboard-hash">{{HASH}}</span>
-      </span>
-      <span>Bygget fra live data via GitHub Actions &amp; NVDB / Entur.</span>
-    </footer>
-  </div>
+  <footer class="footer">
+    <span>Dashboard versjon <span id="dashboard-version">{{VERSION}}</span></span>
+    <span>Hash <span class="mono" id="dashboard-hash">{{HASH}}</span></span>
+  </footer>
 
   <script src="dashboard/assets/dashboard.js"></script>
 </body>
