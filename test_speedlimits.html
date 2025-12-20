@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <title>Testkart – Fartsgrenser</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-sA+4J1rGgGkS2Jp3xO2j3gkGEXLMaLLh5RkRl6hJY= "
+    crossorigin=""
+  />
+
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+
+  <!-- Leaflet JS -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-o9N1j7kGEXLMaLLh5RkRl6hJY="
+    crossorigin=""
+  ></script>
+
+  <script>
+    // ---------------------------------------------------------
+    // INIT MAP
+    // ---------------------------------------------------------
+    const map = L.map("map").setView([59.4222, 5.4425], 13);
+
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: "&copy; OpenStreetMap"
+    }).addTo(map);
+
+    // ---------------------------------------------------------
+    // COLOR FUNCTION
+    // ---------------------------------------------------------
+    function getColor(limit) {
+      if (limit <= 30) return "#2ecc71";   // grønn
+      if (limit <= 50) return "#f1c40f";   // gul
+      if (limit <= 70) return "#e67e22";   // oransje
+      return "#e74c3c";                    // rød
+    }
+
+    // ---------------------------------------------------------
+    // LOAD ALL PART FILES
+    // ---------------------------------------------------------
+    async function loadSpeedlimits() {
+      let part = 1;
+      let totalSegments = 0;
+
+      while (true) {
+        const url = `./data/speedlimits_part${part}.json`;
+
+        try {
+          const res = await fetch(url, { cache: "no-store" });
+          if (!res.ok) break;
+
+          const data = await res.json();
+
+          data.forEach(segment => {
+            const coords = segment.geometry.coordinates.map(c => [c[1], c[0]]); // snu lon/lat → lat/lon
+            const limit = segment.speed_limit;
+
+            L.polyline(coords, {
+              color: getColor(limit),
+              weight: 4,
+              opacity: 0.9
+            })
+            .bindPopup(`
+              <b>ID:</b> ${segment.id}<br>
+              <b>Fartsgrense:</b> ${limit} km/t
+            `)
+            .addTo(map);
+
+            totalSegments++;
+          });
+
+          console.log(`Loaded part ${part}: ${data.length} segments`);
+          part++;
+
+        } catch (err) {
+          console.warn("Stopped at part", part, err);
+          break;
+        }
+
+        if (part > 300) break; // failsafe
+      }
+
+      console.log("Total segments loaded:", totalSegments);
+    }
+
+    loadSpeedlimits();
+  </script>
+</body>
+</html>
