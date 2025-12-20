@@ -105,7 +105,7 @@
 
     // HASH
     try {
-      const hash = (await fetchText("meta/last_hash.txt")).trim();
+      const hash = (await fetchText("../meta/last_hash.txt")).trim();
       hashFullEl.textContent = hash;
       hashShortEl.textContent = hash.slice(0, 8) + "…";
       log("ok", "Leste datahash.");
@@ -118,7 +118,7 @@
 
     // DEPLOY TIME
     try {
-      const epoch = parseInt((await fetchText("meta/last_deploy.txt")).trim(), 10);
+      const epoch = parseInt((await fetchText("../meta/last_deploy.txt")).trim(), 10);
       const date = new Date(epoch * 1000);
       deployTimeEl.textContent = date.toISOString().replace("T", " ").replace("Z", " UTC");
       deployAgeEl.textContent = humanAgo(date);
@@ -146,7 +146,7 @@
     let totalBytes = 0;
 
     while (true) {
-      const url = `data/speedlimits_part${part}.json`;
+      const url = `../data/speedlimits_part${part}.json`;
       try {
         const res = await fetch(url, { cache: "no-store" });
         if (!res.ok) break;
@@ -188,7 +188,7 @@
     const koStatusEl = document.getElementById("ko-status");
 
     try {
-      const data = await fetchJson("data/kolumbus.json");
+      const data = await fetchJson("../data/kolumbus.json");
       const count = Array.isArray(data)
         ? data.length
         : data?.features?.length || 0;
