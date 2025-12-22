@@ -1,14 +1,14 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="no">
 <head>
   <meta charset="UTF-8" />
-  <title>Testkart – Fartsgrenser</title>
+  <title>Testkart – Fartsgrense Coverage Heatmap</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Leaflet CSS -->
   <link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
   />
 
   <style>
@@ -21,6 +21,13 @@
       width: 100%;
       height: 100%;
     }
+    .control-box {
+      background: white;
+      padding: 8px 12px;
+      border-radius: 4px;
+      box-shadow: 0 0 4px rgba(0,0,0,0.3);
+      font-size: 14px;
+    }
   </style>
 </head>
 
@@ -28,7 +35,10 @@
   <div id="map"></div>
 
   <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" ></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Leaflet.heat plugin -->
+  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
 
   <script>
     // ---------------------------------------------------------
@@ -42,14 +52,24 @@
     }).addTo(map);
 
     // ---------------------------------------------------------
-    // COLOR FUNCTION
+    // COLOR FUNCTION FOR LINES
     // ---------------------------------------------------------
     function getColor(limit) {
-      if (limit <= 30) return "#2ecc71";   // grønn
-      if (limit <= 50) return "#f1c40f";   // gul
-      if (limit <= 70) return "#e67e22";   // oransje
-      return "#e74c3c";                    // rød
+      if (limit <= 30) return "#2ecc71";
+      if (limit <= 50) return "#f1c40f";
+      if (limit <= 70) return "#e67e22";
+      return "#e74c3c";
     }
+
+    // ---------------------------------------------------------
+    // HEATMAP LAYER (empty for now)
+    // ---------------------------------------------------------
+    const heatPoints = [];
+    const heatLayer = L.heatLayer(heatPoints, {
+      radius: 20,
+      blur: 15,
+      maxZoom: 17
+    });
 
     // ---------------------------------------------------------
     // LOAD ALL PART FILES
@@ -59,7 +79,7 @@
       let totalSegments = 0;
 
       while (true) {
-        const url = `../data/speedlimits_part${part}.json`;
+        const url = `./data/speedlimits_part${part}.json`;
 
         try {
           const res = await fetch(url, { cache: "no-store" });
@@ -68,9 +88,10 @@
           const data = await res.json();
 
           data.forEach(segment => {
-            const coords = segment.geometry.coordinates.map(c => [c[1], c[0]]); // snu lon/lat → lat/lon
+            const coords = segment.geometry.coordinates.map(c => [c[1], c[0]]);
             const limit = segment.speed_limit;
 
+            // Draw line
             L.polyline(coords, {
               color: getColor(limit),
               weight: 4,
@@ -81,6 +102,11 @@
               <b>Fartsgrense:</b> ${limit} km/t
             `)
             .addTo(map);
+
+            // Add midpoint to heatmap
+            const midIndex = Math.floor(coords.length / 2);
+            const midpoint = coords[midIndex];
+            heatPoints.push(midpoint);
 
             totalSegments++;
           });
@@ -93,13 +119,45 @@
           break;
         }
 
-        if (part > 300) break; // failsafe
+        if (part > 300) break;
       }
 
       console.log("Total segments loaded:", totalSegments);
+
+      // Update heatmap layer
+      heatLayer.setLatLngs(heatPoints);
     }
 
     loadSpeedlimits();
+
+    // ---------------------------------------------------------
+    // CONTROL TOGGLE
+    // ---------------------------------------------------------
+    const control = L.control({ position: "topright" });
+
+    control.onAdd = function () {
+      const div = L.DomUtil.create("div", "control-box");
+      div.innerHTML = `
+        <label>
+          <input type="checkbox" id="toggle-heat" checked />
+          Vis coverage heatmap
+        </label>
+      `;
+      return div;
+    };
+
+    control.addTo(map);
+
+    document.getElementById("toggle-heat").addEventListener("change", (e) => {
+      if (e.target.checked) {
+        heatLayer.addTo(map);
+      } else {
+        map.removeLayer(heatLayer);
+      }
+    });
+
+    // Heatmap on by default
+    heatLayer.addTo(map);
   </script>
 </body>
 </html>
