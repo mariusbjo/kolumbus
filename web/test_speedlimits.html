@@ -88,25 +88,35 @@
           const data = await res.json();
 
           data.forEach(segment => {
-            const coords = segment.geometry.coordinates.map(c => [c[1], c[0]]);
-            const limit = segment.speed_limit;
+            const raw = segment.geometry.coordinates;
 
-            // Draw line
-            L.polyline(coords, {
-              color: getColor(limit),
-              weight: 4,
-              opacity: 0.9
-            })
-            .bindPopup(`
-              <b>ID:</b> ${segment.id}<br>
-              <b>Fartsgrense:</b> ${limit} km/t
-            `)
-            .addTo(map);
+          // Skip empty or invalid segments
+          if (!raw || raw.length < 2) return;
+          
+          const coords = raw.map(c => [c[1], c[0]]);
+          const limit = segment.speed_limit;
+          
+          // Draw line
+          L.polyline(coords, {
+            color: getColor(limit),
+            weight: 4,
+            opacity: 0.9
+          })
+          .bindPopup(`
+            <b>ID:</b> ${segment.id}<br>
+            <b>Fartsgrense:</b> ${limit} km/t
+          `)
+          .addTo(map);
+          
+          // Add midpoint to heatmap
+          const midIndex = Math.floor(coords.length / 2);
+          const midpoint = coords[midIndex];
+          
+          // Skip invalid midpoint
+          if (!midpoint || midpoint.length !== 2) return;
+          
+          heatPoints.push(midpoint);
 
-            // Add midpoint to heatmap
-            const midIndex = Math.floor(coords.length / 2);
-            const midpoint = coords[midIndex];
-            heatPoints.push(midpoint);
 
             totalSegments++;
           });
