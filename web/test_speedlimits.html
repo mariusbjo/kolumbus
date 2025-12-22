@@ -62,7 +62,7 @@
     }
 
     // ---------------------------------------------------------
-    // HEATMAP LAYER (empty for now)
+    // HEATMAP LAYER
     // ---------------------------------------------------------
     const heatPoints = [];
     const heatLayer = L.heatLayer(heatPoints, {
@@ -88,35 +88,42 @@
           const data = await res.json();
 
           data.forEach(segment => {
-            const raw = segment.geometry.coordinates;
+            const raw = segment.geometry?.coordinates;
 
-          // Skip empty or invalid segments
-          if (!raw || raw.length < 2) return;
-          
-          const coords = raw.map(c => [c[1], c[0]]);
-          const limit = segment.speed_limit;
-          
-          // Draw line
-          L.polyline(coords, {
-            color: getColor(limit),
-            weight: 4,
-            opacity: 0.9
-          })
-          .bindPopup(`
-            <b>ID:</b> ${segment.id}<br>
-            <b>Fartsgrense:</b> ${limit} km/t
-          `)
-          .addTo(map);
-          
-          // Add midpoint to heatmap
-          const midIndex = Math.floor(coords.length / 2);
-          const midpoint = coords[midIndex];
-          
-          // Skip invalid midpoint
-          if (!midpoint || midpoint.length !== 2) return;
-          
-          heatPoints.push(midpoint);
+            // Skip empty or invalid geometries
+            if (!raw || raw.length < 2) return;
 
+            // Convert lon/lat → lat/lon
+            const coords = raw.map(c => [c[1], c[0]]);
+
+            // Draw line
+            L.polyline(coords, {
+              color: getColor(segment.speed_limit),
+              weight: 4,
+              opacity: 0.9
+            })
+            .bindPopup(`
+              <b>ID:</b> ${segment.id}<br>
+              <b>Fartsgrense:</b> ${segment.speed_limit} km/t
+            `)
+            .addTo(map);
+
+            // Midpoint for heatmap
+            const midIndex = Math.floor(coords.length / 2);
+            const midpoint = coords[midIndex];
+
+            // Validate midpoint
+            if (
+              midpoint &&
+              Array.isArray(midpoint) &&
+              midpoint.length === 2 &&
+              typeof midpoint[0] === "number" &&
+              typeof midpoint[1] === "number" &&
+              !isNaN(midpoint[0]) &&
+              !isNaN(midpoint[1])
+            ) {
+              heatPoints.push(midpoint);
+            }
 
             totalSegments++;
           });
