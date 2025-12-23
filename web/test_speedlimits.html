@@ -72,31 +72,34 @@
     });
 
     // ---------------------------------------------------------
-    // LOAD ALL PART FILES
+    // LOAD ALL CHUNK FILES
     // ---------------------------------------------------------
     async function loadSpeedlimits() {
       let part = 1;
       let totalSegments = 0;
 
       while (true) {
-        const url = `../data/speedlimits_part${part}.json`;
+        // IMPORTANT: gh-pages path → public/data/
+        const url = `data/speedlimits_part${part}.json`;
 
         try {
           const res = await fetch(url, { cache: "no-store" });
-          if (!res.ok) break;
+
+          // Stop when file does not exist
+          if (!res.ok) {
+            console.log(`Stopped at part ${part} (file not found)`);
+            break;
+          }
 
           const data = await res.json();
 
           data.forEach(segment => {
             const raw = segment.geometry?.coordinates;
 
-            // Skip empty or invalid geometries
             if (!raw || raw.length < 2) return;
 
-            // Convert lon/lat → lat/lon
             const coords = raw.map(c => [c[1], c[0]]);
 
-            // Draw line
             L.polyline(coords, {
               color: getColor(segment.speed_limit),
               weight: 4,
@@ -108,11 +111,9 @@
             `)
             .addTo(map);
 
-            // Midpoint for heatmap
             const midIndex = Math.floor(coords.length / 2);
             const midpoint = coords[midIndex];
 
-            // Validate midpoint
             if (
               midpoint &&
               Array.isArray(midpoint) &&
@@ -136,12 +137,12 @@
           break;
         }
 
-        if (part > 300) break;
+        // Safety stop (should never hit)
+        if (part > 500) break;
       }
 
       console.log("Total segments loaded:", totalSegments);
 
-      // Update heatmap layer
       heatLayer.setLatLngs(heatPoints);
     }
 
@@ -173,7 +174,6 @@
       }
     });
 
-    // Heatmap on by default
     heatLayer.addTo(map);
   </script>
 </body>
