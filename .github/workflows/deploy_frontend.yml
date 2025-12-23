@@ -11,11 +11,13 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    # ✅ GH_TOKEN tilgjengelig for ALLE steps som bruker gh CLI
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
+      # ---------------------------------------------------------
+      # 0) CHECKOUT
+      # ---------------------------------------------------------
       - name: Checkout repo
         uses: actions/checkout@v4
 
@@ -23,7 +25,7 @@ jobs:
         run: mkdir -p public/data public/meta .cache/speedlimits
 
       # ---------------------------------------------------------
-      # 1) BLOCK MANUAL TRIGGERS (feilsøking)
+      # 1) BLOCK MANUAL TRIGGERS
       # ---------------------------------------------------------
       - name: Block manual triggers
         if: ${{ github.event.workflow_run.event == 'workflow_dispatch' }}
@@ -71,7 +73,6 @@ jobs:
             exit 0
           fi
 
-
       # ---------------------------------------------------------
       # 3) 3-TIMERS KRAV
       # ---------------------------------------------------------
@@ -106,14 +107,14 @@ jobs:
           key: speedlimits-cache
 
       # ---------------------------------------------------------
-      # 5) LAST NED SPEEDLIMITS-ARTEFAKT (Løsning A)
+      # 5) LAST NED SPEEDLIMITS-ARTEFAKT (NYTT NAVN)
       # ---------------------------------------------------------
       - name: Download speedlimits artifact
         if: steps.sl_run.outputs.id != ''
         run: |
           rm -rf .cache/speedlimits/*
           gh run download ${{ steps.sl_run.outputs.id }} \
-            --name speedlimits-parts \
+            --name speedlimits-data \
             --dir .cache/speedlimits
 
       - name: Save speedlimits cache
@@ -178,7 +179,7 @@ jobs:
           fi
 
       # ---------------------------------------------------------
-      # 10) GENERER VERSJONERING (status-siden fjernet)
+      # 10) GENERER VERSJONERING
       # ---------------------------------------------------------
       - name: Write version metadata
         run: |
@@ -198,7 +199,7 @@ jobs:
           cp -r scripts public/scripts
 
       # ---------------------------------------------------------
-      # 12) DEBUG: VIS INNHOLD I public/
+      # 12) DEBUG
       # ---------------------------------------------------------
       - name: Debug public folder
         run: |
