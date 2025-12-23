@@ -2,7 +2,7 @@ import requests, json, os, time, math
 from utils.geometry_utils import convert_wkt_to_geojson
 from utils.logger import log_message, print_progress
 
-OUT_DIR = "data/parts"
+OUT_DIR = "data"
 DEBUG_DIR = "data/debug_nvdb"
 LOG_PATH = "data/speedlimits.log"
 
