@@ -144,10 +144,10 @@ jobs:
       - name: Copy frontend files
         run: |
           cp index.html public/
-          cp -r assets public/
-          cp -r scripts public/
-          cp -r web public/
-          cp -r dashboard public/
+          cp -r assets public/ || true
+          cp -r scripts public/ || true
+          cp -r web public/ || true
+          cp -r dashboard public/ || true
 
       # Debug
       - name: Debug public folder
