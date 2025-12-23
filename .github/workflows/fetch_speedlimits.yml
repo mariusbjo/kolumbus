@@ -5,7 +5,7 @@ on:
 
 jobs:
   fetch:
-    runs-on: ubuntu-latest   # Kjør fetch-jobben på en Linux-runner
+    runs-on: ubuntu-latest
 
     steps:
       # ---------------------------------------------------------
@@ -53,6 +53,13 @@ jobs:
       # ---------------------------------------------------------
       - name: Merge speedlimit parts
         run: python scripts/merge_speedlimits.py
+
+      # ---------------------------------------------------------
+      # 6b) SLETT GAMLE PART-FILER (trygt etter merge)
+      # ---------------------------------------------------------
+      - name: Remove old part files
+        run: |
+          find data -maxdepth 1 -type f -name "speedlimits_part*.json" -delete
 
       # ---------------------------------------------------------
       # 7) SPLIT MERGED-FILE INTO CHUNKS (<100MB)
