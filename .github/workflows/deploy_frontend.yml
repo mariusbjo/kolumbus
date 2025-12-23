@@ -2,7 +2,7 @@ name: Deploy frontend to GitHub Pages
 
 on:
   workflow_run:
-    workflows: ["Fetch Rogaland speed limits and publish frontend", "Fetch Kolumbus data"]
+    workflows: ["Fetch Rogaland speed limits", "Fetch Kolumbus data"]
     types: [completed]
 
   workflow_dispatch:
@@ -15,32 +15,25 @@ jobs:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      # ---------------------------------------------------------
-      # 0) CHECKOUT
-      # ---------------------------------------------------------
       - name: Checkout repo
         uses: actions/checkout@v4
 
       - name: Create public folder
         run: mkdir -p public/data public/meta .cache/speedlimits
 
-      # ---------------------------------------------------------
-      # 1) BLOCK MANUAL TRIGGERS
-      # ---------------------------------------------------------
+      # Block manual triggers
       - name: Block manual triggers
-        if: ${{ github.event.workflow_run.event == 'workflow_dispatch' }}
+        if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           echo "Manuell kjøring oppdaget – deploy avbrytes."
           exit 0
 
-      # ---------------------------------------------------------
-      # 2) FINN SISTE RUN AV BEGGE WORKFLOWS
-      # ---------------------------------------------------------
+      # Get latest runs
       - name: Get latest speedlimits run ID
         id: sl_run
         run: |
           SL=$(gh run list \
-            --workflow="Fetch Rogaland speed limits and publish frontend" \
+            --workflow="Fetch Rogaland speed limits" \
             --branch=main \
             --json databaseId,conclusion \
             --jq '.[] | select(.conclusion=="success") | .databaseId' \
@@ -58,59 +51,38 @@ jobs:
             | head -n 1)
           echo "id=$KO" >> $GITHUB_OUTPUT
 
-      # ---------------------------------------------------------
-      # 2b) ROBUST ID-SJEKK
-      # ---------------------------------------------------------
+      # Validate IDs
       - name: Validate run IDs
         run: |
           if [ -z "${{ steps.sl_run.outputs.id }}" ]; then
             echo "Fant ingen vellykket speedlimits-run. Avbryter."
             exit 0
           fi
-
           if [ -z "${{ steps.ko_run.outputs.id }}" ]; then
             echo "Fant ingen vellykket kolumbus-run. Avbryter."
             exit 0
           fi
 
-      # ---------------------------------------------------------
-      # 3) 3-TIMERS KRAV
-      # ---------------------------------------------------------
+      # Freshness check
       - name: Check freshness (3-hour window)
         run: |
           NOW=$(date -u +%s)
-
           SL_TIME=$(gh run view ${{ steps.sl_run.outputs.id }} --json createdAt --jq '.createdAt')
           KO_TIME=$(gh run view ${{ steps.ko_run.outputs.id }} --json createdAt --jq '.createdAt')
-
           SL_EPOCH=$(date -d "$SL_TIME" +%s)
           KO_EPOCH=$(date -d "$KO_TIME" +%s)
+          if [ $((NOW - SL_EPOCH)) -gt 10800 ]; then exit 0; fi
+          if [ $((NOW - KO_EPOCH)) -gt 10800 ]; then exit 0; fi
 
-          if [ $((NOW - SL_EPOCH)) -gt 10800 ]; then
-            echo "Speedlimits-run er eldre enn 3 timer – avbryter deploy."
-            exit 0
-          fi
-
-          if [ $((NOW - KO_EPOCH)) -gt 10800 ]; then
-            echo "Kolumbus-run er eldre enn 3 timer – avbryter deploy."
-            exit 0
-          fi
-
-      # ---------------------------------------------------------
-      # 4) RESTORE CACHE
-      # ---------------------------------------------------------
+      # Restore cache
       - name: Restore speedlimits cache
-        id: cache_restore
         uses: actions/cache@v4
         with:
           path: .cache/speedlimits
           key: speedlimits-cache
 
-      # ---------------------------------------------------------
-      # 5) LAST NED SPEEDLIMITS-ARTEFAKT (NYTT NAVN)
-      # ---------------------------------------------------------
+      # Download artifact
       - name: Download speedlimits artifact
-        if: steps.sl_run.outputs.id != ''
         run: |
           rm -rf .cache/speedlimits/*
           gh run download ${{ steps.sl_run.outputs.id }} \
@@ -123,19 +95,12 @@ jobs:
           path: .cache/speedlimits
           key: speedlimits-cache
 
-      # ---------------------------------------------------------
-      # 6) FALLBACK: STOPP HVIS SPEEDLIMITS MANGLER
-      # ---------------------------------------------------------
+      # Validate
       - name: Validate speedlimits data
         run: |
-          if [ -z "$(ls -A .cache/speedlimits)" ]; then
-            echo "Ingen speedlimits-data tilgjengelig – avbryter deploy."
-            exit 1
-          fi
+          if [ -z "$(ls -A .cache/speedlimits)" ]; then exit 1; fi
 
-      # ---------------------------------------------------------
-      # 7) KOPIER DATA TIL PUBLIC/
-      # ---------------------------------------------------------
+      # Copy data
       - name: Copy speedlimits data
         run: cp .cache/speedlimits/*.json public/data/
 
@@ -144,24 +109,16 @@ jobs:
           cp data/kolumbus.json public/data/ || true
           cp data/debug_entur.json public/data/ || true
 
-      # ---------------------------------------------------------
-      # 8) COOLDOWN (maks én deploy per 30 min)
-      # ---------------------------------------------------------
+      # Cooldown
       - name: Check cooldown
         run: |
           if [ -f public/meta/last_deploy.txt ]; then
             LAST=$(cat public/meta/last_deploy.txt)
             NOW=$(date -u +%s)
-            DIFF=$((NOW - LAST))
-            if [ $DIFF -lt 1800 ]; then
-              echo "Cooldown aktiv – avbryter deploy."
-              exit 0
-            fi
+            if [ $((NOW - LAST)) -lt 1800 ]; then exit 0; fi
           fi
 
-      # ---------------------------------------------------------
-      # 9) HASH-BASERT ENDRINGSDETEKSJON
-      # ---------------------------------------------------------
+      # Hash detection
       - name: Compute data hash
         id: hash
         run: |
@@ -172,15 +129,10 @@ jobs:
         run: |
           if [ -f public/meta/last_hash.txt ]; then
             OLD=$(cat public/meta/last_hash.txt)
-            if [ "$OLD" = "${{ steps.hash.outputs.hash }}" ]; then
-              echo "Ingen endringer i data – avbryter deploy."
-              exit 0
-            fi
+            if [ "$OLD" = "${{ steps.hash.outputs.hash }}" ]; then exit 0; fi
           fi
 
-      # ---------------------------------------------------------
-      # 10) GENERER VERSJONERING
-      # ---------------------------------------------------------
+      # Metadata
       - name: Write version metadata
         run: |
           NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
@@ -188,31 +140,24 @@ jobs:
           date -u +%s > public/meta/last_deploy.txt
           echo "${{ steps.hash.outputs.hash }}" > public/meta/last_hash.txt
 
-      # ---------------------------------------------------------
-      # 11) KOPIER FRONTEND
-      # ---------------------------------------------------------
+      # Copy frontend
       - name: Copy frontend files
         run: |
           cp index.html public/
           cp -r assets public/
+          cp -r scripts public/
           cp -r web public/
-          cp -r scripts public/scripts
+          cp -r dashboard public/
 
-      # ---------------------------------------------------------
-      # 12) DEBUG
-      # ---------------------------------------------------------
+      # Debug
       - name: Debug public folder
-        run: |
-          echo "Innhold i public/:"
-          ls -R public
+        run: ls -R public
 
-      # ---------------------------------------------------------
-      # 13) DEPLOY
-      # ---------------------------------------------------------
+      # Deploy
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: public
-          keep_files: true
+          keep_files: false
           enable_jekyll: false
