@@ -146,7 +146,7 @@
     let totalBytes = 0;
 
     while (true) {
-      const url = `../data/speedlimits_part${part}.json`;
+      const url = `data/speedlimits_part${part}.json`;
       try {
         const res = await fetch(url, { cache: "no-store" });
         if (!res.ok) break;
