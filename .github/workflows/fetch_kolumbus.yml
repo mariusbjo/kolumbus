@@ -46,22 +46,13 @@ jobs:
             exit 1
           fi
 
-          # Check file size
           size=$(stat -c%s "data/kolumbus.json")
           if [ "$size" -gt 100000000 ]; then
             echo "kolumbus.json too large – aborting."
             exit 1
           fi
 
-          # Check valid JSON
-          python - <<EOF
-import json
-try:
-    json.load(open("data/kolumbus.json"))
-except Exception as e:
-    print("Invalid JSON:", e)
-    exit(1)
-EOF
+          python -c "import json,sys; json.load(open('data/kolumbus.json'))"
 
       - name: Configure git
         run: |
@@ -72,9 +63,9 @@ EOF
         run: |
           git add data/kolumbus.json
           if ! git diff --cached --quiet; then
-            git commit -m "Update Kolumbus realtime data"
+            git commit -m 'Update Kolumbus realtime data'
           else
-            echo "No changes to commit."
+            echo 'No changes to commit.'
           fi
 
       # ---------------------------------------------------------
