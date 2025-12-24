@@ -2,44 +2,82 @@ name: Fetch Kolumbus data
 
 on:
   schedule:
-    - cron: "0 2 * * *"
+    - cron: "0 2 * * *"   # Kjør hver dag kl 02:00
   workflow_dispatch:
 
 jobs:
   fetch:
     runs-on: ubuntu-latest
+
     steps:
+      # ---------------------------------------------------------
+      # 1) CHECKOUT
+      # ---------------------------------------------------------
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      # ---------------------------------------------------------
+      # 2) SETUP PYTHON
+      # ---------------------------------------------------------
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
+      # ---------------------------------------------------------
+      # 3) INSTALL DEPENDENCIES
+      # ---------------------------------------------------------
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install requests
 
+      # ---------------------------------------------------------
+      # 4) FETCH KOLUMBUS REALTIME DATA
+      # ---------------------------------------------------------
       - name: Fetch Kolumbus realtime data
         run: python scripts/fetch_entur.py
 
+      # ---------------------------------------------------------
+      # 5) OPTIONAL: CLEAN UP OLD DEBUG FILES
+      # ---------------------------------------------------------
+      - name: Remove old debug files
+        run: |
+          rm -f data/debug_entur.json || true
+
+      # ---------------------------------------------------------
+      # 6) SAFETY CHECK: BLOCK LARGE FILES (>100MB)
+      # ---------------------------------------------------------
+      - name: Validate file sizes
+        run: |
+          for f in data/*.json; do
+            if [ -f "$f" ]; then
+              size=$(stat -c%s "$f")
+              if [ "$size" -gt 100000000 ]; then
+                echo "ERROR: File $f is larger than 100MB. Aborting."
+                exit 1
+              fi
+            fi
+          done
+
+      # ---------------------------------------------------------
+      # 7) CONFIGURE GIT
+      # ---------------------------------------------------------
       - name: Configure git
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
 
+      # ---------------------------------------------------------
+      # 8) COMMIT CHANGES SAFELY
+      # ---------------------------------------------------------
       - name: Commit changes safely
         run: |
           files=""
           if [ -f data/kolumbus.json ]; then
             files="$files data/kolumbus.json"
-          fi
-          if [ -f data/debug_entur.json ]; then
-            files="$files data/debug_entur.json"
           fi
 
           if [ -n "$files" ]; then
@@ -51,6 +89,9 @@ jobs:
             fi
           fi
 
+      # ---------------------------------------------------------
+      # 9) PUSH TO MAIN (NO DEPLOY)
+      # ---------------------------------------------------------
       - name: Rebase and push
         run: |
           git pull --rebase
