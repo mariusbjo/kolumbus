@@ -3,7 +3,7 @@ name: Update Enterprise Dashboard
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/30 * * * *"   # hver 30. minutt
+    - cron: "*/30 * * * *"
 
 jobs:
   update-dashboard:
@@ -15,11 +15,27 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Block manual triggers
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          echo "Manuell kjøring oppdaget – avbryter."
+          exit 0
+
       - name: Prepare public folder
         run: mkdir -p public/dashboard public/dashboard/assets
 
       # ---------------------------------------------------------
-      # 1) BYGG DASHBOARD FRA TEMPLATE
+      # 1) VALIDATE TEMPLATE
+      # ---------------------------------------------------------
+      - name: Validate dashboard template
+        run: |
+          if [ ! -f dashboard/status.html.template ]; then
+            echo "Template mangler."
+            exit 1
+          fi
+
+      # ---------------------------------------------------------
+      # 2) BUILD DASHBOARD
       # ---------------------------------------------------------
       - name: Build dashboard from template
         id: build
@@ -27,7 +43,6 @@ jobs:
           VERSION=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
           HASH=$(sha256sum dashboard/status.html.template | awk '{print $1}')
 
-          # Lag ferdig status.html
           sed \
             -e "s|{{VERSION}}|$VERSION|g" \
             -e "s|{{HASH}}|$HASH|g" \
@@ -38,7 +53,7 @@ jobs:
           echo "hash=$HASH" >> $GITHUB_OUTPUT
 
       # ---------------------------------------------------------
-      # 2) GENERER dashboard.json
+      # 3) GENERATE METADATA
       # ---------------------------------------------------------
       - name: Generate dashboard metadata
         run: |
@@ -51,14 +66,28 @@ jobs:
           EOF
 
       # ---------------------------------------------------------
-      # 3) KOPIER DASHBOARD-ASSETS
+      # 4) COPY ASSETS
       # ---------------------------------------------------------
       - name: Copy dashboard assets
         run: |
-          cp dashboard/assets/* public/dashboard/assets/
+          cp -r dashboard/assets/* public/dashboard/assets/ || true
 
       # ---------------------------------------------------------
-      # 4) SJEKK OM DASHBOARDET HAR ENDRET SEG
+      # 5) VALIDATE ASSETS
+      # ---------------------------------------------------------
+      - name: Validate dashboard assets
+        run: |
+          for f in public/dashboard/assets/*; do
+            [ -f "$f" ] || continue
+            size=$(stat -c%s "$f")
+            if [ "$size" -gt 100000000 ]; then
+              echo "Asset $f er for stor."
+              exit 1
+            fi
+          done
+
+      # ---------------------------------------------------------
+      # 6) CHECK EXISTING DASHBOARD IN GH-PAGES
       # ---------------------------------------------------------
       - name: Checkout gh-pages branch
         uses: actions/checkout@v4
@@ -78,16 +107,16 @@ jobs:
           echo "changed=true" >> $GITHUB_OUTPUT
 
       # ---------------------------------------------------------
-      # 5) STOPP HVIS INGEN ENDRING
+      # 7) STOP IF NO CHANGE
       # ---------------------------------------------------------
       - name: Stop if no changes
         if: steps.diff.outputs.changed == 'false'
         run: |
-          echo "Ingen endringer i dashboardet – avbryter deploy."
+          echo "Ingen endringer – avbryter."
           exit 0
 
       # ---------------------------------------------------------
-      # 6) DEPLOY KUN DASHBOARD (keep_files: true)
+      # 8) DEPLOY DASHBOARD ONLY
       # ---------------------------------------------------------
       - name: Deploy updated dashboard
         uses: peaceiris/actions-gh-pages@v3
