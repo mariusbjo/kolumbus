@@ -15,20 +15,27 @@ jobs:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
+      # ---------------------------------------------------------
+      # 0) CHECKOUT
+      # ---------------------------------------------------------
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Create public folder
+      - name: Prepare folders
         run: mkdir -p public/data public/meta .cache/speedlimits
 
-      # Block manual triggers
+      # ---------------------------------------------------------
+      # 1) BLOCK MANUAL TRIGGERS
+      # ---------------------------------------------------------
       - name: Block manual triggers
         if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           echo "Manuell kjøring oppdaget – deploy avbrytes."
           exit 0
 
-      # Get latest runs
+      # ---------------------------------------------------------
+      # 2) FIND LATEST SUCCESSFUL RUNS
+      # ---------------------------------------------------------
       - name: Get latest speedlimits run ID
         id: sl_run
         run: |
@@ -51,19 +58,23 @@ jobs:
             | head -n 1)
           echo "id=$KO" >> $GITHUB_OUTPUT
 
-      # Validate IDs
+      # ---------------------------------------------------------
+      # 3) VALIDATE RUN IDS
+      # ---------------------------------------------------------
       - name: Validate run IDs
         run: |
           if [ -z "${{ steps.sl_run.outputs.id }}" ]; then
-            echo "Fant ingen vellykket speedlimits-run. Avbryter."
+            echo "Ingen vellykket speedlimits-run funnet."
             exit 0
           fi
           if [ -z "${{ steps.ko_run.outputs.id }}" ]; then
-            echo "Fant ingen vellykket kolumbus-run. Avbryter."
+            echo "Ingen vellykket kolumbus-run funnet."
             exit 0
           fi
 
-      # Freshness check
+      # ---------------------------------------------------------
+      # 4) FRESHNESS CHECK (3 HOURS)
+      # ---------------------------------------------------------
       - name: Check freshness (3-hour window)
         run: |
           NOW=$(date -u +%s)
@@ -71,17 +82,29 @@ jobs:
           KO_TIME=$(gh run view ${{ steps.ko_run.outputs.id }} --json createdAt --jq '.createdAt')
           SL_EPOCH=$(date -d "$SL_TIME" +%s)
           KO_EPOCH=$(date -d "$KO_TIME" +%s)
-          if [ $((NOW - SL_EPOCH)) -gt 10800 ]; then exit 0; fi
-          if [ $((NOW - KO_EPOCH)) -gt 10800 ]; then exit 0; fi
 
-      # Restore cache
+          if [ $((NOW - SL_EPOCH)) -gt 10800 ]; then
+            echo "Speedlimits-run er eldre enn 3 timer."
+            exit 0
+          fi
+
+          if [ $((NOW - KO_EPOCH)) -gt 10800 ]; then
+            echo "Kolumbus-run er eldre enn 3 timer."
+            exit 0
+          fi
+
+      # ---------------------------------------------------------
+      # 5) RESTORE CACHE
+      # ---------------------------------------------------------
       - name: Restore speedlimits cache
         uses: actions/cache@v4
         with:
           path: .cache/speedlimits
           key: speedlimits-cache
 
-      # Download artifact
+      # ---------------------------------------------------------
+      # 6) DOWNLOAD ARTIFACT
+      # ---------------------------------------------------------
       - name: Download speedlimits artifact
         run: |
           rm -rf .cache/speedlimits/*
@@ -95,69 +118,40 @@ jobs:
           path: .cache/speedlimits
           key: speedlimits-cache
 
-      # Validate
+      # ---------------------------------------------------------
+      # 7) VALIDATE ARTIFACT CONTENT
+      # ---------------------------------------------------------
       - name: Validate speedlimits data
         run: |
-          if [ -z "$(ls -A .cache/speedlimits)" ]; then exit 1; fi
+          if [ -z "$(ls -A .cache/speedlimits)" ]; then
+            echo "Ingen speedlimits-data funnet."
+            exit 1
+          fi
 
-      # Copy data
+          for f in .cache/speedlimits/*.json; do
+            echo "Validerer $f"
+            python - <<EOF
+import json
+json.load(open("$f"))
+EOF
+          done
+
+      # ---------------------------------------------------------
+      # 8) COPY DATA TO PUBLIC
+      # ---------------------------------------------------------
       - name: Copy speedlimits data
         run: cp .cache/speedlimits/*.json public/data/
 
       - name: Copy Kolumbus data
         run: |
           cp data/kolumbus.json public/data/ || true
-          cp data/debug_entur.json public/data/ || true
 
-      # Cooldown
+      # ---------------------------------------------------------
+      # 9) COOLDOWN (30 MIN)
+      # ---------------------------------------------------------
       - name: Check cooldown
         run: |
           if [ -f public/meta/last_deploy.txt ]; then
             LAST=$(cat public/meta/last_deploy.txt)
             NOW=$(date -u +%s)
-            if [ $((NOW - LAST)) -lt 1800 ]; then exit 0; fi
-          fi
-
-      # Hash detection
-      - name: Compute data hash
-        id: hash
-        run: |
-          HASH=$(find public/data -type f -exec sha256sum {} \; | sha256sum | awk '{print $1}')
-          echo "hash=$HASH" >> $GITHUB_OUTPUT
-
-      - name: Compare with previous hash
-        run: |
-          if [ -f public/meta/last_hash.txt ]; then
-            OLD=$(cat public/meta/last_hash.txt)
-            if [ "$OLD" = "${{ steps.hash.outputs.hash }}" ]; then exit 0; fi
-          fi
-
-      # Metadata
-      - name: Write version metadata
-        run: |
-          NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          echo "{ \"updated\": \"$NOW\" }" > public/meta/version.json
-          date -u +%s > public/meta/last_deploy.txt
-          echo "${{ steps.hash.outputs.hash }}" > public/meta/last_hash.txt
-
-      # Copy frontend
-      - name: Copy frontend files
-        run: |
-          cp index.html public/
-          cp -r assets public/ || true
-          cp -r scripts public/ || true
-          cp -r web public/ || true
-          cp -r dashboard public/ || true
-
-      # Debug
-      - name: Debug public folder
-        run: ls -R public
-
-      # Deploy
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: public
-          keep_files: false
-          enable_jekyll: false
+            if
