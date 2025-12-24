@@ -1,7 +1,7 @@
 name: Fetch Rogaland speed limits
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
 
 jobs:
   fetch:
@@ -66,10 +66,7 @@ jobs:
             exit 1
           fi
 
-          python - <<EOF
-import json
-json.load(open("data/speedlimits_merged.json"))
-EOF
+          python -c "import json; json.load(open('data/speedlimits_merged.json'))"
 
       # ---------------------------------------------------------
       # REMOVE OLD PART FILES
@@ -89,18 +86,15 @@ EOF
       # ---------------------------------------------------------
       - name: Validate chunk files
         run: |
-          for f in data/speedlimits_part*.json; do
-            [ -f "$f" ] || continue
-            size=$(stat -c%s "$f")
-            echo "$f size: $size bytes"
-            if [ "$size" -gt 100000000 ]; then
-              echo "Chunk too large"
-              exit 1
-            fi
-            python - <<EOF
-import json
-json.load(open("$f"))
-EOF
+          for f in data/speedlimits_part*.json; do \
+            [ -f "$f" ] || continue; \
+            size=$(stat -c%s "$f"); \
+            echo "$f size: $size bytes"; \
+            if [ "$size" -gt 100000000 ]; then \
+              echo "Chunk too large"; \
+              exit 1; \
+            fi; \
+            python -c "import json,sys; json.load(open(sys.argv[1]))" "$f"; \
           done
 
       # ---------------------------------------------------------
