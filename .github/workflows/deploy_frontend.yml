@@ -121,16 +121,16 @@ jobs:
       # ---------------------------------------------------------
       # 7) VALIDATE ARTIFACT CONTENT
       # ---------------------------------------------------------
-            - name: Validate speedlimits data
+      - name: Validate speedlimits data
         run: |
           if [ -z "$(ls -A .cache/speedlimits)" ]; then
             echo "Ingen speedlimits-data funnet."
             exit 1
           fi
 
-          for f in .cache/speedlimits/*.json; do
-            echo "Validerer $f"
-            python -c "import json,sys; json.load(open(sys.argv[1]))" "$f"
+          for f in .cache/speedlimits/*.json; do \
+            echo "Validerer $f"; \
+            python -c "import json,sys; json.load(open(sys.argv[1]))" "$f"; \
           done
 
       # ---------------------------------------------------------
