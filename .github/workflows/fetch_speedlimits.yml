@@ -1,30 +1,21 @@
 name: Fetch Rogaland speed limits
 
 on:
-  workflow_dispatch   # Manuell kjøring
+  workflow_dispatch
 
 jobs:
   fetch:
     runs-on: ubuntu-latest
 
     steps:
-      # ---------------------------------------------------------
-      # 1) CHECKOUT
-      # ---------------------------------------------------------
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      # ---------------------------------------------------------
-      # 2) SETUP PYTHON
-      # ---------------------------------------------------------
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      # ---------------------------------------------------------
-      # 3) CACHE PIP
-      # ---------------------------------------------------------
       - name: Cache pip
         uses: actions/cache@v3
         with:
@@ -33,46 +24,91 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      # ---------------------------------------------------------
-      # 4) INSTALL DEPENDENCIES
-      # ---------------------------------------------------------
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       # ---------------------------------------------------------
-      # 5) FETCH SPEEDLIMITS (INKREMENTELL)
+      # CLEAN OLD FILES
+      # ---------------------------------------------------------
+      - name: Remove old merged file
+        run: rm -f data/speedlimits_merged.json
+
+      # ---------------------------------------------------------
+      # FETCH
       # ---------------------------------------------------------
       - name: Fetch Rogaland speed limits
         run: python scripts/fetch_speedlimits.py
         timeout-minutes: 60
 
       # ---------------------------------------------------------
-      # 6) MERGE PART-FILES (DEDUPLIKASJON)
+      # MERGE
       # ---------------------------------------------------------
       - name: Merge speedlimit parts
         run: python scripts/merge_speedlimits.py
 
       # ---------------------------------------------------------
-      # 6b) SLETT GAMLE PART-FILER (trygt etter merge)
+      # VALIDATE MERGED FILE
+      # ---------------------------------------------------------
+      - name: Validate merged file
+        run: |
+          if [ ! -f data/speedlimits_merged.json ]; then
+            echo "Merged file missing"
+            exit 1
+          fi
+
+          size=$(stat -c%s "data/speedlimits_merged.json")
+          echo "Merged file size: $size bytes"
+
+          if [ "$size" -gt 100000000 ]; then
+            echo "Merged file too large (>100MB)"
+            exit 1
+          fi
+
+          python - <<EOF
+import json
+json.load(open("data/speedlimits_merged.json"))
+EOF
+
+      # ---------------------------------------------------------
+      # REMOVE OLD PART FILES
       # ---------------------------------------------------------
       - name: Remove old part files
         run: |
           find data -maxdepth 1 -type f -name "speedlimits_part*.json" -delete
 
       # ---------------------------------------------------------
-      # 7) SPLIT MERGED-FILE INTO CHUNKS (<100MB)
+      # SPLIT
       # ---------------------------------------------------------
       - name: Split merged file into chunks
         run: python scripts/split_speedlimits.py
 
       # ---------------------------------------------------------
-      # 8) UPLOAD ARTIFACT (MERGED + CHUNKS)
+      # VALIDATE CHUNKS
       # ---------------------------------------------------------
-      - name: Upload merged + parts as artifact
+      - name: Validate chunk files
+        run: |
+          for f in data/speedlimits_part*.json; do
+            [ -f "$f" ] || continue
+            size=$(stat -c%s "$f")
+            echo "$f size: $size bytes"
+            if [ "$size" -gt 100000000 ]; then
+              echo "Chunk too large"
+              exit 1
+            fi
+            python - <<EOF
+import json
+json.load(open("$f"))
+EOF
+          done
+
+      # ---------------------------------------------------------
+      # UPLOAD ARTIFACT (ONLY CHUNKS)
+      # ---------------------------------------------------------
+      - name: Upload chunk files as artifact
         uses: actions/upload-artifact@v4
         with:
           name: speedlimits-data
-          path: data/*.json
+          path: data/speedlimits_part*.json
           retention-days: 7
