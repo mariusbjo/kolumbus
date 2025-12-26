@@ -34,7 +34,16 @@ jobs:
           exit 0
 
       # ---------------------------------------------------------
-      # 2) FIND LATEST SUCCESSFUL RUNS
+      # 2) ABORT IF TRIGGERING WORKFLOW FAILED
+      # ---------------------------------------------------------
+      - name: Abort if triggering workflow failed
+        if: ${{ github.event.workflow_run.conclusion != 'success' }}
+        run: |
+          echo "Triggering workflow feilet – deploy avbrytes."
+          exit 0
+
+      # ---------------------------------------------------------
+      # 3) FIND LATEST SUCCESSFUL RUNS
       # ---------------------------------------------------------
       - name: Get latest speedlimits run ID
         id: sl_run
@@ -59,7 +68,7 @@ jobs:
           echo "id=$KO" >> $GITHUB_OUTPUT
 
       # ---------------------------------------------------------
-      # 3) VALIDATE RUN IDS
+      # 4) VALIDATE RUN IDS
       # ---------------------------------------------------------
       - name: Validate run IDs
         run: |
@@ -73,7 +82,7 @@ jobs:
           fi
 
       # ---------------------------------------------------------
-      # 4) FRESHNESS CHECK (3 HOURS)
+      # 5) FRESHNESS CHECK (3 HOURS)
       # ---------------------------------------------------------
       - name: Check freshness (3-hour window)
         run: |
@@ -94,7 +103,7 @@ jobs:
           fi
 
       # ---------------------------------------------------------
-      # 5) RESTORE CACHE
+      # 6) RESTORE CACHE
       # ---------------------------------------------------------
       - name: Restore speedlimits cache
         uses: actions/cache@v4
@@ -103,7 +112,7 @@ jobs:
           key: speedlimits-cache
 
       # ---------------------------------------------------------
-      # 6) DOWNLOAD ARTIFACT
+      # 7) DOWNLOAD ARTIFACT
       # ---------------------------------------------------------
       - name: Download speedlimits artifact
         run: |
@@ -119,7 +128,7 @@ jobs:
           key: speedlimits-cache
 
       # ---------------------------------------------------------
-      # 7) VALIDATE ARTIFACT CONTENT
+      # 8) VALIDATE ARTIFACT CONTENT
       # ---------------------------------------------------------
       - name: Validate speedlimits data
         run: |
@@ -134,17 +143,28 @@ jobs:
           done
 
       # ---------------------------------------------------------
-      # 8) COPY DATA TO PUBLIC
+      # 9) COPY DATA TO PUBLIC
       # ---------------------------------------------------------
       - name: Copy speedlimits data
         run: cp .cache/speedlimits/*.json public/data/
 
       - name: Copy Kolumbus data
         run: |
-          cp data/kolumbus.json public/data/ || true
+          if [ -f data/kolumbus.json ]; then
+            python -c "import json; json.load(open('data/kolumbus.json'))" || exit 0
+            cp data/kolumbus.json public/data/
+          else
+            echo "Kolumbus-data mangler – hopper over."
+          fi
 
       # ---------------------------------------------------------
-      # 9) COOLDOWN (30 MIN)
+      # 10) REMOVE MERGED FILE IF PRESENT
+      # ---------------------------------------------------------
+      - name: Remove merged file
+        run: rm -f public/data/speedlimits_merged.json
+
+      # ---------------------------------------------------------
+      # 11) COOLDOWN (30 MIN)
       # ---------------------------------------------------------
       - name: Check cooldown
         run: |
@@ -158,7 +178,7 @@ jobs:
           fi
 
       # ---------------------------------------------------------
-      # 10) HASH-BASED CHANGE DETECTION
+      # 12) HASH-BASED CHANGE DETECTION
       # ---------------------------------------------------------
       - name: Compute data hash
         id: hash
@@ -177,7 +197,7 @@ jobs:
           fi
 
       # ---------------------------------------------------------
-      # 11) WRITE METADATA
+      # 13) WRITE METADATA
       # ---------------------------------------------------------
       - name: Write version metadata
         run: |
@@ -187,7 +207,7 @@ jobs:
           echo "${{ steps.hash.outputs.hash }}" > public/meta/last_hash.txt
 
       # ---------------------------------------------------------
-      # 12) COPY FRONTEND
+      # 14) COPY FRONTEND
       # ---------------------------------------------------------
       - name: Copy frontend files
         run: |
@@ -198,13 +218,13 @@ jobs:
           cp -r dashboard public/ || true
 
       # ---------------------------------------------------------
-      # 13) DEBUG
+      # 15) DEBUG
       # ---------------------------------------------------------
       - name: Debug public folder
         run: ls -R public
 
       # ---------------------------------------------------------
-      # 14) DEPLOY
+      # 16) DEPLOY
       # ---------------------------------------------------------
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
