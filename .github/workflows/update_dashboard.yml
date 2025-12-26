@@ -39,7 +39,7 @@ jobs:
       - name: Validate dashboard template
         run: |
           if [ ! -f dashboard/status.html.template ]; then
-            echo "❌ Template mangler."
+            echo "Template mangler."
             exit 1
           fi
 
@@ -58,15 +58,15 @@ jobs:
             dashboard/status.html.template \
             > public/dashboard/status.html
 
-          # 🔥 Fail if placeholders remain
+          # Fail if placeholders remain
           if grep -q "{{VERSION}}" public/dashboard/status.html || grep -q "{{HASH}}" public/dashboard/status.html; then
-            echo "❌ Template ble ikke rendret riktig – placeholders finnes fortsatt."
-            echo "🔍 Første 20 linjer av generert fil:"
+            echo "Template ble ikke rendret riktig – placeholders finnes fortsatt."
+            echo "Første 20 linjer av generert fil:"
             head -n 20 public/dashboard/status.html
             exit 1
           fi
 
-          echo "🔍 Første 20 linjer av generert dashboard:"
+          echo "Første 20 linjer av generert dashboard:"
           head -n 20 public/dashboard/status.html
 
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
@@ -77,7 +77,7 @@ jobs:
       # ---------------------------------------------------------
       - name: Generate dashboard metadata
         run: |
-          cat > public/dashboard/dashboard.json <<EOF
+          cat > public/dashboard/dashboard.json <<'EOF'
           {
             "version": "${{ steps.build.outputs.version }}",
             "hash": "${{ steps.build.outputs.hash }}",
@@ -86,10 +86,7 @@ jobs:
           EOF
 
           # Validate JSON
-          python3 - <<EOF
-import json
-json.load(open("public/dashboard/dashboard.json"))
-EOF
+          python3 -c "import json; json.load(open('public/dashboard/dashboard.json'))"
 
       # ---------------------------------------------------------
       # 4) COPY ASSETS
@@ -109,7 +106,7 @@ EOF
             [ -f "$f" ] || continue
             size=$(stat -c%s "$f")
             if [ "$size" -gt 100000000 ]; then
-              echo "❌ Asset $f er for stor."
+              echo "Asset $f er for stor."
               exit 1
             fi
           done
