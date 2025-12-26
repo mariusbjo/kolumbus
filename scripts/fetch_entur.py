@@ -12,10 +12,11 @@ HEADERS = {
     "ET-Client-Name": os.getenv("ET_CLIENT_NAME", "marius-kolumbus-demo")
 }
 
+# Entur har fjernet "id" → nytt felt er "vehicleId"
 QUERY = """
 {
   vehicles(codespaceId:"KOL") {
-    id
+    vehicleId
     line { lineRef }
     lastUpdated
     location { latitude longitude }
@@ -114,7 +115,7 @@ def validate_and_extract(data):
             continue
 
         entries.append({
-            "id": v.get("id"),
+            "id": v.get("vehicleId"),
             "lineRef": v.get("line", {}).get("lineRef"),
             "lat": lat,
             "lon": lon,
