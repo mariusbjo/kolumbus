@@ -2,10 +2,19 @@ name: Fetch Rogaland speed limits
 
 on:
   workflow_dispatch:
+  schedule:
+    # Daily incremental at 03:00
+    - cron: "0 3 * * *"
+    # Monthly full refresh at 04:00 on the 1st
+    - cron: "0 4 1 * *"
 
 jobs:
   fetch:
     runs-on: ubuntu-latest
+
+    env:
+      # Determine mode based on schedule
+      MODE: ${{ github.event.schedule == '0 4 1 * *' && 'full' || 'incremental' }}
 
     steps:
       # ---------------------------------------------------------
@@ -33,17 +42,19 @@ jobs:
           pip install -r requirements.txt
 
       # ---------------------------------------------------------
-      # CLEAN OLD PART FILES
+      # CLEAN OLD PART FILES (ONLY FOR FULL REFRESH)
       # ---------------------------------------------------------
-      - name: Remove old part files
+      - name: Remove old part files (full refresh only)
+        if: env.MODE == 'full'
         run: |
+          echo "Full refresh – sletter alle part-filer"
           find data -maxdepth 1 -type f -name "speedlimits_part*.json" -delete
 
       # ---------------------------------------------------------
       # FETCH (produces chunk files directly)
       # ---------------------------------------------------------
       - name: Fetch Rogaland speed limits
-        run: python scripts/fetch_speedlimits.py
+        run: python scripts/fetch_speedlimits.py --mode $MODE
         timeout-minutes: 60
 
       # ---------------------------------------------------------
