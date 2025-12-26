@@ -56,13 +56,25 @@ def fetch_entur():
             # Forsøk å parse JSON
             try:
                 data = res.json()
-            except json.JSONDecodeError:
-                print("❌ API returnerte ikke gyldig JSON (kan være HTML / rate limit).")
+            except Exception as e:
+                print(f"❌ API returnerte ikke gyldig JSON: {e}")
                 time.sleep(2)
                 continue
 
             # Lagre debug-data
             safe_write_json(DEBUG_PATH, data)
+
+            # GraphQL-feil?
+            if "errors" in data:
+                print(f"❌ GraphQL-feil fra Entur: {data['errors']}")
+                time.sleep(2)
+                continue
+
+            # Respons må inneholde "data"
+            if not isinstance(data, dict) or "data" not in data:
+                print("❌ Ugyldig respons – mangler 'data'-felt.")
+                time.sleep(2)
+                continue
 
             return data
 
@@ -80,13 +92,13 @@ def fetch_entur():
 
 def validate_and_extract(data):
     """Valider API-respons og trekk ut kjøretøydata."""
-    if not data or "data" not in data:
-        print("❌ Ugyldig API-respons – mangler 'data' nøkkel.")
+    if not isinstance(data, dict):
+        print("❌ API-respons er ikke et JSON-objekt.")
         return []
 
-    vehicles = data.get("data", {}).get("vehicles", [])
+    vehicles = data.get("data", {}).get("vehicles")
     if not isinstance(vehicles, list):
-        print("❌ 'vehicles' er ikke en liste.")
+        print("❌ 'vehicles' mangler eller er ikke en liste.")
         return []
 
     print(f"🚍 Fant {len(vehicles)} kjøretøy")
@@ -123,6 +135,7 @@ def enforce_file_size(path):
 
 def main():
     data = fetch_entur()
+
     if not data:
         print("❌ Ingen data hentet – avbryter.")
         sys.exit(1)
