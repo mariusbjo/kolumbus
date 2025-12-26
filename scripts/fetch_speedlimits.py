@@ -105,7 +105,6 @@ def get_next_part_index():
     if not part_files:
         return 1
 
-    # Ekstra robust: parse nummeret ut av filnavnet
     indices = []
     for fn in part_files:
         try:
@@ -169,7 +168,6 @@ def main():
         else:
             error_streak = 0
 
-        # Robust JSON-parsing
         try:
             payload = res.json()
         except Exception as e:
@@ -181,7 +179,6 @@ def main():
             time.sleep(5)
             continue
 
-        # Debug dump
         debug_path = os.path.join(DEBUG_DIR, f"page_{page_count + 1}.json")
         try:
             with open(debug_path, "w", encoding="utf-8") as f:
@@ -189,7 +186,6 @@ def main():
         except Exception as e:
             log_message(f"⚠️ Klarte ikke skrive debug-fil {debug_path}: {e}")
 
-        # Total count
         if page_count == 0:
             total_objects = payload.get("metadata", {}).get("totaltAntall")
             if isinstance(total_objects, int):
@@ -200,7 +196,6 @@ def main():
         objekter = payload.get("objekter", [])
         log_message(f"Fant {len(objekter)} objekter på denne siden.")
 
-        # Handle empty pages
         if len(objekter) == 0:
             empty_streak += 1
             log_message(f"⚠️ Tom side #{empty_streak}")
@@ -215,20 +210,17 @@ def main():
         else:
             empty_streak = 0
 
-        # Process objects
         for obj in objekter:
             obj_id = str(obj.get("id"))
             if obj_id in existing_ids:
                 continue
 
-            # Extract speed limit
             limit = None
             for e in obj.get("egenskaper", []):
                 if e.get("navn") == "Fartsgrense":
                     limit = e.get("verdi")
                     break
 
-            # Convert geometry
             geojson_geom = None
             geom_obj = obj.get("geometri")
             if geom_obj and "wkt" in geom_obj:
@@ -246,13 +238,11 @@ def main():
             existing_ids.add(obj_id)
             new_count += 1
 
-            # Save chunk
             if len(buffer) >= CHUNK_SIZE:
                 save_chunk(buffer, part_index)
                 part_index += 1
                 buffer = []
 
-        # Progress
         elapsed = time.time() - start_time
         avg_time = elapsed if avg_time is None else (avg_time * page_count + elapsed) / (page_count + 1)
 
@@ -261,7 +251,6 @@ def main():
             est_remaining = remaining_pages * avg_time
             print_progress(page_count + 1, total_pages, est_remaining)
 
-        # Pagination
         neste = payload.get("metadata", {}).get("neste")
         if isinstance(neste, dict) and "href" in neste:
             url = neste["href"]
@@ -273,7 +262,6 @@ def main():
 
         page_count += 1
 
-    # Save remaining
     if buffer:
         save_chunk(buffer, part_index)
 
