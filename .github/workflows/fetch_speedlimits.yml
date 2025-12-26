@@ -43,12 +43,6 @@ jobs:
         timeout-minutes: 60
 
       # ---------------------------------------------------------
-      # MERGE
-      # ---------------------------------------------------------
-      - name: Merge speedlimit parts
-        run: python scripts/merge_speedlimits.py
-
-      # ---------------------------------------------------------
       # VALIDATE MERGED FILE
       # ---------------------------------------------------------
       - name: Validate merged file
