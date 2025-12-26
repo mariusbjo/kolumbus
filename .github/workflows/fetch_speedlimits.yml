@@ -8,6 +8,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # ---------------------------------------------------------
+      # CHECKOUT
+      # ---------------------------------------------------------
       - name: Checkout repo
         uses: actions/checkout@v4
 
@@ -32,45 +35,19 @@ jobs:
       # ---------------------------------------------------------
       # CLEAN OLD FILES
       # ---------------------------------------------------------
-      - name: Remove old merged file
-        run: rm -f data/speedlimits_merged.json
+      - name: Remove old part files
+        run: |
+          find data -maxdepth 1 -type f -name "speedlimits_part*.json" -delete
 
       # ---------------------------------------------------------
-      # FETCH
+      # FETCH (produces speedlimits_merged.json internally)
       # ---------------------------------------------------------
       - name: Fetch Rogaland speed limits
         run: python scripts/fetch_speedlimits.py
         timeout-minutes: 60
 
       # ---------------------------------------------------------
-      # VALIDATE MERGED FILE
-      # ---------------------------------------------------------
-      - name: Validate merged file
-        run: |
-          if [ ! -f data/speedlimits_merged.json ]; then
-            echo "Merged file missing"
-            exit 1
-          fi
-
-          size=$(stat -c%s "data/speedlimits_merged.json")
-          echo "Merged file size: $size bytes"
-
-          if [ "$size" -gt 100000000 ]; then
-            echo "Merged file too large (>100MB)"
-            exit 1
-          fi
-
-          python -c "import json; json.load(open('data/speedlimits_merged.json'))"
-
-      # ---------------------------------------------------------
-      # REMOVE OLD PART FILES
-      # ---------------------------------------------------------
-      - name: Remove old part files
-        run: |
-          find data -maxdepth 1 -type f -name "speedlimits_part*.json" -delete
-
-      # ---------------------------------------------------------
-      # SPLIT
+      # SPLIT INTO CHUNKS
       # ---------------------------------------------------------
       - name: Split merged file into chunks
         run: python scripts/split_speedlimits.py
