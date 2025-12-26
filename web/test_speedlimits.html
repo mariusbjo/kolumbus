@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <title>Testkart – Fartsgrense Coverage Heatmap</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+    .control-box {
+      background: white;
+      padding: 8px 12px;
+      border-radius: 4px;
+      box-shadow: 0 0 4px rgba(0,0,0,0.3);
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Leaflet.heat plugin -->
+  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+
+  <script>
+    // ---------------------------------------------------------
+    // INIT MAP
+    // ---------------------------------------------------------
+    const map = L.map("map").setView([59.4222, 5.4425], 13);
+
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: "&copy; OpenStreetMap"
+    }).addTo(map);
+
+    // ---------------------------------------------------------
+    // COLOR FUNCTION FOR LINES
+    // ---------------------------------------------------------
+    function getColor(limit) {
+      if (limit <= 30) return "#2ecc71";
+      if (limit <= 50) return "#f1c40f";
+      if (limit <= 70) return "#e67e22";
+      return "#e74c3c";
+    }
+
+    // ---------------------------------------------------------
+    // HEATMAP LAYER
+    // ---------------------------------------------------------
+    const heatPoints = [];
+    const heatLayer = L.heatLayer(heatPoints, {
+      radius: 20,
+      blur: 15,
+      maxZoom: 17
+    });
+
+    // ---------------------------------------------------------
+    // LOAD ALL CHUNK FILES
+    // ---------------------------------------------------------
+    async function loadSpeedlimits() {
+      let part = 1;
+      let totalSegments = 0;
+
+      while (true) {
+        // IMPORTANT: gh-pages path → public/data/
+        const url = `data/speedlimits_part${part}.json`;
+
+        try {
+          const res = await fetch(url, { cache: "no-store" });
+
+          // Stop when file does not exist
+          if (!res.ok) {
+            console.log(`Stopped at part ${part} (file not found)`);
+            break;
+          }
+
+          const data = await res.json();
+
+          data.forEach(segment => {
+            const raw = segment.geometry?.coordinates;
+
+            if (!raw || raw.length < 2) return;
+
+            const coords = raw.map(c => [c[1], c[0]]);
+
+            L.polyline(coords, {
+              color: getColor(segment.speed_limit),
+              weight: 4,
+              opacity: 0.9
+            })
+            .bindPopup(`
+              <b>ID:</b> ${segment.id}<br>
+              <b>Fartsgrense:</b> ${segment.speed_limit} km/t
+            `)
+            .addTo(map);
+
+            const midIndex = Math.floor(coords.length / 2);
+            const midpoint = coords[midIndex];
+
+            if (
+              midpoint &&
+              Array.isArray(midpoint) &&
+              midpoint.length === 2 &&
+              typeof midpoint[0] === "number" &&
+              typeof midpoint[1] === "number" &&
+              !isNaN(midpoint[0]) &&
+              !isNaN(midpoint[1])
+            ) {
+              heatPoints.push(midpoint);
+            }
+
+            totalSegments++;
+          });
+
+          console.log(`Loaded part ${part}: ${data.length} segments`);
+          part++;
+
+        } catch (err) {
+          console.warn("Stopped at part", part, err);
+          break;
+        }
+
+        // Safety stop (should never hit)
+        if (part > 500) break;
+      }
+
+      console.log("Total segments loaded:", totalSegments);
+
+      heatLayer.setLatLngs(heatPoints);
+    }
+
+    loadSpeedlimits();
+
+    // ---------------------------------------------------------
+    // CONTROL TOGGLE
+    // ---------------------------------------------------------
+    const control = L.control({ position: "topright" });
+
+    control.onAdd = function () {
+      const div = L.DomUtil.create("div", "control-box");
+      div.innerHTML = `
+        <label>
+          <input type="checkbox" id="toggle-heat" checked />
+          Vis coverage heatmap
+        </label>
+      `;
+      return div;
+    };
+
+    control.addTo(map);
+
+    document.getElementById("toggle-heat").addEventListener("change", (e) => {
+      if (e.target.checked) {
+        heatLayer.addTo(map);
+      } else {
+        map.removeLayer(heatLayer);
+      }
+    });
+
+    heatLayer.addTo(map);
+  </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8">
+  <title>Kolumbus sanntid</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <!-- Egen CSS -->
+  <link rel="stylesheet" href="web/style.css">
+</head>
+<body>
+  <div class="meta">
+    <strong>Kolumbus sanntid</strong><br>
+    Data fra Entur, oppdatert hvert 5. sekund direkte i nettleseren.
+  </div>
+  <div id="map"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Turf.js via CDN som global UMD -->
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+
+  <!-- Modulene våre -->
+  <script type="module" src="assets/config.js"></script>
+  <script type="module" src="assets/utils.js"></script>
+  <script type="module" src="assets/icons.js"></script>
+  <script type="module" src="assets/script.js"></script>
+</body>
+</html>

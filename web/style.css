@@ -1,0 +1,33 @@
+/* web/style.css */
+
+html, body { height: 100%; margin: 0; }
+#map { height: 100vh; }
+
+.meta {
+  position: absolute;
+  z-index: 999;
+  background: rgba(255,255,255,0.9);
+  padding: 6px 10px;
+  margin: 8px;
+  border-radius: 6px;
+  font: 14px/1.4 system-ui, sans-serif;
+}
+
+/* Fartsskilt-ikon */
+.speed-icon div {
+  background: white;
+  border: 2px solid red;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  font-weight: bold;
+  font-family: system-ui, sans-serif;
+}
+
+.speed-icon.over div {
+  background: red;
+  color: white;
+  border: 2px solid black;
+}
