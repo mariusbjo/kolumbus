@@ -33,39 +33,33 @@ jobs:
           pip install -r requirements.txt
 
       # ---------------------------------------------------------
-      # CLEAN OLD FILES
+      # CLEAN OLD PART FILES
       # ---------------------------------------------------------
       - name: Remove old part files
         run: |
           find data -maxdepth 1 -type f -name "speedlimits_part*.json" -delete
 
       # ---------------------------------------------------------
-      # FETCH (produces speedlimits_merged.json internally)
+      # FETCH (produces chunk files directly)
       # ---------------------------------------------------------
       - name: Fetch Rogaland speed limits
         run: python scripts/fetch_speedlimits.py
         timeout-minutes: 60
 
       # ---------------------------------------------------------
-      # SPLIT INTO CHUNKS
-      # ---------------------------------------------------------
-      - name: Split merged file into chunks
-        run: python scripts/split_speedlimits.py
-
-      # ---------------------------------------------------------
       # VALIDATE CHUNKS
       # ---------------------------------------------------------
       - name: Validate chunk files
         run: |
-          for f in data/speedlimits_part*.json; do \
-            [ -f "$f" ] || continue; \
-            size=$(stat -c%s "$f"); \
-            echo "$f size: $size bytes"; \
-            if [ "$size" -gt 100000000 ]; then \
-              echo "Chunk too large"; \
-              exit 1; \
-            fi; \
-            python -c "import json,sys; json.load(open(sys.argv[1]))" "$f"; \
+          shopt -s nullglob
+          for f in data/speedlimits_part*.json; do
+            size=$(stat -c%s "$f")
+            echo "$f size: $size bytes"
+            if [ "$size" -gt 100000000 ]; then
+              echo "Chunk too large"
+              exit 1
+            fi
+            python -c "import json,sys; json.load(open(sys.argv[1]))" "$f"
           done
 
       # ---------------------------------------------------------
