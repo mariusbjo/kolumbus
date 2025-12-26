@@ -2,6 +2,16 @@ name: Fetch Rogaland speed limits
 
 on:
   workflow_dispatch:
+    inputs:
+      mode:
+        description: "Velg modus for kjøring"
+        required: true
+        default: "incremental"
+        type: choice
+        options:
+          - incremental
+          - full
+
   schedule:
     # Daily incremental at 03:00
     - cron: "0 3 * * *"
@@ -13,8 +23,15 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      # Determine mode based on schedule
-      MODE: ${{ github.event.schedule == '0 4 1 * *' && 'full' || 'incremental' }}
+      # Determine mode:
+      # 1) If manual run → use input
+      # 2) If monthly cron → full
+      # 3) Otherwise → incremental
+      MODE: ${{ github.event_name == 'workflow_dispatch'
+                && inputs.mode
+                || (github.event.schedule == '0 4 1 * *'
+                    && 'full'
+                    || 'incremental') }}
 
     steps:
       # ---------------------------------------------------------
