@@ -3,39 +3,48 @@ name: Update Enterprise Dashboard
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "*/30 * * * *"   # Hver 30. minutt
 
 jobs:
   update-dashboard:
     runs-on: ubuntu-latest
 
     steps:
+      # ---------------------------------------------------------
+      # CHECKOUT MAIN BRANCH
+      # ---------------------------------------------------------
       - name: Checkout repo (main)
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
+      # ---------------------------------------------------------
+      # BLOCK MANUAL RUNS
+      # ---------------------------------------------------------
       - name: Block manual triggers
         if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           echo "Manuell kjøring oppdaget – avbryter."
           exit 0
 
+      # ---------------------------------------------------------
+      # PREPARE OUTPUT FOLDERS
+      # ---------------------------------------------------------
       - name: Prepare public folder
         run: mkdir -p public/dashboard public/dashboard/assets
 
       # ---------------------------------------------------------
-      # 1) VALIDATE TEMPLATE
+      # 1) VALIDATE TEMPLATE EXISTS
       # ---------------------------------------------------------
       - name: Validate dashboard template
         run: |
           if [ ! -f dashboard/status.html.template ]; then
-            echo "Template mangler."
+            echo "❌ Template mangler."
             exit 1
           fi
 
       # ---------------------------------------------------------
-      # 2) BUILD DASHBOARD
+      # 2) BUILD DASHBOARD FROM TEMPLATE
       # ---------------------------------------------------------
       - name: Build dashboard from template
         id: build
@@ -49,11 +58,22 @@ jobs:
             dashboard/status.html.template \
             > public/dashboard/status.html
 
+          # 🔥 Fail if placeholders remain
+          if grep -q "{{VERSION}}" public/dashboard/status.html || grep -q "{{HASH}}" public/dashboard/status.html; then
+            echo "❌ Template ble ikke rendret riktig – placeholders finnes fortsatt."
+            echo "🔍 Første 20 linjer av generert fil:"
+            head -n 20 public/dashboard/status.html
+            exit 1
+          fi
+
+          echo "🔍 Første 20 linjer av generert dashboard:"
+          head -n 20 public/dashboard/status.html
+
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "hash=$HASH" >> $GITHUB_OUTPUT
 
       # ---------------------------------------------------------
-      # 3) GENERATE METADATA
+      # 3) GENERATE METADATA JSON
       # ---------------------------------------------------------
       - name: Generate dashboard metadata
         run: |
@@ -65,12 +85,20 @@ jobs:
           }
           EOF
 
+          # Validate JSON
+          python3 - <<EOF
+import json
+json.load(open("public/dashboard/dashboard.json"))
+EOF
+
       # ---------------------------------------------------------
       # 4) COPY ASSETS
       # ---------------------------------------------------------
       - name: Copy dashboard assets
         run: |
-          cp -r dashboard/assets/* public/dashboard/assets/ || true
+          if [ -d dashboard/assets ]; then
+            cp -r dashboard/assets/* public/dashboard/assets/ || true
+          fi
 
       # ---------------------------------------------------------
       # 5) VALIDATE ASSETS
@@ -81,7 +109,7 @@ jobs:
             [ -f "$f" ] || continue
             size=$(stat -c%s "$f")
             if [ "$size" -gt 100000000 ]; then
-              echo "Asset $f er for stor."
+              echo "❌ Asset $f er for stor."
               exit 1
             fi
           done
@@ -94,15 +122,14 @@ jobs:
         with:
           ref: gh-pages
           path: ghp
+          fetch-depth: 1
 
       - name: Compare dashboard with existing version
         id: diff
         run: |
-          if [ -f ghp/dashboard/status.html ]; then
-            if diff -q public/dashboard/status.html ghp/dashboard/status.html > /dev/null; then
-              echo "changed=false" >> $GITHUB_OUTPUT
-              exit 0
-            fi
+          if [ -f ghp/dashboard/status.html ] && diff -q public/dashboard/status.html ghp/dashboard/status.html > /dev/null; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            exit 0
           fi
           echo "changed=true" >> $GITHUB_OUTPUT
 
@@ -116,7 +143,7 @@ jobs:
           exit 0
 
       # ---------------------------------------------------------
-      # 8) DEPLOY DASHBOARD ONLY
+      # 8) DEPLOY UPDATED DASHBOARD
       # ---------------------------------------------------------
       - name: Deploy updated dashboard
         uses: peaceiris/actions-gh-pages@v3
