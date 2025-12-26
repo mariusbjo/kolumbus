@@ -4,6 +4,7 @@ import os
 import time
 import math
 import sys
+import argparse
 
 from utils.geometry_utils import convert_wkt_to_geojson
 from utils.logger import log_message, print_progress
@@ -31,10 +32,19 @@ MAX_EMPTY_STREAK = 50
 MAX_ERROR_STREAK = 10
 
 
+# ---------------------------------------------------------
+# ARGUMENTER: incremental eller full
+# ---------------------------------------------------------
+parser = argparse.ArgumentParser()
+parser.add_argument("--mode", choices=["incremental", "full"], default="incremental")
+args = parser.parse_args()
+MODE = args.mode
+
+
 def load_existing_ids():
     """
     Les eksisterende ID-er fra tidligere part-filer.
-    Vi ser KUN på speedlimits_part*.json for å unngå støy.
+    Brukes kun i incremental mode.
     """
     existing_ids = set()
 
@@ -67,8 +77,11 @@ def load_existing_ids():
 
 def load_resume_url():
     """
-    Prøv å finne siste 'Neste URL' fra logg-filen.
+    Gjenoppta fra siste 'Neste URL' – kun i incremental mode.
     """
+    if MODE == "full":
+        return None
+
     if not os.path.exists(LOG_PATH):
         return None
 
@@ -93,7 +106,11 @@ def save_chunk(buffer, part_index):
 def get_next_part_index():
     """
     Finn neste part-indeks basert på eksisterende part-filer.
+    I full mode starter vi alltid på 1.
     """
+    if MODE == "full":
+        return 1
+
     if not os.path.exists(OUT_DIR):
         return 1
 
@@ -117,13 +134,23 @@ def get_next_part_index():
 
 
 def main():
+    log_message(f"🚀 Starter fetch_speedlimits.py i MODE = {MODE}")
+
     os.makedirs(DEBUG_DIR, exist_ok=True)
     os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
     os.makedirs(OUT_DIR, exist_ok=True)
 
-    existing_ids = load_existing_ids()
-    resume_url = load_resume_url()
+    # ---------------------------------------------------------
+    # MODE: incremental → last existing IDs
+    # MODE: full → start fresh
+    # ---------------------------------------------------------
+    if MODE == "incremental":
+        existing_ids = load_existing_ids()
+    else:
+        existing_ids = set()
+        log_message("🔄 FULL REFRESH – ignorerer eksisterende ID-er")
 
+    resume_url = load_resume_url()
     url = resume_url if resume_url else BASE_URL
 
     page_count = 0
@@ -179,6 +206,7 @@ def main():
             time.sleep(5)
             continue
 
+        # Debug dump
         debug_path = os.path.join(DEBUG_DIR, f"page_{page_count + 1}.json")
         try:
             with open(debug_path, "w", encoding="utf-8") as f:
@@ -186,6 +214,7 @@ def main():
         except Exception as e:
             log_message(f"⚠️ Klarte ikke skrive debug-fil {debug_path}: {e}")
 
+        # Total count
         if page_count == 0:
             total_objects = payload.get("metadata", {}).get("totaltAntall")
             if isinstance(total_objects, int):
@@ -210,17 +239,24 @@ def main():
         else:
             empty_streak = 0
 
+        # ---------------------------------------------------------
+        # Prosesser objekter
+        # ---------------------------------------------------------
         for obj in objekter:
             obj_id = str(obj.get("id"))
-            if obj_id in existing_ids:
+
+            # Skip duplicates only in incremental mode
+            if MODE == "incremental" and obj_id in existing_ids:
                 continue
 
+            # Extract speed limit
             limit = None
             for e in obj.get("egenskaper", []):
                 if e.get("navn") == "Fartsgrense":
                     limit = e.get("verdi")
                     break
 
+            # Convert geometry
             geojson_geom = None
             geom_obj = obj.get("geometri")
             if geom_obj and "wkt" in geom_obj:
@@ -243,6 +279,7 @@ def main():
                 part_index += 1
                 buffer = []
 
+        # Progress
         elapsed = time.time() - start_time
         avg_time = elapsed if avg_time is None else (avg_time * page_count + elapsed) / (page_count + 1)
 
@@ -251,6 +288,7 @@ def main():
             est_remaining = remaining_pages * avg_time
             print_progress(page_count + 1, total_pages, est_remaining)
 
+        # Pagination
         neste = payload.get("metadata", {}).get("neste")
         if isinstance(neste, dict) and "href" in neste:
             url = neste["href"]
@@ -262,6 +300,7 @@ def main():
 
         page_count += 1
 
+    # Save remaining
     if buffer:
         save_chunk(buffer, part_index)
 
