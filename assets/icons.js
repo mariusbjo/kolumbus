@@ -2,7 +2,7 @@
 
 // Standard ikon for alle busser (sort buss)
 export const busIcon = L.icon({
-  iconUrl: 'icons/bus-black.png',   // <-- nytt ikon (sort buss)
+  iconUrl: 'assets/icons/bus-black.png',   // <-- nytt ikon (sort buss)
   iconSize: [28, 28],
   iconAnchor: [14, 14],
   popupAnchor: [0, -14]
