@@ -140,13 +140,13 @@
     const slFilesEl = document.getElementById("sl-files");
     const slSizeEl = document.getElementById("sl-size");
     const slStatusEl = document.getElementById("sl-status");
-
+  
     let part = 1;
     let files = 0;
     let totalBytes = 0;
-
+  
     while (true) {
-      const url = `data/speedlimits_part${part}.json`;
+      const url = `../data/speedlimits_part${part}.json`;  // <-- FIXED
       try {
         const res = await fetch(url, { cache: "no-store" });
         if (!res.ok) break;
@@ -159,7 +159,7 @@
       }
       if (part > 200) break;
     }
-
+  
     if (files === 0) {
       slFilesEl.textContent = "0";
       slSizeEl.textContent = "Ingen filer funnet";
@@ -168,16 +168,17 @@
       log("err", "Fant ingen speedlimits-delfiler.");
       return false;
     }
-
+  
     const mb = totalBytes / (1024 * 1024);
     slFilesEl.textContent = files;
     slSizeEl.textContent = `${mb.toFixed(1)} MB`;
     slStatusEl.textContent = "OK";
     slStatusEl.classList.add("status-ok");
-
+  
     log("ok", `Leste ${files} speedlimits-delfiler.`);
     return true;
   }
+
 
   /* ---------------------------------------------------------
      LOAD KOLUMBUS
