@@ -2,7 +2,7 @@
 <html lang="no">
 <head>
   <meta charset="UTF-8" />
-  <title>Kolumbus – Systemverktøy</title>
+  <title>Kollektivdata – Systemverktøy v1.0</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <link rel="stylesheet" href="web/style.css" />
@@ -12,8 +12,11 @@
   <div class="welcome-container">
 
     <div class="welcome-header">
-      <h1>Kolumbus – Systemverktøy</h1>
-      <button id="theme-toggle" class="theme-toggle">🌓</button>
+      <h1>
+        Kollektivdata – Systemverktøy
+        <span class="version">v1.0</span>
+      </h1>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Bytt tema">🌓</button>
     </div>
 
     <p class="welcome-subtitle">Velg et verktøy for å fortsette</p>
@@ -24,24 +27,33 @@
       <a class="tool-card" href="realtime.html">
         <div class="tool-icon">🚌</div>
         <div class="tool-title">Sanntidskart</div>
-        <div class="tool-desc">Live posisjoner fra Kolumbus</div>
-        <div class="tool-status" id="status-realtime">Laster…</div>
+        <div class="tool-desc">Live posisjoner fra Kolumbus, med fartslogging og detaljert ruteinformasjon</div>
+        <div class="tool-status">
+          <span class="label">Status:</span>
+          <span id="status-realtime" class="status-badge status-loading">Laster…</span>
+        </div>
       </a>
 
       <!-- TESTKART -->
       <a class="tool-card" href="web/test_speedlimits.html">
         <div class="tool-icon">🚧</div>
-        <div class="tool-title">Testkart – Fartsgrenser</div>
-        <div class="tool-desc">Heatmap og segmentvisning</div>
-        <div class="tool-status" id="status-speed">Laster…</div>
+        <div class="tool-title">Fartsgrensekart – Rogaland</div>
+        <div class="tool-desc">Heatmap og segmentvisning av fartsgrensedata fra SVV</div>
+        <div class="tool-status">
+          <span class="label">Status:</span>
+          <span id="status-speed" class="status-badge status-loading">Laster…</span>
+        </div>
       </a>
 
       <!-- DASHBOARD -->
       <a class="tool-card" href="dashboard/status.html">
         <div class="tool-icon">📊</div>
         <div class="tool-title">Systemstatus Dashboard</div>
-        <div class="tool-desc">Oversikt over datastrømmer</div>
-        <div class="tool-status" id="status-dashboard">Laster…</div>
+        <div class="tool-desc">Oversikt over datastrømmer til sanntidskart og fartsgrensekart</div>
+        <div class="tool-status">
+          <span class="label">Status:</span>
+          <span id="status-dashboard" class="status-badge status-loading">Laster…</span>
+        </div>
       </a>
 
     </div>
@@ -88,31 +100,44 @@
        STATUS INDICATORS
        Henter dashboard.json fra gh-pages
     --------------------------------------------------------- */
+    function setStatusOk(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = "OK";
+      el.classList.remove("status-loading", "status-err");
+      el.classList.add("status-ok");
+    }
+
+    function setStatusErr(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = "Feil";
+      el.classList.remove("status-loading", "status-ok");
+      el.classList.add("status-err");
+    }
+
     async function loadStatus() {
       try {
         const res = await fetch("dashboard/dashboard.json", { cache: "no-store" });
         const data = await res.json();
 
         // Dashboard status
-        document.getElementById("status-dashboard").textContent = "OK";
-        document.getElementById("status-dashboard").classList.add("status-ok");
+        setStatusOk("status-dashboard");
 
         // Speedlimits status (basert på hash)
         if (data.hash && data.hash.length > 0) {
-          document.getElementById("status-speed").textContent = "OK";
-          document.getElementById("status-speed").classList.add("status-ok");
+          setStatusOk("status-speed");
         } else {
-          document.getElementById("status-speed").textContent = "Feil";
-          document.getElementById("status-speed").classList.add("status-err");
+          setStatusErr("status-speed");
         }
 
         // Realtime status (dummy – kan kobles til API senere)
-        document.getElementById("status-realtime").textContent = "OK";
-        document.getElementById("status-realtime").classList.add("status-ok");
+        setStatusOk("status-realtime");
 
       } catch {
-        document.getElementById("status-dashboard").textContent = "Feil";
-        document.getElementById("status-dashboard").classList.add("status-err");
+        setStatusErr("status-dashboard");
+        setStatusErr("status-speed");
+        setStatusErr("status-realtime");
       }
     }
     loadStatus();
