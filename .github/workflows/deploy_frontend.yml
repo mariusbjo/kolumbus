@@ -2,7 +2,7 @@ name: Deploy frontend to GitHub Pages
 
 on:
   workflow_run:
-    workflows: ["Fetch Rogaland speed limits", "Fetch Kolumbus data"]
+    workflows: ["Fetch Rogaland speed limits", "Fetch Kolumbus data", "Update Enterprise Dashboard"]
     types: [completed]
 
   workflow_dispatch:
