@@ -97,7 +97,7 @@ html, body {
 }
 
 /* ---------------------------------------------------------
-   WELCOME PAGE (index.html)
+   WELCOME PAGE – CARD LAYOUT
 --------------------------------------------------------- */
 
 :root {
@@ -108,7 +108,9 @@ html, body {
   --card-shadow: rgba(0,0,0,0.1);
   --btn-bg: #0078d4;
   --btn-bg-hover: #005fa3;
-  --btn-text: #ffffff;
+  --status-ok: #27ae60;
+  --status-warn: #f39c12;
+  --status-err: #c0392b;
 }
 
 [data-theme="dark"] {
@@ -117,9 +119,6 @@ html, body {
   --subtext: #cccccc;
   --card-bg: #2a2a2a;
   --card-shadow: rgba(0,0,0,0.4);
-  --btn-bg: #0a84ff;
-  --btn-bg-hover: #006edc;
-  --btn-text: #ffffff;
 }
 
 .welcome-body {
@@ -128,19 +127,18 @@ html, body {
   align-items: center;
   min-height: 100vh;
   background: var(--bg);
-  font-family: system-ui, sans-serif;
   transition: background 0.3s ease;
 }
 
 .welcome-container {
-  max-width: 600px;
+  max-width: 900px;
   width: 90%;
   background: var(--card-bg);
-  padding: 36px;
+  padding: 40px;
   border-radius: 14px;
   box-shadow: 0 4px 20px var(--card-shadow);
   text-align: center;
-  transition: background 0.3s ease, box-shadow 0.3s ease;
+  transition: background 0.3s ease;
 }
 
 .welcome-header {
@@ -151,53 +149,91 @@ html, body {
 
 .welcome-container h1 {
   margin: 0;
-  font-size: 30px;
+  font-size: 32px;
   color: var(--text);
 }
 
 .welcome-subtitle {
-  margin: 16px 0 28px;
+  margin: 16px 0 32px;
   color: var(--subtext);
-  font-size: 17px;
+  font-size: 18px;
 }
 
-.theme-toggle {
-  background: transparent;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
+/* ---------------------------------------------------------
+   CARD GRID
+--------------------------------------------------------- */
 
-.theme-toggle:hover {
-  transform: rotate(20deg);
-}
-
-.welcome-link-grid {
+.card-grid {
   display: grid;
-  gap: 18px;
-  margin-top: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
 }
 
-.welcome-link-btn {
-  display: block;
-  padding: 16px 22px;
-  background: var(--btn-bg);
-  color: var(--btn-text);
+.tool-card {
+  background: var(--card-bg);
+  padding: 24px;
+  border-radius: 12px;
   text-decoration: none;
-  border-radius: 10px;
-  font-size: 17px;
-  font-weight: 600;
-  transition: background 0.25s ease, transform 0.15s ease;
+  color: var(--text);
+  box-shadow: 0 4px 12px var(--card-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.welcome-link-btn:hover {
-  background: var(--btn-bg-hover);
-  transform: translateY(-3px);
+.tool-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px var(--card-shadow);
 }
+
+.tool-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+.tool-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.tool-desc {
+  font-size: 14px;
+  color: var(--subtext);
+  margin-bottom: 16px;
+}
+
+/* ---------------------------------------------------------
+   STATUS INDICATORS
+--------------------------------------------------------- */
+
+.tool-status {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+.status-ok {
+  background: var(--status-ok);
+  color: white;
+}
+
+.status-warn {
+  background: var(--status-warn);
+  color: white;
+}
+
+.status-err {
+  background: var(--status-err);
+  color: white;
+}
+
+/* ---------------------------------------------------------
+   FOOTER INFO
+--------------------------------------------------------- */
 
 .welcome-updated {
-  margin-top: 28px;
+  margin-top: 32px;
   font-size: 14px;
   color: var(--subtext);
 }

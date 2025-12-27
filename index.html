@@ -5,12 +5,12 @@
   <title>Kolumbus – Systemverktøy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Global CSS -->
   <link rel="stylesheet" href="web/style.css" />
 </head>
 
 <body class="welcome-body">
   <div class="welcome-container">
+
     <div class="welcome-header">
       <h1>Kolumbus – Systemverktøy</h1>
       <button id="theme-toggle" class="theme-toggle">🌓</button>
@@ -18,43 +18,62 @@
 
     <p class="welcome-subtitle">Velg et verktøy for å fortsette</p>
 
-    <div class="welcome-link-grid">
-      <a class="welcome-link-btn" href="realtime.html">🚌 Sanntidskart (Kolumbus)</a>
-      <a class="welcome-link-btn" href="web/test_speedlimits.html">🚧 Testkart – Fartsgrenser</a>
-      <a class="welcome-link-btn" href="dashboard/status.html">📊 Systemstatus Dashboard</a>
+    <div class="card-grid">
+
+      <!-- SANNTIDSKART -->
+      <a class="tool-card" href="realtime.html">
+        <div class="tool-icon">🚌</div>
+        <div class="tool-title">Sanntidskart</div>
+        <div class="tool-desc">Live posisjoner fra Kolumbus</div>
+        <div class="tool-status" id="status-realtime">Laster…</div>
+      </a>
+
+      <!-- TESTKART -->
+      <a class="tool-card" href="web/test_speedlimits.html">
+        <div class="tool-icon">🚧</div>
+        <div class="tool-title">Testkart – Fartsgrenser</div>
+        <div class="tool-desc">Heatmap og segmentvisning</div>
+        <div class="tool-status" id="status-speed">Laster…</div>
+      </a>
+
+      <!-- DASHBOARD -->
+      <a class="tool-card" href="dashboard/status.html">
+        <div class="tool-icon">📊</div>
+        <div class="tool-title">Systemstatus Dashboard</div>
+        <div class="tool-desc">Oversikt over datastrømmer</div>
+        <div class="tool-status" id="status-dashboard">Laster…</div>
+      </a>
+
     </div>
 
     <div class="welcome-updated">
       Sist oppdatert: <span id="last-updated">Laster…</span>
     </div>
+
   </div>
 
   <script>
     /* ---------------------------------------------------------
-       THEME TOGGLE (dark/light mode)
+       THEME TOGGLE
     --------------------------------------------------------- */
     const html = document.documentElement;
     const toggle = document.getElementById("theme-toggle");
 
     const stored = localStorage.getItem("welcome-theme");
-    if (stored === "dark" || stored === "light") {
-      html.setAttribute("data-theme", stored);
-    }
+    if (stored) html.setAttribute("data-theme", stored);
 
     toggle.addEventListener("click", () => {
-      const current = html.getAttribute("data-theme") || "light";
-      const next = current === "light" ? "dark" : "light";
+      const next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
       html.setAttribute("data-theme", next);
       localStorage.setItem("welcome-theme", next);
     });
 
     /* ---------------------------------------------------------
-       LAST UPDATED INDICATOR
+       LAST UPDATED
     --------------------------------------------------------- */
     async function loadLastUpdated() {
       try {
         const res = await fetch("meta/last_deploy.txt", { cache: "no-store" });
-        if (!res.ok) throw new Error("Missing file");
         const epoch = parseInt((await res.text()).trim(), 10);
         const date = new Date(epoch * 1000);
         document.getElementById("last-updated").textContent =
@@ -63,8 +82,40 @@
         document.getElementById("last-updated").textContent = "ukjent";
       }
     }
-
     loadLastUpdated();
+
+    /* ---------------------------------------------------------
+       STATUS INDICATORS
+       Henter dashboard.json fra gh-pages
+    --------------------------------------------------------- */
+    async function loadStatus() {
+      try {
+        const res = await fetch("dashboard/dashboard.json", { cache: "no-store" });
+        const data = await res.json();
+
+        // Dashboard status
+        document.getElementById("status-dashboard").textContent = "OK";
+        document.getElementById("status-dashboard").classList.add("status-ok");
+
+        // Speedlimits status (basert på hash)
+        if (data.hash && data.hash.length > 0) {
+          document.getElementById("status-speed").textContent = "OK";
+          document.getElementById("status-speed").classList.add("status-ok");
+        } else {
+          document.getElementById("status-speed").textContent = "Feil";
+          document.getElementById("status-speed").classList.add("status-err");
+        }
+
+        // Realtime status (dummy – kan kobles til API senere)
+        document.getElementById("status-realtime").textContent = "OK";
+        document.getElementById("status-realtime").classList.add("status-ok");
+
+      } catch {
+        document.getElementById("status-dashboard").textContent = "Feil";
+        document.getElementById("status-dashboard").classList.add("status-err");
+      }
+    }
+    loadStatus();
   </script>
 </body>
 </html>
