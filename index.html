@@ -11,8 +11,12 @@
 
 <body class="welcome-body">
   <div class="welcome-container">
-    <h1>Kolumbus – Systemverktøy</h1>
-    <p>Velg et verktøy for å fortsette</p>
+    <div class="welcome-header">
+      <h1>Kolumbus – Systemverktøy</h1>
+      <button id="theme-toggle" class="theme-toggle">🌓</button>
+    </div>
+
+    <p class="welcome-subtitle">Velg et verktøy for å fortsette</p>
 
     <div class="welcome-link-grid">
       <a class="welcome-link-btn" href="realtime.html">🚌 Sanntidskart (Kolumbus)</a>
@@ -20,10 +24,47 @@
       <a class="welcome-link-btn" href="dashboard/status.html">📊 Systemstatus Dashboard</a>
     </div>
 
-    <div class="welcome-small-note">
-      Alle verktøy bruker felles styling fra <code>web/style.css</code>  
-      (unntatt dashboardet som har egen CSS).
+    <div class="welcome-updated">
+      Sist oppdatert: <span id="last-updated">Laster…</span>
     </div>
   </div>
+
+  <script>
+    /* ---------------------------------------------------------
+       THEME TOGGLE (dark/light mode)
+    --------------------------------------------------------- */
+    const html = document.documentElement;
+    const toggle = document.getElementById("theme-toggle");
+
+    const stored = localStorage.getItem("welcome-theme");
+    if (stored === "dark" || stored === "light") {
+      html.setAttribute("data-theme", stored);
+    }
+
+    toggle.addEventListener("click", () => {
+      const current = html.getAttribute("data-theme") || "light";
+      const next = current === "light" ? "dark" : "light";
+      html.setAttribute("data-theme", next);
+      localStorage.setItem("welcome-theme", next);
+    });
+
+    /* ---------------------------------------------------------
+       LAST UPDATED INDICATOR
+    --------------------------------------------------------- */
+    async function loadLastUpdated() {
+      try {
+        const res = await fetch("meta/last_deploy.txt", { cache: "no-store" });
+        if (!res.ok) throw new Error("Missing file");
+        const epoch = parseInt((await res.text()).trim(), 10);
+        const date = new Date(epoch * 1000);
+        document.getElementById("last-updated").textContent =
+          date.toISOString().replace("T", " ").replace("Z", " UTC");
+      } catch {
+        document.getElementById("last-updated").textContent = "ukjent";
+      }
+    }
+
+    loadLastUpdated();
+  </script>
 </body>
 </html>
