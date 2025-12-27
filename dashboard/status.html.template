@@ -2,7 +2,7 @@
 <html lang="no" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
-  <title>Systemstatus – Kolumbus & Rogaland</title>
+  <title>Systemstatus – Sanntidsdata og Fartsgrensedata</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="dashboard-version" content="{{VERSION}}" />
@@ -16,7 +16,7 @@
   <header class="topbar">
     <div class="topbar-left">
       <h1 class="title">Systemstatus</h1>
-      <p class="subtitle">Kolumbus realtime • Rogaland speedlimits • Frontend deploy</p>
+      <p class="subtitle">Kolumbus sanntid • Rogaland fartsgrenser • Frontend deploy</p>
     </div>
 
     <div class="topbar-right">
