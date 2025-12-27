@@ -1,15 +1,18 @@
 // assets/icons.js
 
+// Standard ikon for alle busser (sort buss)
 export const busIcon = L.icon({
-  iconUrl: 'https://cdn-icons-png.flaticon.com/512/61/61231.png',
-  iconSize: [32, 32],
-  iconAnchor: [16, 32],
-  popupAnchor: [0, -32]
+  iconUrl: 'icons/bus-black.png',   // <-- nytt ikon (sort buss)
+  iconSize: [28, 28],
+  iconAnchor: [14, 14],
+  popupAnchor: [0, -14]
 });
 
+// Fartsskilt-ikon som brukes KUN når en buss er valgt
 export function speedIcon(speed, limit) {
   const over = limit && speed > limit;
   const className = over ? 'speed-icon over' : 'speed-icon';
+
   return L.divIcon({
     className,
     html: `<div>${Math.round(speed)}</div>`,
@@ -18,7 +21,5 @@ export function speedIcon(speed, limit) {
   });
 }
 
-export const busIconOverLimit = L.icon({
-  iconUrl: 'icons/bus-red.png',
-  iconSize: [25, 25]
-});
+// Ikke lenger i bruk – fjernet
+// export const busIconOverLimit = ...
