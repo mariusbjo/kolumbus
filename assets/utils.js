@@ -1,43 +1,78 @@
 // assets/utils.js
 
-let speedLimitsCache = [];
+let speedLimitsCache = null;   // null = ikke lastet ennå
+let speedLimitsLoaded = false; // caching flag
 
 /**
- * Laster inn speedlimits.json og legger det i cache
- * + preprosesserer bounding boxes for raskere oppslag
+ * Laster inn alle speedlimits_partX.json automatisk
+ * Stopper når 3 filer på rad mangler.
+ * Resultatet caches i speedLimitsCache.
  */
 export async function loadSpeedLimits() {
-  try {
-    const res = await fetch("data/speedlimits.json", { cache: "no-store" });
-    if (res.ok) {
-      speedLimitsCache = await res.json();
+  if (speedLimitsLoaded && Array.isArray(speedLimitsCache)) {
+    console.log("Speedlimits allerede lastet (cache).");
+    return;
+  }
 
-      // Precompute bounding boxes for each segment
-      if (typeof turf !== "undefined") {
-        speedLimitsCache.forEach(seg => {
-          try {
-            if (seg.geometry?.coordinates) {
-              const line = turf.lineString(seg.geometry.coordinates);
-              seg._bbox = turf.bbox(line); // [minX, minY, maxX, maxY]
-            }
-          } catch {
-            seg._bbox = null;
-          }
-        });
+  try {
+    let allSegments = [];
+    let part = 1;
+    let consecutiveMissing = 0;
+    const MAX_MISSING = 3;
+
+    console.log("Laster speedlimit-deler...");
+
+    while (consecutiveMissing < MAX_MISSING) {
+      const url = `data/speedlimits_part${part}.json`;
+
+      try {
+        const res = await fetch(url, { cache: "no-store" });
+
+        if (!res.ok) {
+          console.warn(`Fant ikke ${url} (status ${res.status})`);
+          consecutiveMissing++;
+          part++;
+          continue;
+        }
+
+        const json = await res.json();
+        if (Array.isArray(json)) {
+          allSegments = allSegments.concat(json);
+          console.log(`Lastet ${url} (${json.length} segmenter)`);
+        }
+
+        consecutiveMissing = 0; // reset siden vi fant en fil
+      } catch (err) {
+        console.warn(`Feil ved lasting av ${url}:`, err);
+        consecutiveMissing++;
       }
 
-      console.log(
-        `Speedlimits lastet: ${
-          Array.isArray(speedLimitsCache) ? speedLimitsCache.length : 0
-        } segmenter`
-      );
-    } else {
-      console.error(
-        `Kunne ikke laste speedlimits.json: ${res.status} ${res.statusText}`
-      );
+      part++;
     }
+
+    speedLimitsCache = allSegments;
+    speedLimitsLoaded = true;
+
+    console.log(
+      `Ferdig: Lastet ${allSegments.length} segmenter fra ${part - consecutiveMissing - 1} filer`
+    );
+
+    // Precompute bounding boxes for ytelse
+    if (typeof turf !== "undefined") {
+      speedLimitsCache.forEach(seg => {
+        try {
+          if (seg.geometry?.coordinates) {
+            const line = turf.lineString(seg.geometry.coordinates);
+            seg._bbox = turf.bbox(line); // [minX, minY, maxX, maxY]
+          }
+        } catch {
+          seg._bbox = null;
+        }
+      });
+    }
+
   } catch (err) {
-    console.error("Kunne ikke laste speedlimits.json:", err);
+    console.error("Kunne ikke laste speedlimits:", err);
   }
 }
 
@@ -81,13 +116,11 @@ export function getSpeedLimitForPosition(lat, lon) {
   for (const seg of speedLimitsCache) {
     if (!seg.geometry?.coordinates) continue;
 
-    // -----------------------------
     // 1. Bounding box prefilter
-    // -----------------------------
     if (seg._bbox) {
       const [minX, minY, maxX, maxY] = seg._bbox;
 
-      // +/- 0.001° ≈ 110 m margin
+      // +/- 0.001° ≈ ~110 m margin
       if (
         lon < minX - 0.001 ||
         lon > maxX + 0.001 ||
@@ -101,9 +134,7 @@ export function getSpeedLimitForPosition(lat, lon) {
     try {
       const line = turf.lineString(seg.geometry.coordinates);
 
-      // -----------------------------
       // 2. Avstand til segment
-      // -----------------------------
       const dist = turf.pointToLineDistance(pt, line, { units: "meters" });
 
       // 3. Cutoff: ignorer segmenter > 40 m unna
@@ -118,12 +149,5 @@ export function getSpeedLimitForPosition(lat, lon) {
     }
   }
 
-  if (nearest) {
-    // console.log(
-    //   `Nærmeste segment: avstand=${nearestDist.toFixed(1)}m, limit=${nearest.speed_limit}`
-    // );
-    return nearest.speed_limit;
-  }
-
-  return null;
+  return nearest ? nearest.speed_limit : null;
 }
