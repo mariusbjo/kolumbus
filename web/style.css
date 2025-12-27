@@ -1,7 +1,21 @@
-/* web/style.css */
+/* ---------------------------------------------------------
+   GLOBAL LAYOUT
+--------------------------------------------------------- */
 
-html, body { height: 100%; margin: 0; }
-#map { height: 100vh; }
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: system-ui, sans-serif;
+}
+
+#map {
+  height: 100vh;
+  width: 100%;
+}
+
+/* ---------------------------------------------------------
+   META BOX (brukt i sanntidskartet)
+--------------------------------------------------------- */
 
 .meta {
   position: absolute;
@@ -13,7 +27,10 @@ html, body { height: 100%; margin: 0; }
   font: 14px/1.4 system-ui, sans-serif;
 }
 
-/* Fartsskilt-ikon */
+/* ---------------------------------------------------------
+   SPEED LIMIT ICONS (sanntidskart)
+--------------------------------------------------------- */
+
 .speed-icon div {
   background: white;
   border: 2px solid red;
@@ -30,4 +47,51 @@ html, body { height: 100%; margin: 0; }
   background: red;
   color: white;
   border: 2px solid black;
+}
+
+/* ---------------------------------------------------------
+   TESTKART: CONTROL PANEL
+--------------------------------------------------------- */
+
+.control-box {
+  background: white;
+  padding: 10px 14px;
+  border-radius: 6px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.25);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* ---------------------------------------------------------
+   TESTKART: LOG PANEL
+--------------------------------------------------------- */
+
+.log-box {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: 340px;
+  max-height: 220px;
+  overflow-y: auto;
+  background: rgba(255,255,255,0.9);
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.25);
+}
+
+.log-line {
+  margin: 2px 0;
+}
+
+.log-line.ok {
+  color: #27ae60;
+}
+
+.log-line.warn {
+  color: #f39c12;
+}
+
+.log-line.err {
+  color: #c0392b;
 }
