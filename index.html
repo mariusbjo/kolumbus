@@ -87,13 +87,39 @@
       try {
         const res = await fetch("meta/last_deploy.txt", { cache: "no-store" });
         const epoch = parseInt((await res.text()).trim(), 10);
-        const date = new Date(epoch * 1000);
-        document.getElementById("last-updated").textContent =
-          date.toISOString().replace("T", " ").replace("Z", " UTC");
+    
+        // Original UTC-tid fra server
+        const utcDate = new Date(epoch * 1000);
+    
+        let date;
+    
+        try {
+          // Forsøk å bruke lokal tid basert på brukerens browser
+          date = new Date(utcDate.toLocaleString("en-US", { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone }));
+        } catch {
+          // Fallback: UTC+1
+          date = new Date(utcDate.getTime() + 1 * 60 * 60 * 1000);
+        }
+    
+        // Format: DD.MM.YYYY
+        const dd = String(date.getDate()).padStart(2, "0");
+        const mm = String(date.getMonth() + 1).padStart(2, "0");
+        const yyyy = date.getFullYear();
+    
+        // Format: HH:MM:SS
+        const hh = String(date.getHours()).padStart(2, "0");
+        const min = String(date.getMinutes()).padStart(2, "0");
+        const ss = String(date.getSeconds()).padStart(2, "0");
+    
+        const formatted = `${dd}.${mm}.${yyyy} ${hh}:${min}:${ss}`;
+    
+        document.getElementById("last-updated").textContent = formatted;
+    
       } catch {
         document.getElementById("last-updated").textContent = "ukjent";
       }
     }
+    
     loadLastUpdated();
 
     /* ---------------------------------------------------------
