@@ -100,60 +100,104 @@ html, body {
    WELCOME PAGE (index.html)
 --------------------------------------------------------- */
 
+:root {
+  --bg: #f5f7fa;
+  --text: #333;
+  --subtext: #555;
+  --card-bg: #ffffff;
+  --card-shadow: rgba(0,0,0,0.1);
+  --btn-bg: #0078d4;
+  --btn-bg-hover: #005fa3;
+  --btn-text: #ffffff;
+}
+
+[data-theme="dark"] {
+  --bg: #1e1e1e;
+  --text: #f0f0f0;
+  --subtext: #cccccc;
+  --card-bg: #2a2a2a;
+  --card-shadow: rgba(0,0,0,0.4);
+  --btn-bg: #0a84ff;
+  --btn-bg-hover: #006edc;
+  --btn-text: #ffffff;
+}
+
 .welcome-body {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: #f5f7fa;
+  background: var(--bg);
   font-family: system-ui, sans-serif;
+  transition: background 0.3s ease;
 }
 
 .welcome-container {
   max-width: 600px;
   width: 90%;
-  background: white;
-  padding: 32px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  background: var(--card-bg);
+  padding: 36px;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px var(--card-shadow);
   text-align: center;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.welcome-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .welcome-container h1 {
-  margin-bottom: 8px;
-  font-size: 28px;
-  color: #333;
+  margin: 0;
+  font-size: 30px;
+  color: var(--text);
 }
 
-.welcome-container p {
-  margin-bottom: 24px;
-  color: #555;
+.welcome-subtitle {
+  margin: 16px 0 28px;
+  color: var(--subtext);
+  font-size: 17px;
+}
+
+.theme-toggle {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.theme-toggle:hover {
+  transform: rotate(20deg);
 }
 
 .welcome-link-grid {
   display: grid;
-  gap: 16px;
+  gap: 18px;
   margin-top: 20px;
 }
 
 .welcome-link-btn {
   display: block;
-  padding: 14px 20px;
-  background: #0078d4;
-  color: white;
+  padding: 16px 22px;
+  background: var(--btn-bg);
+  color: var(--btn-text);
   text-decoration: none;
-  border-radius: 8px;
-  font-size: 16px;
+  border-radius: 10px;
+  font-size: 17px;
   font-weight: 600;
-  transition: background 0.2s ease;
+  transition: background 0.25s ease, transform 0.15s ease;
 }
 
 .welcome-link-btn:hover {
-  background: #005fa3;
+  background: var(--btn-bg-hover);
+  transform: translateY(-3px);
 }
 
-.welcome-small-note {
-  margin-top: 24px;
-  font-size: 13px;
-  color: #777;
+.welcome-updated {
+  margin-top: 28px;
+  font-size: 14px;
+  color: var(--subtext);
 }
