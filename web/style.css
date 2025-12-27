@@ -95,3 +95,109 @@ html, body {
 .log-line.err {
   color: #c0392b;
 }
+
+/* ---------------------------------------------------------
+   WELCOME PAGE (index.html)
+--------------------------------------------------------- */
+
+:root {
+  --bg: #f5f7fa;
+  --text: #333;
+  --subtext: #555;
+  --card-bg: #ffffff;
+  --card-shadow: rgba(0,0,0,0.1);
+  --btn-bg: #0078d4;
+  --btn-bg-hover: #005fa3;
+  --btn-text: #ffffff;
+}
+
+[data-theme="dark"] {
+  --bg: #1e1e1e;
+  --text: #f0f0f0;
+  --subtext: #cccccc;
+  --card-bg: #2a2a2a;
+  --card-shadow: rgba(0,0,0,0.4);
+  --btn-bg: #0a84ff;
+  --btn-bg-hover: #006edc;
+  --btn-text: #ffffff;
+}
+
+.welcome-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: var(--bg);
+  font-family: system-ui, sans-serif;
+  transition: background 0.3s ease;
+}
+
+.welcome-container {
+  max-width: 600px;
+  width: 90%;
+  background: var(--card-bg);
+  padding: 36px;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px var(--card-shadow);
+  text-align: center;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.welcome-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.welcome-container h1 {
+  margin: 0;
+  font-size: 30px;
+  color: var(--text);
+}
+
+.welcome-subtitle {
+  margin: 16px 0 28px;
+  color: var(--subtext);
+  font-size: 17px;
+}
+
+.theme-toggle {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.theme-toggle:hover {
+  transform: rotate(20deg);
+}
+
+.welcome-link-grid {
+  display: grid;
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.welcome-link-btn {
+  display: block;
+  padding: 16px 22px;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  text-decoration: none;
+  border-radius: 10px;
+  font-size: 17px;
+  font-weight: 600;
+  transition: background 0.25s ease, transform 0.15s ease;
+}
+
+.welcome-link-btn:hover {
+  background: var(--btn-bg-hover);
+  transform: translateY(-3px);
+}
+
+.welcome-updated {
+  margin-top: 28px;
+  font-size: 14px;
+  color: var(--subtext);
+}
