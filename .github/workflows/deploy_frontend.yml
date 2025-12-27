@@ -16,7 +16,7 @@ jobs:
 
     steps:
       # ---------------------------------------------------------
-      # 0) CHECKOUT
+      # 0) CHECKOUT MAIN
       # ---------------------------------------------------------
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -225,12 +225,12 @@ jobs:
         run: ls -R public
 
       # ---------------------------------------------------------
-      # 16) DEPLOY
+      # 16) DEPLOY (KEEP FILES!)
       # ---------------------------------------------------------
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: public
-          keep_files: false
+          keep_files: true
           enable_jekyll: false
