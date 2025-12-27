@@ -15,8 +15,9 @@ let history = {};
 let followBusId = null;
 let routeLayer = null;
 let speedMarkers = [];
+let speedBadgeMarkers = {}; // fartsskilt ved siden av buss
 
-// ★ Klikk i kartet stopper følge-modus
+// Klikk i kartet stopper følge-modus
 map.on("click", () => stopFollow());
 
 // Last inn fartsgrense-cache ved oppstart
@@ -70,15 +71,8 @@ async function loadKolumbusLive() {
       const cutoff = now - 30 * 60 * 1000;
       history[id] = history[id].filter(p => p.timestamp >= cutoff);
 
-      // ★ Velg ikon:
-      // - Hvis denne bussen er valgt → speedIcon
-      // - Ellers → sort bussikon
-      let icon;
-      if (followBusId === id && typeof speed === "number") {
-        icon = speedIcon(speed, speedLimit);
-      } else {
-        icon = busIcon;
-      }
+      // Bussen bruker ALLTID standard sort ikon
+      const icon = busIcon;
 
       // Opprett eller oppdater markør
       if (!markers[id]) {
@@ -92,16 +86,38 @@ async function loadKolumbusLive() {
           .bindPopup(popup)
           .addTo(map);
 
-        // ★ Klikk på buss → følg bussen
-        markers[id].on("click", () => followBus(id));
+        // Klikk på buss → følg bussen
+        markers[id].on("click", (e) => {
+          e.originalEvent.cancelBubble = true; // hindre kartklikk
+          followBus(id);
+        });
 
       } else {
         markers[id].setLatLng(pos);
         markers[id].setIcon(icon);
       }
+
+      // Hvis denne bussen er valgt → vis fartsskilt ved siden av bussen
+      if (followBusId === id && typeof speed === "number") {
+        const badgeIcon = speedIcon(speed, speedLimit);
+
+        if (!speedBadgeMarkers[id]) {
+          speedBadgeMarkers[id] = L.marker(pos, { icon: badgeIcon }).addTo(map);
+        } else {
+          speedBadgeMarkers[id].setLatLng(pos);
+          speedBadgeMarkers[id].setIcon(badgeIcon);
+        }
+
+      } else {
+        // Fjern fartsskilt hvis bussen ikke lenger er valgt
+        if (speedBadgeMarkers[id]) {
+          map.removeLayer(speedBadgeMarkers[id]);
+          delete speedBadgeMarkers[id];
+        }
+      }
     }
 
-    // ★ Følg buss-modus
+    // Følg buss-modus
     if (followBusId && history[followBusId]) {
       if (routeLayer) map.removeLayer(routeLayer);
       speedMarkers.forEach(m => map.removeLayer(m));
@@ -131,12 +147,12 @@ async function loadKolumbusLive() {
   }
 }
 
-// ★ Klikk på buss → følg
+// Klikk på buss → følg
 window.followBus = function(id) {
   followBusId = id;
 };
 
-// ★ Klikk i kartet → stopp følge
+// Klikk i kartet → stopp følge
 window.stopFollow = function() {
   followBusId = null;
 
@@ -147,6 +163,9 @@ window.stopFollow = function() {
 
   speedMarkers.forEach(m => map.removeLayer(m));
   speedMarkers = [];
+
+  Object.values(speedBadgeMarkers).forEach(m => map.removeLayer(m));
+  speedBadgeMarkers = {};
 };
 
 loadKolumbusLive();
