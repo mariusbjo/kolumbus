@@ -1,7 +1,7 @@
 // assets/script.js
 import { ENTUR_URL, CLIENT_NAME, UPDATE_INTERVAL } from './config.js';
 import { haversine, loadSpeedLimits, getSpeedLimitForPosition } from './utils.js';
-import { busIcon, busIconOverLimit, speedIcon } from './icons.js';
+import { speedIcon } from './icons.js';
 
 const map = L.map('map').setView([58.97, 5.73], 9);
 
@@ -38,6 +38,7 @@ async function loadKolumbusLive() {
       },
       body: JSON.stringify({ query })
     });
+
     const payload = await res.json();
     const vehicles = payload.data?.vehicles || [];
 
@@ -49,6 +50,8 @@ async function loadKolumbusLive() {
       const now = new Date(v.lastUpdated).getTime();
       if (!history[id]) history[id] = [];
       const prev = history[id].slice(-1)[0];
+
+      // Beregn fart
       let speed = null;
       if (prev) {
         const dt = (now - prev.timestamp) / 1000;
@@ -59,19 +62,28 @@ async function loadKolumbusLive() {
       // Finn fartsgrense
       const speedLimit = getSpeedLimitForPosition(pos[0], pos[1]);
 
+      // Logg historikk
       history[id].push({ lat: pos[0], lon: pos[1], timestamp: now, speed, speedLimit });
       const cutoff = now - 30 * 60 * 1000;
       history[id] = history[id].filter(p => p.timestamp >= cutoff);
 
-      // Velg ikon basert på fartsgrense
-      let icon = busIcon;
-      if (typeof speed === "number" && typeof speedLimit === "number" && speed > speedLimit) {
-        icon = busIconOverLimit;
-        console.log(`Bus ${id} OVER limit: speed=${speed.toFixed(1)} km/t, limit=${speedLimit} km/t`);
-      } else {
-        console.log(`Bus ${id}: speed=${speed?.toFixed(1) ?? "?"}, limit=${speedLimit ?? "?"}`);
+      // Velg ikon basert på speedIcon()
+      const icon = speedIcon(speed ?? 0, speedLimit ?? null);
+
+      if (typeof speed === "number" && typeof speedLimit === "number") {
+        if (speed > speedLimit) {
+          console.log(
+            `%cBus ${id} OVER limit: speed=${speed.toFixed(1)} km/t, limit=${speedLimit} km/t`,
+            "color:red;font-weight:bold"
+          );
+        } else {
+          console.log(
+            `Bus ${id}: speed=${speed.toFixed(1)} km/t, limit=${speedLimit} km/t`
+          );
+        }
       }
 
+      // Oppdater eller opprett markør
       if (!markers[id]) {
         const popup = `
           <strong>Linje ${code}</strong><br>
@@ -87,6 +99,7 @@ async function loadKolumbusLive() {
       }
     }
 
+    // Følg buss-modus
     if (followBusId && history[followBusId]) {
       if (routeLayer) map.removeLayer(routeLayer);
       speedMarkers.forEach(m => map.removeLayer(m));
@@ -97,7 +110,9 @@ async function loadKolumbusLive() {
 
       history[followBusId].forEach(p => {
         if (p.speed) {
-          const sm = L.marker([p.lat, p.lon], { icon: speedIcon(p.speed, p.speedLimit) });
+          const sm = L.marker([p.lat, p.lon], {
+            icon: speedIcon(p.speed, p.speedLimit)
+          });
           sm.addTo(map);
           speedMarkers.push(sm);
         }
@@ -108,6 +123,7 @@ async function loadKolumbusLive() {
         map.setView(pos, map.getZoom());
       }
     }
+
   } catch (err) {
     console.error("Feil ved henting av sanntidsdata:", err);
   }
