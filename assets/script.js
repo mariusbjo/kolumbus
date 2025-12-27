@@ -1,7 +1,7 @@
 // assets/script.js
 import { ENTUR_URL, CLIENT_NAME, UPDATE_INTERVAL } from './config.js';
 import { haversine, loadSpeedLimits, getSpeedLimitForPosition } from './utils.js';
-import { speedIcon } from './icons.js';
+import { busIcon, speedIcon } from './icons.js';
 
 const map = L.map('map').setView([58.97, 5.73], 9);
 
@@ -15,6 +15,9 @@ let history = {};
 let followBusId = null;
 let routeLayer = null;
 let speedMarkers = [];
+
+// ★ Klikk i kartet stopper følge-modus
+map.on("click", () => stopFollow());
 
 // Last inn fartsgrense-cache ved oppstart
 await loadSpeedLimits();
@@ -67,39 +70,38 @@ async function loadKolumbusLive() {
       const cutoff = now - 30 * 60 * 1000;
       history[id] = history[id].filter(p => p.timestamp >= cutoff);
 
-      // Velg ikon basert på speedIcon()
-      const icon = speedIcon(speed ?? 0, speedLimit ?? null);
-
-      if (typeof speed === "number" && typeof speedLimit === "number") {
-        if (speed > speedLimit) {
-          console.log(
-            `%cBus ${id} OVER limit: speed=${speed.toFixed(1)} km/t, limit=${speedLimit} km/t`,
-            "color:red;font-weight:bold"
-          );
-        } else {
-          console.log(
-            `Bus ${id}: speed=${speed.toFixed(1)} km/t, limit=${speedLimit} km/t`
-          );
-        }
+      // ★ Velg ikon:
+      // - Hvis denne bussen er valgt → speedIcon
+      // - Ellers → sort bussikon
+      let icon;
+      if (followBusId === id && typeof speed === "number") {
+        icon = speedIcon(speed, speedLimit);
+      } else {
+        icon = busIcon;
       }
 
-      // Oppdater eller opprett markør
+      // Opprett eller oppdater markør
       if (!markers[id]) {
         const popup = `
           <strong>Linje ${code}</strong><br>
           ID: ${id}<br>
-          Oppdatert: ${v.lastUpdated}<br>
-          <button onclick="followBus('${id}')">Følg denne bussen</button>
-          <button onclick="stopFollow()">Slutt å følg</button>
+          Oppdatert: ${v.lastUpdated}
         `;
-        markers[id] = L.marker(pos, { icon }).bindPopup(popup).addTo(map);
+
+        markers[id] = L.marker(pos, { icon })
+          .bindPopup(popup)
+          .addTo(map);
+
+        // ★ Klikk på buss → følg bussen
+        markers[id].on("click", () => followBus(id));
+
       } else {
         markers[id].setLatLng(pos);
         markers[id].setIcon(icon);
       }
     }
 
-    // Følg buss-modus
+    // ★ Følg buss-modus
     if (followBusId && history[followBusId]) {
       if (routeLayer) map.removeLayer(routeLayer);
       speedMarkers.forEach(m => map.removeLayer(m));
@@ -129,17 +131,22 @@ async function loadKolumbusLive() {
   }
 }
 
+// ★ Klikk på buss → følg
 window.followBus = function(id) {
   followBusId = id;
-  alert(`Du følger nå buss ${id}. Klikk 'Slutt å følg' for å stoppe.`);
 };
 
+// ★ Klikk i kartet → stopp følge
 window.stopFollow = function() {
   followBusId = null;
-  if (routeLayer) { map.removeLayer(routeLayer); routeLayer = null; }
+
+  if (routeLayer) {
+    map.removeLayer(routeLayer);
+    routeLayer = null;
+  }
+
   speedMarkers.forEach(m => map.removeLayer(m));
   speedMarkers = [];
-  alert("Du følger ikke lenger en buss.");
 };
 
 loadKolumbusLive();
