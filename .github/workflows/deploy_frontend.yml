@@ -212,6 +212,7 @@ jobs:
       - name: Copy frontend files
         run: |
           cp index.html public/
+          cp realtime.html public/
           cp -r assets public/ || true
           cp -r scripts public/ || true
           cp -r web public/ || true
