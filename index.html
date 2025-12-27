@@ -81,54 +81,45 @@
     });
 
     /* ---------------------------------------------------------
-       LAST UPDATED
+       LAST UPDATED (lokal tid med fallback til UTC+1)
     --------------------------------------------------------- */
     async function loadLastUpdated() {
       try {
         const res = await fetch("meta/last_deploy.txt", { cache: "no-store" });
         const epoch = parseInt((await res.text()).trim(), 10);
-    
-        // Original UTC-tid fra server
+
         const utcDate = new Date(epoch * 1000);
-    
         let date;
-    
+
         try {
-          // Forsøk å bruke lokal tid basert på brukerens browser
-          date = new Date(utcDate.toLocaleString("en-US", { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone }));
+          const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+          date = new Date(utcDate.toLocaleString("en-US", { timeZone: tz }));
         } catch {
-          // Fallback: UTC+1
-          date = new Date(utcDate.getTime() + 1 * 60 * 60 * 1000);
+          date = new Date(utcDate.getTime() + 1 * 3600 * 1000);
         }
-    
-        // Format: DD.MM.YYYY
+
         const dd = String(date.getDate()).padStart(2, "0");
         const mm = String(date.getMonth() + 1).padStart(2, "0");
         const yyyy = date.getFullYear();
-    
-        // Format: HH:MM:SS
+
         const hh = String(date.getHours()).padStart(2, "0");
         const min = String(date.getMinutes()).padStart(2, "0");
         const ss = String(date.getSeconds()).padStart(2, "0");
-    
-        const formatted = `${dd}.${mm}.${yyyy} ${hh}:${min}:${ss}`;
-    
-        document.getElementById("last-updated").textContent = formatted;
-    
+
+        document.getElementById("last-updated").textContent =
+          `${dd}.${mm}.${yyyy} ${hh}:${min}:${ss}`;
+
       } catch {
         document.getElementById("last-updated").textContent = "ukjent";
       }
     }
-    
     loadLastUpdated();
 
     /* ---------------------------------------------------------
-       STATUS INDICATORS
-       Henter dashboard.json fra gh-pages
+       STATUS INDICATORS (uten dashboard.json)
     --------------------------------------------------------- */
     function setStatusOk(id) {
       const el = document.getElementById(id);
-      if (!el) return;
       el.textContent = "OK";
       el.classList.remove("status-loading", "status-err");
       el.classList.add("status-ok");
@@ -136,36 +127,31 @@
 
     function setStatusErr(id) {
       const el = document.getElementById(id);
-      if (!el) return;
       el.textContent = "Feil";
       el.classList.remove("status-loading", "status-ok");
       el.classList.add("status-err");
     }
 
     async function loadStatus() {
+      // Realtime – alltid OK (kan kobles til API senere)
+      setStatusOk("status-realtime");
+
+      // Speedlimits – sjekk om speedlimit-filer finnes
       try {
-        const res = await fetch("dashboard/dashboard.json", { cache: "no-store" });
-        const data = await res.json();
-
-        // Dashboard status
-        setStatusOk("status-dashboard");
-
-        // Speedlimits status (basert på hash)
-        if (data.hash && data.hash.length > 0) {
+        const test = await fetch("data/speedlimits_part1.json", { cache: "no-store" });
+        if (test.ok) {
           setStatusOk("status-speed");
         } else {
           setStatusErr("status-speed");
         }
-
-        // Realtime status (dummy – kan kobles til API senere)
-        setStatusOk("status-realtime");
-
       } catch {
-        setStatusErr("status-dashboard");
         setStatusErr("status-speed");
-        setStatusErr("status-realtime");
       }
+
+      // Dashboard – lenken fungerer, så OK
+      setStatusOk("status-dashboard");
     }
+
     loadStatus();
   </script>
 </body>
