@@ -93,7 +93,7 @@
   }
 
   /* ---------------------------------------------------------
-     LOAD HASH + META
+     LOAD META (HASH + DEPLOY TIME)
   --------------------------------------------------------- */
   async function loadMeta() {
     const hashFullEl = document.getElementById("hash-full");
@@ -134,32 +134,40 @@
   }
 
   /* ---------------------------------------------------------
-     LOAD SPEEDLIMITS
+     LOAD SPEEDLIMITS (IMPROVED)
   --------------------------------------------------------- */
   async function loadSpeedlimits() {
     const slFilesEl = document.getElementById("sl-files");
     const slSizeEl = document.getElementById("sl-size");
     const slStatusEl = document.getElementById("sl-status");
-  
+
     let part = 1;
     let files = 0;
     let totalBytes = 0;
-  
+    let totalObjects = 0;
+
     while (true) {
-      const url = `../data/speedlimits_part${part}.json`;  // <-- FIXED
+      const url = `../data/speedlimits_part${part}.json`;
       try {
         const res = await fetch(url, { cache: "no-store" });
         if (!res.ok) break;
+
         const text = await res.text();
+        const json = JSON.parse(text);
+
         files++;
         totalBytes += new Blob([text]).size;
+        totalObjects += json.length;
+
         part++;
-      } catch {
+      } catch (err) {
+        log("err", `Feil ved lasting av ${url}: ${err.message}`);
         break;
       }
+
       if (part > 200) break;
     }
-  
+
     if (files === 0) {
       slFilesEl.textContent = "0";
       slSizeEl.textContent = "Ingen filer funnet";
@@ -168,17 +176,17 @@
       log("err", "Fant ingen speedlimits-delfiler.");
       return false;
     }
-  
+
     const mb = totalBytes / (1024 * 1024);
-    slFilesEl.textContent = files;
-    slSizeEl.textContent = `${mb.toFixed(1)} MB`;
+
+    slFilesEl.textContent = `${totalObjects.toLocaleString("no-NO")} objekter`;
+    slSizeEl.textContent = `${mb.toFixed(1)} MB (${files} filer)`;
     slStatusEl.textContent = "OK";
     slStatusEl.classList.add("status-ok");
-  
-    log("ok", `Leste ${files} speedlimits-delfiler.`);
+
+    log("ok", `Leste ${files} speedlimits-delfiler (${totalObjects} objekter).`);
     return true;
   }
-
 
   /* ---------------------------------------------------------
      LOAD KOLUMBUS
