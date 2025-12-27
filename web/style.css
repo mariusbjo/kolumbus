@@ -14,7 +14,7 @@ html, body {
 }
 
 /* ---------------------------------------------------------
-   META BOX (brukt i sanntidskartet)
+   META BOX (sanntidskart)
 --------------------------------------------------------- */
 
 .meta {
@@ -28,7 +28,7 @@ html, body {
 }
 
 /* ---------------------------------------------------------
-   SPEED LIMIT ICONS (sanntidskart)
+   SPEED LIMIT ICONS
 --------------------------------------------------------- */
 
 .speed-icon div {
@@ -84,20 +84,12 @@ html, body {
   margin: 2px 0;
 }
 
-.log-line.ok {
-  color: #27ae60;
-}
-
-.log-line.warn {
-  color: #f39c12;
-}
-
-.log-line.err {
-  color: #c0392b;
-}
+.log-line.ok { color: #27ae60; }
+.log-line.warn { color: #f39c12; }
+.log-line.err { color: #c0392b; }
 
 /* ---------------------------------------------------------
-   WELCOME PAGE – CARD LAYOUT
+   WELCOME PAGE – THEME VARIABLES
 --------------------------------------------------------- */
 
 :root {
@@ -120,6 +112,10 @@ html, body {
   --card-bg: #2a2a2a;
   --card-shadow: rgba(0,0,0,0.4);
 }
+
+/* ---------------------------------------------------------
+   WELCOME PAGE – LAYOUT
+--------------------------------------------------------- */
 
 .welcome-body {
   display: flex;
@@ -151,6 +147,27 @@ html, body {
   margin: 0;
   font-size: 32px;
   color: var(--text);
+}
+
+.version {
+  font-size: 0.6em;
+  background: #444;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 6px;
+}
+
+.theme-toggle {
+  border: none;
+  background: transparent;
+  font-size: 1.6rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.theme-toggle:hover {
+  transform: rotate(20deg);
 }
 
 .welcome-subtitle {
@@ -210,22 +227,61 @@ html, body {
   font-weight: 600;
   padding: 6px 10px;
   border-radius: 6px;
-  display: inline-block;
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
 }
 
+.tool-status .label {
+  opacity: 0.8;
+}
+
+.status-badge {
+  padding: 2px 6px;
+  border-radius: 4px;
+  min-width: 48px;
+  text-align: center;
+}
+
+/* OK */
 .status-ok {
   background: var(--status-ok);
   color: white;
 }
 
-.status-warn {
-  background: var(--status-warn);
-  color: white;
+.status-ok::before {
+  content: "✔ ";
+  font-weight: bold;
 }
 
+/* ERROR */
 .status-err {
   background: var(--status-err);
   color: white;
+}
+
+.status-err::before {
+  content: "✖ ";
+  font-weight: bold;
+}
+
+/* LOADING ANIMATION */
+.status-loading {
+  background: #999;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.status-loading::after {
+  content: "...";
+  animation: dots 1.2s infinite;
+}
+
+@keyframes dots {
+  0% { content: "."; }
+  33% { content: ".."; }
+  66% { content: "..."; }
 }
 
 /* ---------------------------------------------------------
@@ -236,4 +292,34 @@ html, body {
   margin-top: 32px;
   font-size: 14px;
   color: var(--subtext);
+}
+
+/* ---------------------------------------------------------
+   RESPONSIVE MOBILE VERSION
+--------------------------------------------------------- */
+
+@media (max-width: 600px) {
+  .welcome-container {
+    padding: 24px;
+  }
+
+  .welcome-container h1 {
+    font-size: 24px;
+  }
+
+  .tool-card {
+    padding: 18px;
+  }
+
+  .tool-icon {
+    font-size: 32px;
+  }
+
+  .tool-title {
+    font-size: 18px;
+  }
+
+  .tool-desc {
+    font-size: 13px;
+  }
 }
