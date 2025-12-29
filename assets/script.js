@@ -1,7 +1,7 @@
 // assets/script.js
 import { ENTUR_URL, CLIENT_NAME, UPDATE_INTERVAL } from './config.js';
 import { haversine, loadSpeedLimits, getSpeedLimitForPosition } from './utils.js';
-import { busIcon, speedIcon } from './icons.js';
+import { busIcon, speedIcon, busWithSpeedIcon } from './icons.js';
 
 const map = L.map('map').setView([58.97, 5.73], 9);
 
