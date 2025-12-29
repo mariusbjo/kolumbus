@@ -21,5 +21,20 @@ export function speedIcon(speed, limit) {
   });
 }
 
-// Ikke lenger i bruk – fjernet
-// export const busIconOverLimit = ...
+// Kombinert ikon: buss + fartsbadge
+export function busWithSpeedIcon(speed, limit) {
+  const over = limit && speed > limit;
+  const badgeClass = over ? "speed-badge over" : "speed-badge";
+
+  return L.divIcon({
+    className: "bus-marker",
+    html: `
+      <div class="bus-icon-wrapper">
+        <img src="assets/icons/bus-black.png" class="bus-icon">
+        <div class="${badgeClass}">${Math.round(speed)}</div>
+      </div>
+    `,
+    iconSize: [40, 40],
+    iconAnchor: [20, 20]
+  });
+}
