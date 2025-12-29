@@ -15,7 +15,6 @@ let history = {};
 let followBusId = null;
 let routeLayer = null;
 let speedMarkers = [];
-let speedBadgeMarkers = {}; // fartsskilt ved siden av buss
 
 // Klikk i kartet stopper følge-modus
 map.on("click", () => stopFollow());
@@ -72,7 +71,7 @@ async function loadKolumbusLive() {
       history[id] = history[id].filter(p => p.timestamp >= cutoff);
 
       // Bussen bruker ALLTID standard sort ikon
-      const icon = busIcon;
+      const icon = busWithSpeedIcon(speed, speedLimit);
 
       // Opprett eller oppdater markør
       if (!markers[id]) {
@@ -94,26 +93,7 @@ async function loadKolumbusLive() {
 
       } else {
         markers[id].setLatLng(pos);
-        markers[id].setIcon(icon);
-      }
-
-      // Hvis denne bussen er valgt → vis fartsskilt ved siden av bussen
-      if (followBusId === id && typeof speed === "number") {
-        const badgeIcon = speedIcon(speed, speedLimit);
-
-        if (!speedBadgeMarkers[id]) {
-          speedBadgeMarkers[id] = L.marker(pos, { icon: badgeIcon }).addTo(map);
-        } else {
-          speedBadgeMarkers[id].setLatLng(pos);
-          speedBadgeMarkers[id].setIcon(badgeIcon);
-        }
-
-      } else {
-        // Fjern fartsskilt hvis bussen ikke lenger er valgt
-        if (speedBadgeMarkers[id]) {
-          map.removeLayer(speedBadgeMarkers[id]);
-          delete speedBadgeMarkers[id];
-        }
+        markers[id].setIcon(busWithSpeedIcon(speed, speedLimit));
       }
     }
 
