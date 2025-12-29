@@ -1,10 +1,10 @@
 // assets/utils.js
 
-let speedLimitsCache = null;   // null = ikke lastet ennå
-let speedLimitsLoaded = false; // caching flag
+let speedLimitsCache = null;     // Array med alle segmenter
+let speedLimitsLoaded = false;   // Flag for caching
 
 /**
- * Laster inn alle speedlimits_partX.json automatisk
+ * Laster inn alle speedlimits_partX.json automatisk.
  * Stopper når 3 filer på rad mangler.
  * Resultatet caches i speedLimitsCache.
  */
@@ -14,65 +14,67 @@ export async function loadSpeedLimits() {
     return;
   }
 
-  try {
-    let allSegments = [];
-    let part = 1;
-    let consecutiveMissing = 0;
-    const MAX_MISSING = 3;
+  console.log("Laster speedlimit-deler...");
 
-    console.log("Laster speedlimit-deler...");
+  const allSegments = [];
+  let part = 1;
+  let missingCount = 0;
+  const MAX_MISSING = 3;
 
-    while (consecutiveMissing < MAX_MISSING) {
-      const url = `data/speedlimits_part${part}.json`;
+  while (missingCount < MAX_MISSING) {
+    const url = `data/speedlimits_part${part}.json`;
 
-      try {
-        const res = await fetch(url, { cache: "no-store" });
+    try {
+      const res = await fetch(url, { cache: "no-store" });
 
-        if (!res.ok) {
-          console.warn(`Fant ikke ${url} (status ${res.status})`);
-          consecutiveMissing++;
-          part++;
-          continue;
-        }
-
-        const json = await res.json();
-        if (Array.isArray(json)) {
-          allSegments = allSegments.concat(json);
-          console.log(`Lastet ${url} (${json.length} segmenter)`);
-        }
-
-        consecutiveMissing = 0; // reset siden vi fant en fil
-      } catch (err) {
-        console.warn(`Feil ved lasting av ${url}:`, err);
-        consecutiveMissing++;
+      if (!res.ok) {
+        console.warn(`Fant ikke ${url} (status ${res.status})`);
+        missingCount++;
+        part++;
+        continue;
       }
 
-      part++;
+      const json = await res.json();
+
+      if (Array.isArray(json)) {
+        allSegments.push(...json);
+        console.log(`Lastet ${url} (${json.length} segmenter)`);
+      }
+
+      missingCount = 0; // reset siden vi fant en fil
+
+    } catch (err) {
+      console.warn(`Feil ved lasting av ${url}:`, err);
+      missingCount++;
     }
 
-    speedLimitsCache = allSegments;
-    speedLimitsLoaded = true;
+    part++;
+  }
 
-    console.log(
-      `Ferdig: Lastet ${allSegments.length} segmenter fra ${part - consecutiveMissing - 1} filer`
-    );
+  speedLimitsCache = allSegments;
+  speedLimitsLoaded = true;
 
-    // Precompute bounding boxes for ytelse
-    if (typeof turf !== "undefined") {
-      speedLimitsCache.forEach(seg => {
-        try {
-          if (seg.geometry?.coordinates) {
-            const line = turf.lineString(seg.geometry.coordinates);
-            seg._bbox = turf.bbox(line); // [minX, minY, maxX, maxY]
-          }
-        } catch {
+  console.log(
+    `Ferdig: Lastet ${allSegments.length} segmenter fra ${part - missingCount - 1} filer`
+  );
+
+  // Precompute bounding boxes for ytelse
+  if (typeof turf !== "undefined") {
+    speedLimitsCache.forEach(seg => {
+      try {
+        const coords = seg.geometry?.coordinates;
+        if (!coords) {
           seg._bbox = null;
+          return;
         }
-      });
-    }
 
-  } catch (err) {
-    console.error("Kunne ikke laste speedlimits:", err);
+        const line = turf.lineString(coords);
+        seg._bbox = turf.bbox(line); // [minX, minY, maxX, maxY]
+
+      } catch {
+        seg._bbox = null;
+      }
+    });
   }
 }
 
@@ -82,18 +84,21 @@ export async function loadSpeedLimits() {
 export function haversine(lat1, lon1, lat2, lon2) {
   const R = 6371000;
   const toRad = x => x * Math.PI / 180;
+
   const dLat = toRad(lat2 - lat1);
   const dLon = toRad(lon2 - lon1);
+
   const a =
     Math.sin(dLat / 2) ** 2 +
     Math.cos(toRad(lat1)) *
       Math.cos(toRad(lat2)) *
       Math.sin(dLon / 2) ** 2;
+
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
 /**
- * Finn gjeldende fartsgrense for en posisjon ved å sjekke nærmeste segment
+ * Finn gjeldende fartsgrense for en posisjon ved å sjekke nærmeste segment.
  * Optimalisert:
  *  - Bounding box prefilter
  *  - Maks avstand cutoff (40 m)
@@ -109,16 +114,17 @@ export function getSpeedLimitForPosition(lat, lon) {
   }
 
   const pt = turf.point([lon, lat]);
-
   let nearest = null;
   let nearestDist = Infinity;
 
   for (const seg of speedLimitsCache) {
-    if (!seg.geometry?.coordinates) continue;
+    const coords = seg.geometry?.coordinates;
+    if (!coords) continue;
 
     // 1. Bounding box prefilter
-    if (seg._bbox) {
-      const [minX, minY, maxX, maxY] = seg._bbox;
+    const bbox = seg._bbox;
+    if (bbox) {
+      const [minX, minY, maxX, maxY] = bbox;
 
       // +/- 0.001° ≈ ~110 m margin
       if (
@@ -132,7 +138,7 @@ export function getSpeedLimitForPosition(lat, lon) {
     }
 
     try {
-      const line = turf.lineString(seg.geometry.coordinates);
+      const line = turf.lineString(coords);
 
       // 2. Avstand til segment
       const dist = turf.pointToLineDistance(pt, line, { units: "meters" });
@@ -144,6 +150,7 @@ export function getSpeedLimitForPosition(lat, lon) {
         nearestDist = dist;
         nearest = seg;
       }
+
     } catch {
       continue;
     }

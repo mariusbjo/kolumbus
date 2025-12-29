@@ -1,7 +1,7 @@
 // assets/script.js
 import { ENTUR_URL, CLIENT_NAME, UPDATE_INTERVAL } from './config.js';
 import { haversine, loadSpeedLimits, getSpeedLimitForPosition } from './utils.js';
-import { busIcon, speedIcon } from './icons.js';
+import { busWithSpeedIcon } from './icons.js';
 
 const map = L.map('map').setView([58.97, 5.73], 9);
 
@@ -15,7 +15,6 @@ let history = {};
 let followBusId = null;
 let routeLayer = null;
 let speedMarkers = [];
-let speedBadgeMarkers = {}; // fartsskilt ved siden av buss
 
 // Klikk i kartet stopper følge-modus
 map.on("click", () => stopFollow());
@@ -71,8 +70,8 @@ async function loadKolumbusLive() {
       const cutoff = now - 30 * 60 * 1000;
       history[id] = history[id].filter(p => p.timestamp >= cutoff);
 
-      // Bussen bruker ALLTID standard sort ikon
-      const icon = busIcon;
+      // Kombinert ikon
+      const icon = busWithSpeedIcon(speed, speedLimit);
 
       // Opprett eller oppdater markør
       if (!markers[id]) {
@@ -88,32 +87,13 @@ async function loadKolumbusLive() {
 
         // Klikk på buss → følg bussen
         markers[id].on("click", (e) => {
-          e.originalEvent.cancelBubble = true; // hindre kartklikk
+          e.originalEvent.cancelBubble = true;
           followBus(id);
         });
 
       } else {
         markers[id].setLatLng(pos);
         markers[id].setIcon(icon);
-      }
-
-      // Hvis denne bussen er valgt → vis fartsskilt ved siden av bussen
-      if (followBusId === id && typeof speed === "number") {
-        const badgeIcon = speedIcon(speed, speedLimit);
-
-        if (!speedBadgeMarkers[id]) {
-          speedBadgeMarkers[id] = L.marker(pos, { icon: badgeIcon }).addTo(map);
-        } else {
-          speedBadgeMarkers[id].setLatLng(pos);
-          speedBadgeMarkers[id].setIcon(badgeIcon);
-        }
-
-      } else {
-        // Fjern fartsskilt hvis bussen ikke lenger er valgt
-        if (speedBadgeMarkers[id]) {
-          map.removeLayer(speedBadgeMarkers[id]);
-          delete speedBadgeMarkers[id];
-        }
       }
     }
 
@@ -129,7 +109,7 @@ async function loadKolumbusLive() {
       history[followBusId].forEach(p => {
         if (p.speed) {
           const sm = L.marker([p.lat, p.lon], {
-            icon: speedIcon(p.speed, p.speedLimit)
+            icon: busWithSpeedIcon(p.speed, p.speedLimit)
           });
           sm.addTo(map);
           speedMarkers.push(sm);
@@ -163,9 +143,6 @@ window.stopFollow = function() {
 
   speedMarkers.forEach(m => map.removeLayer(m));
   speedMarkers = [];
-
-  Object.values(speedBadgeMarkers).forEach(m => map.removeLayer(m));
-  speedBadgeMarkers = {};
 };
 
 loadKolumbusLive();
