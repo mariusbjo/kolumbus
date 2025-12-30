@@ -160,13 +160,27 @@ async function loadKolumbusLive() {
 
       // Historikk langs ruten: kun når bussen faktisk beveger seg
       // OG ikke på siste punkt (nåværende posisjon)
-      for (let i = 0; i < hist.length - 1; i++) {
+      const lastIndex = hist.length - 1;
+
+      for (let i = 0; i < lastIndex; i++) {
         const p = hist[i];
+
         if (p.speed && p.speed > 1) {
           const sm = L.marker([p.lat, p.lon], {
             icon: speedIcon(p.speed, p.speedLimit)
           });
+
           sm.addTo(map);
+
+          // -----------------------------------------------------
+          // TRANSPARENS: eldste punkter er svakere
+          // -----------------------------------------------------
+          const alpha = 0.25 + 0.75 * (i / (lastIndex - 1));
+          sm.on('add', () => {
+            const el = sm.getElement();
+            if (el) el.style.opacity = alpha.toFixed(2);
+          });
+
           speedMarkers.push(sm);
         }
       }
