@@ -1,46 +1,34 @@
 // -----------------------------------------------------
 // map-history.js
-// Canvas-basert historikkvisning for fulgt buss
+// Canvas-basert historikkvisning med mini-busCombined-ikoner
 // -----------------------------------------------------
 
 import {
   getMinHistoryDistanceMeters,
-  computeFade,
-  trimHistory
+  computeFade
 } from './utils.js';
 
 import { getFollowBusId, registerFollowCallback } from './map-follow.js';
+import { createMiniBusIconCanvas } from './mini-bus-icon.js';
 
-// Ett felles Canvas-lag for historikkpunkter
 let historyLayer = null;
-
-// Intern referanse til kartet
 let mapRef = null;
-
-// Historikkdata (pekes til av realtime-modulen)
 let historyByIdRef = null;
 
-// -----------------------------------------------------
-// Opprett Canvas-lag (kun én gang)
-// -----------------------------------------------------
 function ensureHistoryLayer(map) {
   if (!historyLayer) {
-    historyLayer = L.layerGroup([], { renderer: L.canvas() }).addTo(map);
+    historyLayer = L.canvas({ padding: 0.5 });
+    map.addLayer(historyLayer);
   }
 }
 
-// -----------------------------------------------------
-// Fjern alle historikkpunkter fra kartet
-// -----------------------------------------------------
 export function clearHistory() {
-  if (historyLayer) {
-    historyLayer.clearLayers();
+  if (historyLayer && historyLayer._ctx) {
+    const ctx = historyLayer._ctx;
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   }
 }
 
-// -----------------------------------------------------
-// Tegn historikk for fulgt buss
-// -----------------------------------------------------
 export function updateHistoryForBus(map, historyById) {
   mapRef = map;
   historyByIdRef = historyById;
@@ -58,7 +46,10 @@ export function updateHistoryForBus(map, historyById) {
   }
 
   ensureHistoryLayer(map);
-  clearHistory();
+
+  const ctx = historyLayer._ctx;
+  const canvas = ctx.canvas;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   const lastIndex = hist.length - 1;
   const minDist = getMinHistoryDistanceMeters(map.getZoom());
@@ -68,48 +59,35 @@ export function updateHistoryForBus(map, historyById) {
   for (let i = 0; i < lastIndex; i++) {
     const p = hist[i];
 
-    // Hopp over punkter uten fart
     if (!(p.speed && p.speed > 1)) continue;
 
-    // Minimumsavstand
     if (lastAccepted) {
-      const d = L.latLng(lastAccepted.lat, lastAccepted.lon)
-        .distanceTo([p.lat, p.lon]);
+      const d = map.distance([lastAccepted.lat, lastAccepted.lon], [p.lat, p.lon]);
       if (d < minDist) continue;
     }
 
-    // Fading
     const alpha = computeFade(i, lastIndex);
 
-    // Canvas-marker
-    const marker = L.circleMarker([p.lat, p.lon], {
-      radius: 6,
-      color: "#ff8800",
-      fillColor: "#ff8800",
-      fillOpacity: alpha,
-      opacity: alpha,
-      renderer: historyLayer.options.renderer
-    });
+    const iconCanvas = createMiniBusIconCanvas(
+      p.speed,
+      p.speedLimit,
+      p.bearing,
+      1 // scale for mini-ikon
+    );
 
-    marker.addTo(historyLayer);
+    const pixel = map.latLngToContainerPoint([p.lat, p.lon]);
+
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.drawImage(iconCanvas, pixel.x - 8, pixel.y - 8);
+    ctx.restore();
+
     lastAccepted = p;
   }
 }
 
-// -----------------------------------------------------
-// Koble followBus → automatisk oppdatering av historikk
-// -----------------------------------------------------
 registerFollowCallback(() => {
   if (mapRef && historyByIdRef) {
     updateHistoryForBus(mapRef, historyByIdRef);
   }
 });
-
-// -----------------------------------------------------
-// Trim historikk for alle busser (kalles fra realtime)
-// -----------------------------------------------------
-export function trimAllHistory(historyById, minutes = 20) {
-  for (const id of Object.keys(historyById)) {
-    historyById[id] = trimHistory(historyById[id], minutes);
-  }
-}

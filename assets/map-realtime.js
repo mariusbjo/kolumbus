@@ -111,7 +111,8 @@ async function loadKolumbusLive(map) {
         lon: pos[1],
         timestamp: now,
         speed,
-        speedLimit
+        speedLimit,
+        bearing: v.bearing ?? null
       });
     }
 
