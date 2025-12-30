@@ -1,6 +1,6 @@
 // assets/icons.js
 
-// Standard ikon beholdes hvis du trenger det i andre visninger
+// Standard ikon for alle busser (sort buss)
 export const busIcon = L.icon({
   iconUrl: 'assets/icons/bus-black.png',
   iconSize: [28, 28],
@@ -8,20 +8,15 @@ export const busIcon = L.icon({
   popupAnchor: [0, -14]
 });
 
-// Kombinert ikon: buss + fartsbadge
-export function busWithSpeedIcon(speed, limit) {
+// Fartsskilt-ikon som brukes KUN når en buss er valgt
+export function speedIcon(speed, limit) {
   const over = limit && speed > limit;
-  const badgeClass = over ? "speed-badge over" : "speed-badge";
+  const className = over ? 'speed-icon over' : 'speed-icon';
 
   return L.divIcon({
-    className: "bus-marker",
-    html: `
-      <div class="bus-icon-wrapper">
-        <img src="assets/icons/bus-black.png" class="bus-icon">
-        <div class="${badgeClass}">${Math.round(speed ?? 0)}</div>
-      </div>
-    `,
-    iconSize: [40, 40],
-    iconAnchor: [20, 20]
+    className,
+    html: `<div>${Math.round(speed)}</div>`,
+    iconSize: [32, 32],
+    iconAnchor: [16, 16]
   });
 }
