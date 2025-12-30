@@ -39,6 +39,14 @@ export function updateHistoryForBus(map, historyById) {
     return;
   }
 
+  // -----------------------------------------------------
+  // Slett historikk for ALLE busser unntatt followId
+  // (hindrer "rare små ikoner" fra gamle busser)
+  // -----------------------------------------------------
+  for (const id of Object.keys(historyById)) {
+    if (id !== followId) delete historyById[id];
+  }
+
   const hist = historyById[followId];
   if (!hist.length) {
     clearHistory();
@@ -59,7 +67,8 @@ export function updateHistoryForBus(map, historyById) {
   for (let i = 0; i < lastIndex; i++) {
     const p = hist[i];
 
-    if (!(p.speed && p.speed > 1)) continue;
+    // Tegn punkter med speed = 0, men hopp over speed = null
+    if (p.speed == null) continue;
 
     if (lastAccepted) {
       const d = map.distance([lastAccepted.lat, lastAccepted.lon], [p.lat, p.lon]);
