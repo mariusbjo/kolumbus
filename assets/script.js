@@ -15,7 +15,39 @@ let history = {};
 let followBusId = null;
 let routeLayer = null;
 let speedMarkers = [];
-let speedBadgeMarkers = {}; // brukes ikke lenger for live, men beholdes for sikkerhet
+let speedBadgeMarkers = {}; // beholdes for sikkerhet
+
+// -----------------------------------------------------
+// ZOOM-ADAPTIVE IKONER
+// -----------------------------------------------------
+let currentScale = 1;
+
+function getScaleForZoom(z) {
+  return Math.min(1.8, Math.max(0.6, z / 10));
+}
+
+map.on("zoomend", () => {
+  currentScale = getScaleForZoom(map.getZoom());
+});
+
+// -----------------------------------------------------
+// SMOOTH ANIMASJON
+// -----------------------------------------------------
+function animateMarker(marker, from, to, duration = 500) {
+  const start = performance.now();
+
+  function frame(t) {
+    const progress = Math.min((t - start) / duration, 1);
+    const lat = from.lat + (to.lat - from.lat) * progress;
+    const lon = from.lng + (to.lng - from.lng) * progress;
+
+    marker.setLatLng([lat, lon]);
+
+    if (progress < 1) requestAnimationFrame(frame);
+  }
+
+  requestAnimationFrame(frame);
+}
 
 // Klikk i kartet stopper følge-modus
 map.on("click", () => stopFollow());
@@ -80,9 +112,9 @@ async function loadKolumbusLive() {
       history[id] = history[id].filter(p => p.timestamp >= cutoff);
 
       // -----------------------------------------------------
-      // SANNTIDSBUSS: Kombinert ikon (buss + fart)
+      // SANNTIDSBUSS: Kombinert ikon (buss + fart + scale)
       // -----------------------------------------------------
-      const icon = busCombinedIcon(speed, speedLimit);
+      const icon = busCombinedIcon(speed, speedLimit, currentScale);
 
       if (!markers[id]) {
         const popup = `
@@ -101,7 +133,13 @@ async function loadKolumbusLive() {
         });
 
       } else {
-        markers[id].setLatLng(pos);
+        const prevPos = markers[id].getLatLng();
+        const newPos = L.latLng(pos[0], pos[1]);
+
+        // Smooth animasjon
+        animateMarker(markers[id], prevPos, newPos);
+
+        // Oppdater ikon (scale + fart)
         markers[id].setIcon(icon);
       }
     }
@@ -119,7 +157,7 @@ async function loadKolumbusLive() {
 
       // Historikk langs ruten: kun når bussen faktisk beveger seg
       history[followBusId].forEach(p => {
-        if (p.speed && p.speed > 1) { // unngå stillstand
+        if (p.speed && p.speed > 1) {
           const sm = L.marker([p.lat, p.lon], {
             icon: speedIcon(p.speed, p.speedLimit)
           });
