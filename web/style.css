@@ -412,9 +412,8 @@ html, body {
 }
 
 #zoom-slider {
-  writing-mode: bt-lr; /* vertikal slider via rotasjon */
-  transform: rotate(270deg);
-  width: 120px;
+  width: 140px;
+  height: 6px;
   cursor: pointer;
 }
 
