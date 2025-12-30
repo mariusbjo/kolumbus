@@ -26,6 +26,14 @@ const zoomOutBtn = document.getElementById("zoom-out");
 const zoomFitBtn = document.getElementById("zoom-fit");
 const zoomResetBtn = document.getElementById("zoom-reset");
 const zoomPanel = document.querySelector(".zoom-control");
+const zoomLevelLabel = document.getElementById("zoom-level");
+
+// Funksjon for å oppdatere zoom-indikatoren
+function updateZoomLabel() {
+  if (zoomLevelLabel) {
+    zoomLevelLabel.textContent = "Zoom: " + map.getZoom();
+  }
+}
 
 // Init slider med nåværende zoom
 if (zoomSlider) {
@@ -34,23 +42,40 @@ if (zoomSlider) {
   // Slider → kart
   zoomSlider.oninput = () => {
     map.setZoom(parseInt(zoomSlider.value));
+    updateZoomLabel();
   };
 
   // Kart → slider
   map.on("zoomend", () => {
     zoomSlider.value = map.getZoom();
+    updateZoomLabel();
   });
+
+  // Init label ved oppstart
+  updateZoomLabel();
 }
 
 // Knapper
-if (zoomInBtn) zoomInBtn.onclick = () => map.zoomIn();
-if (zoomOutBtn) zoomOutBtn.onclick = () => map.zoomOut();
+if (zoomInBtn) {
+  zoomInBtn.onclick = () => {
+    map.zoomIn();
+    updateZoomLabel();
+  };
+}
+
+if (zoomOutBtn) {
+  zoomOutBtn.onclick = () => {
+    map.zoomOut();
+    updateZoomLabel();
+  };
+}
 
 // Fit-route: zoom til hele ruten hvis vi følger en buss og har rute
 if (zoomFitBtn) {
   zoomFitBtn.onclick = () => {
     if (routeLayer) {
       map.fitBounds(routeLayer.getBounds(), { padding: [40, 40] });
+      updateZoomLabel();
     }
   };
 }
