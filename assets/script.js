@@ -18,6 +18,27 @@ let speedMarkers = [];
 let speedBadgeMarkers = {}; // beholdes for sikkerhet
 
 // -----------------------------------------------------
+// PREMIUM ZOOM CONTROL
+// -----------------------------------------------------
+const zoomSlider = document.getElementById("zoom-slider");
+
+zoomSlider.value = map.getZoom();
+
+// Slider → kart
+zoomSlider.oninput = () => {
+  map.setZoom(parseInt(zoomSlider.value));
+};
+
+// Kart → slider
+map.on("zoomend", () => {
+  zoomSlider.value = map.getZoom();
+});
+
+// Knapper
+document.getElementById("zoom-in").onclick = () => map.zoomIn();
+document.getElementById("zoom-out").onclick = () => map.zoomOut();
+
+// -----------------------------------------------------
 // ZOOM-ADAPTIVE IKONER
 // -----------------------------------------------------
 let currentScale = 1;
@@ -55,7 +76,6 @@ function animateMarker(marker, from, to, duration = 500) {
 // -----------------------------------------------------
 function getMinHistoryDistanceMeters() {
   const z = map.getZoom();
-  // Skaleringsfaktor relativt til BEST_VIEW_ZOOM
   const scale = Math.pow(2, z - BEST_VIEW_ZOOM);
   const baseDistance = 20; // meter ved BEST_VIEW_ZOOM
   return baseDistance * scale;
@@ -170,8 +190,7 @@ async function loadKolumbusLive() {
       const points = hist.map(p => [p.lat, p.lon]);
       routeLayer = L.polyline(points, { color: "blue" }).addTo(map);
 
-      // Historikk langs ruten: kun når bussen faktisk beveger seg
-      // OG ikke på siste punkt (nåværende posisjon)
+      // Historikk langs ruten
       const lastIndex = hist.length - 1;
       const minDist = getMinHistoryDistanceMeters();
 
@@ -182,12 +201,9 @@ async function loadKolumbusLive() {
 
         if (!(p.speed && p.speed > 1)) continue;
 
-        // Sjekk avstand til forrige aksepterte punkt
         if (lastAccepted) {
           const d = haversine(lastAccepted.lat, lastAccepted.lon, p.lat, p.lon);
-          if (d < minDist) {
-            continue; // for tett, hopp over dette ikonet
-          }
+          if (d < minDist) continue;
         }
 
         const sm = L.marker([p.lat, p.lon], {
@@ -196,7 +212,6 @@ async function loadKolumbusLive() {
 
         sm.addTo(map);
 
-        // TRANSPARENS: eldste punkter er svakere
         const alpha = lastIndex > 1
           ? 0.25 + 0.75 * (i / (lastIndex - 1))
           : 1.0;
@@ -209,9 +224,6 @@ async function loadKolumbusLive() {
         speedMarkers.push(sm);
         lastAccepted = p;
       }
-
-      // Ingen auto-follow her lenger; kartet står i ro
-      // Brukeren kan selv panorere/zoome
     }
 
   } catch (err) {
@@ -222,8 +234,6 @@ async function loadKolumbusLive() {
 // Klikk på buss → følg
 window.followBus = function (id) {
   followBusId = id;
-
-  // Sett best-view zoom én gang ved klikk
   map.setZoom(BEST_VIEW_ZOOM);
 };
 

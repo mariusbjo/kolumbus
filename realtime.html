@@ -18,6 +18,22 @@
   </div>
   <div id="map"></div>
 
+  <!-- Premium Zoom-kontroll -->
+  <div class="zoom-control">
+  <button id="zoom-in">+</button>
+  <input type="range" id="zoom-slider" min="5" max="18" value="14">
+  <button id="zoom-out">−</button>
+  </div>
+
+  <!-- Utvidet Zoom-kontroll -->
+  <div class="zoom-control">
+  <button id="zoom-reset" title="Tilbake til forrige utsnitt">🧭</button>
+  <button id="zoom-fit" title="Vis hele ruten">⤢</button>
+  <button id="zoom-in" title="Zoom inn">+</button>
+  <input type="range" id="zoom-slider" min="5" max="18" value="9">
+  <button id="zoom-out" title="Zoom ut">−</button>
+  </div>
+
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
