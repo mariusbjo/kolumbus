@@ -152,19 +152,38 @@ async function loadKolumbusLive() {
       speedMarkers.forEach(m => map.removeLayer(m));
       speedMarkers = [];
 
-      const points = history[followBusId].map(p => [p.lat, p.lon]);
+      const hist = history[followBusId];
+
+      // Rute: alle historikkpunkter
+      const points = hist.map(p => [p.lat, p.lon]);
       routeLayer = L.polyline(points, { color: "blue" }).addTo(map);
 
       // Historikk langs ruten: kun når bussen faktisk beveger seg
-      history[followBusId].forEach(p => {
+      // OG ikke på siste punkt (nåværende posisjon)
+      const lastIndex = hist.length - 1;
+
+      for (let i = 0; i < lastIndex; i++) {
+        const p = hist[i];
+
         if (p.speed && p.speed > 1) {
           const sm = L.marker([p.lat, p.lon], {
             icon: speedIcon(p.speed, p.speedLimit)
           });
+
           sm.addTo(map);
+
+          // -----------------------------------------------------
+          // TRANSPARENS: eldste punkter er svakere
+          // -----------------------------------------------------
+          const alpha = 0.25 + 0.75 * (i / (lastIndex - 1));
+          sm.on('add', () => {
+            const el = sm.getElement();
+            if (el) el.style.opacity = alpha.toFixed(2);
+          });
+
           speedMarkers.push(sm);
         }
-      });
+      }
 
       if (markers[followBusId]) {
         const pos = markers[followBusId].getLatLng();
