@@ -4,6 +4,9 @@ import { haversine, loadSpeedLimits, getSpeedLimitForPosition } from './utils.js
 import { busWithSpeedIcon } from './icons.js';
 
 const map = L.map('map').setView([58.97, 5.73], 9);
+// SANITY CHECK: Marker Stavanger
+console.log("Sanity check: legger til testmarkør i Stavanger");
+L.marker([58.97, 5.73]).addTo(map);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 18,
@@ -44,10 +47,12 @@ async function loadKolumbusLive() {
 
     const payload = await res.json();
     const vehicles = payload.data?.vehicles || [];
+    console.log("DEBUG: Første 5 kjøretøy fra Entur:", vehicles.slice(0, 5));
 
     for (const v of vehicles) {
       const id = v.vehicleId;
       const pos = [v.location.latitude, v.location.longitude];
+      console.log(`DEBUG: Buss ${id} posisjon:`, pos);
       const code = v.line?.publicCode ?? '—';
 
       const now = new Date(v.lastUpdated).getTime();
