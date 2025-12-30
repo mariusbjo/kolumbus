@@ -53,19 +53,22 @@ html, body {
    BUS MARKER WITH SPEED BADGE (sanntidskart)
 --------------------------------------------------------- */
 
-.bus-marker {
+.bus-marker,
+.bus-marker * {
+  all: unset;
   position: relative;
+  box-sizing: border-box;
 }
 
 .bus-icon-wrapper {
+  width: 40px !important;
+  height: 40px !important;
   position: relative;
-  width: 40px;
-  height: 40px;
 }
 
 .bus-icon {
-  width: 40px;
-  height: 40px;
+  width: 40px !important;
+  height: 40px !important;
   display: block;
 }
 
@@ -73,25 +76,18 @@ html, body {
   position: absolute;
   bottom: -4px;
   right: -4px;
+  width: 22px !important;
+  height: 22px !important;
+  line-height: 18px !important;
+  font-size: 12px !important;
+  border-radius: 50%;
   background: white;
   border: 2px solid red;
-  border-radius: 50%;
-  width: 22px;
-  height: 22px;
-  font-size: 12px;
-  font-weight: bold;
-  line-height: 18px;
   text-align: center;
-  color: black;
+  font-weight: bold;
   box-shadow: 0 0 4px rgba(0,0,0,0.3);
-  font-family: system-ui, sans-serif;
 }
 
-.speed-badge.over {
-  background: red;
-  color: white;
-  border-color: black;
-}
 
 /* ---------------------------------------------------------
    TESTKART: CONTROL PANEL
