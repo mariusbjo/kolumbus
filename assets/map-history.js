@@ -91,3 +91,17 @@ registerFollowCallback(() => {
     updateHistoryForBus(mapRef, historyByIdRef);
   }
 });
+
+// -----------------------------------------------------
+// Trim historikk for alle busser (kalles fra realtime)
+// -----------------------------------------------------
+export function trimAllHistory(historyById, minutes = 20) {
+  const cutoff = Date.now() - minutes * 60 * 1000;
+
+  for (const id of Object.keys(historyById)) {
+    const arr = historyById[id];
+    if (!arr || !arr.length) continue;
+
+    historyById[id] = arr.filter(p => p.timestamp >= cutoff);
+  }
+}
