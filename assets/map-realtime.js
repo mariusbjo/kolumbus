@@ -32,6 +32,9 @@ const markers = {};
 // Historikk per buss-id:
 // { [id]: [{ lat, lon, timestamp, speed, speedLimit }, ...] }
 const historyById = {};
+// Debug: eksponer historikk globalt
+window.__history = historyById;
+
 
 // -----------------------------------------------------
 // Smooth animasjon av markør (posisjon over tid)
