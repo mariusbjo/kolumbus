@@ -414,6 +414,7 @@ html, body {
 #zoom-slider {
   width: 140px;
   height: 6px;
+  margin: 0 6px;
   cursor: pointer;
 }
 
