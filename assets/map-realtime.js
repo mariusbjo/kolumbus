@@ -84,18 +84,20 @@ async function loadKolumbusLive(map) {
     const payload = await res.json();
     const vehicles = payload.data?.vehicles || [];
 
-    const nowGlobal = Date.now();
-
     for (const v of vehicles) {
       const id = v.vehicleId;
       const pos = [v.location.latitude, v.location.longitude];
       const code = v.line?.publicCode ?? "—";
 
-      const now = new Date(v.lastUpdated).getTime() || nowGlobal;
-
       if (!historyById[id]) historyById[id] = [];
       const hist = historyById[id];
       const prev = hist.length ? hist[hist.length - 1] : null;
+
+      // Timestamp: bruk Entur sin, men fall tilbake hvis den ikke endrer seg
+      let now = new Date(v.lastUpdated).getTime();
+      if (!now || (prev && now === prev.timestamp)) {
+        now = Date.now();
+      }
 
       // Beregn fart
       let speed = null;
