@@ -18,25 +18,42 @@ let speedMarkers = [];
 let speedBadgeMarkers = {}; // beholdes for sikkerhet
 
 // -----------------------------------------------------
-// PREMIUM ZOOM CONTROL
+// PREMIUM ZOOM CONTROL (slider, +/-, fit, reset, draggable)
 // -----------------------------------------------------
 const zoomSlider = document.getElementById("zoom-slider");
+const zoomInBtn = document.getElementById("zoom-in");
+const zoomOutBtn = document.getElementById("zoom-out");
+const zoomFitBtn = document.getElementById("zoom-fit");
+const zoomResetBtn = document.getElementById("zoom-reset");
+const zoomPanel = document.querySelector(".zoom-control");
 
-zoomSlider.value = map.getZoom();
-
-// Slider → kart
-zoomSlider.oninput = () => {
-  map.setZoom(parseInt(zoomSlider.value));
-};
-
-// Kart → slider
-map.on("zoomend", () => {
+// Init slider med nåværende zoom
+if (zoomSlider) {
   zoomSlider.value = map.getZoom();
-});
+
+  // Slider → kart
+  zoomSlider.oninput = () => {
+    map.setZoom(parseInt(zoomSlider.value));
+  };
+
+  // Kart → slider
+  map.on("zoomend", () => {
+    zoomSlider.value = map.getZoom();
+  });
+}
 
 // Knapper
-document.getElementById("zoom-in").onclick = () => map.zoomIn();
-document.getElementById("zoom-out").onclick = () => map.zoomOut();
+if (zoomInBtn) zoomInBtn.onclick = () => map.zoomIn();
+if (zoomOutBtn) zoomOutBtn.onclick = () => map.zoomOut();
+
+// Fit-route: zoom til hele ruten hvis vi følger en buss og har rute
+if (zoomFitBtn) {
+  zoomFitBtn.onclick = () => {
+    if (routeLayer) {
+      map.fitBounds(routeLayer.getBounds(), { padding: [40, 40] });
+    }
+  };
+}
 
 // -----------------------------------------------------
 // ZOOM-ADAPTIVE IKONER
@@ -79,6 +96,76 @@ function getMinHistoryDistanceMeters() {
   const scale = Math.pow(2, z - BEST_VIEW_ZOOM);
   const baseDistance = 20; // meter ved BEST_VIEW_ZOOM
   return baseDistance * scale;
+}
+
+// -----------------------------------------------------
+// SMART RESET VIEW (kompass): husk utsnitt før follow
+// -----------------------------------------------------
+let prevViewCenter = null;
+let prevViewZoom = null;
+
+if (zoomResetBtn) {
+  zoomResetBtn.onclick = () => {
+    if (prevViewCenter && typeof prevViewZoom === "number") {
+      // Stopp følge-modus og rydd overlays
+      stopFollow(false); // ikke nullstill prevView*
+
+      // Gå tilbake til tidligere utsnitt
+      map.setView(prevViewCenter, prevViewZoom);
+
+      // Nullstill lagret view
+      prevViewCenter = null;
+      prevViewZoom = null;
+    }
+  };
+}
+
+// -----------------------------------------------------
+// DRAGGABLE ZOOM-PANEL
+// -----------------------------------------------------
+if (zoomPanel) {
+  let isDragging = false;
+  let dragOffsetX = 0;
+  let dragOffsetY = 0;
+
+  zoomPanel.addEventListener("mousedown", (e) => {
+    // Ikke start drag når man klikker på knapper eller slider
+    const target = e.target;
+    if (
+      target.tagName === "BUTTON" ||
+      target.id === "zoom-slider" ||
+      target.closest("button")
+    ) {
+      return;
+    }
+
+    isDragging = true;
+    const rect = zoomPanel.getBoundingClientRect();
+
+    dragOffsetX = e.clientX - rect.left;
+    dragOffsetY = e.clientY - rect.top;
+
+    // Lås panel til eksplisitt left/top når vi begynner å dra
+    zoomPanel.style.left = rect.left + "px";
+    zoomPanel.style.top = rect.top + "px";
+    zoomPanel.style.bottom = "auto";
+    zoomPanel.style.transform = "none";
+
+    const onMove = (ev) => {
+      if (!isDragging) return;
+      zoomPanel.style.left = ev.clientX - dragOffsetX + "px";
+      zoomPanel.style.top = ev.clientY - dragOffsetY + "px";
+    };
+
+    const onUp = () => {
+      isDragging = false;
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseup", onUp);
+    };
+
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup", onUp);
+  });
 }
 
 // Klikk i kartet stopper følge-modus
@@ -233,12 +320,18 @@ async function loadKolumbusLive() {
 
 // Klikk på buss → følg
 window.followBus = function (id) {
+  // Lagre utsnitt før vi begynner å følge
+  if (!followBusId) {
+    prevViewCenter = map.getCenter();
+    prevViewZoom = map.getZoom();
+  }
+
   followBusId = id;
   map.setZoom(BEST_VIEW_ZOOM);
 };
 
 // Klikk i kartet → stopp følge
-window.stopFollow = function () {
+window.stopFollow = function (resetPrevView = true) {
   followBusId = null;
 
   if (routeLayer) {
@@ -251,6 +344,11 @@ window.stopFollow = function () {
 
   Object.values(speedBadgeMarkers).forEach(m => map.removeLayer(m));
   speedBadgeMarkers = {};
+
+  if (resetPrevView) {
+    prevViewCenter = null;
+    prevViewZoom = null;
+  }
 };
 
 loadKolumbusLive();
