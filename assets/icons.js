@@ -28,19 +28,21 @@ export function speedIcon(speed, limit) {
 
 // ---------------------------------------------------------
 // KOMBINERT IKON FOR SANNTIDSBUSSEN
-// Bussikon + fart i badge
-// Robust HTML-struktur som er trygg å style i CSS
+// Bussikon + fart i badge + zoom-adaptiv skalering
+// scale hentes fra script.js basert på map.getZoom()
 // ---------------------------------------------------------
-export function busCombinedIcon(speed, limit) {
+export function busCombinedIcon(speed, limit, scale = 1) {
   const over = limit && speed > limit * 1.1; // 10 % margin
   const badgeClass = over ? "bus-speed-badge over" : "bus-speed-badge";
+  const safeSpeed = Math.round(speed ?? 0);
+  const safeScale = Number.isFinite(scale) ? scale : 1;
 
   return L.divIcon({
     className: "bus-combined-marker",
     html: `
-      <div class="bus-combined-wrapper">
+      <div class="bus-combined-wrapper" style="transform: scale(${safeScale}); transform-origin: center center;">
         <img src="assets/icons/bus-black.png" class="bus-combined-icon">
-        <div class="${badgeClass}">${Math.round(speed ?? 0)}</div>
+        <div class="${badgeClass}">${safeSpeed}</div>
       </div>
     `,
     iconSize: [40, 40],
