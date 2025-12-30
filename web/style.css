@@ -418,6 +418,20 @@ html, body {
   cursor: pointer;
 }
 
+.zoom-level {
+  font-size: 14px;
+  padding: 4px 8px;
+  background: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  user-select: none;
+}
+
+[data-theme="dark"] .zoom-level {
+  background: #3a3a3a;
+  color: #f0f0f0;
+}
+
 /* Dark mode-tilpasning */
 
 [data-theme="dark"] .zoom-control {
