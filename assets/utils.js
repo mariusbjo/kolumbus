@@ -161,7 +161,7 @@ export function getSpeedLimitForPosition(lat, lon) {
 
 // Zoom-adaptiv ikon-scale
 export function getScaleForZoom(z) {
-  return Math.min(1.8, Math.max(0.6, z / 10));
+  return Math.min(1.8, Math.max(0.6, (z - 10) * 0.15));
 }
 
 // Minimumsavstand for historikkpunkter (zoom-adaptiv)
