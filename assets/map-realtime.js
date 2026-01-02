@@ -32,8 +32,6 @@ const markers = {};
 // Historikk per buss-id:
 // { [id]: [{ lat, lon, timestamp, speed, speedLimit }, ...] }
 const historyById = {};
-// Debug: eksponer historikk globalt
-window.__history = historyById;
 
 
 // -----------------------------------------------------
@@ -87,7 +85,6 @@ async function loadKolumbusLive(map) {
     for (const v of vehicles) {
       const id = v.vehicleId;
       const pos = [v.location.latitude, v.location.longitude];
-      const code = v.line?.publicCode ?? "—";
 
       if (!historyById[id]) historyById[id] = [];
       const hist = historyById[id];
@@ -185,16 +182,10 @@ async function loadKolumbusLive(map) {
 // Start sanntidsoppdatering
 // -----------------------------------------------------
 export async function startRealtime(map) {
-  // Setup "fit route"-knapp (zoompanelet)
   setupFitRouteButton(map);
-
-  // Last inn fartsgrense-cache ved oppstart
   await loadSpeedLimits();
-
-  // Første kall
   await loadKolumbusLive(map);
 
-  // Periodiske oppdateringer
   setInterval(() => {
     loadKolumbusLive(map);
   }, UPDATE_INTERVAL);
