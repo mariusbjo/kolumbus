@@ -19,7 +19,7 @@ export function getCurrentScale() {
 export function initMap() {
   // Standard utsnitt (tilpasses som du ønsker)
   mapInstance = L.map('map', {
-  zoomControl: false
+    zoomControl: false   // Fjern Leaflet sin innebygde zoom-kontroll
   }).setView([58.97, 5.73], 9);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
