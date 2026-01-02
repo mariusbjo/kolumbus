@@ -56,13 +56,14 @@ export function updateHistoryForBus(map, historyById) {
   historyLayer.clearLayers();
 
   // -----------------------------------------------------
-  // DOM-basert historikk: ett speedIcon per punkt
+  // DOM-basert historikk: kun punkter bakover i tid
+  // og kun når speed > 15 km/t
   // -----------------------------------------------------
-  for (let i = 0; i < hist.length; i++) {
+  for (let i = 0; i < hist.length - 1; i++) {
     const p = hist[i];
 
-    // Hopp over punkter uten fart
-    if (p.speed == null) continue;
+    // Hopp over punkter uten fart eller under 15 km/t
+    if (p.speed == null || p.speed < 15) continue;
 
     const marker = L.marker([p.lat, p.lon], {
       icon: speedIcon(p.speed, p.speedLimit)
