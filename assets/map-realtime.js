@@ -35,7 +35,7 @@ const historyById = {};
 
 
 // -----------------------------------------------------
-// Smooth animasjon av markør (posisjon over tid)
+// Smooth animasjon av markør (ease-in-out)
 // -----------------------------------------------------
 function animateMarker(marker, from, to, duration = 700) {
   const start = performance.now();
@@ -60,6 +60,7 @@ function animateMarker(marker, from, to, duration = 700) {
 
   requestAnimationFrame(frame);
 }
+
 
 // -----------------------------------------------------
 // Hent sanntidsdata fra Entur og oppdater kartet
@@ -104,14 +105,27 @@ async function loadKolumbusLive(map) {
         now = Date.now();
       }
 
-      // Beregn fart
+      // -----------------------------------------------------
+      // Forbedret fartberegning:
+      // - glatting (bruk siste 2 punkter)
+      // - ignorer mikrobevegelser (< 3 meter)
+      // - behold forrige speed hvis ny speed = null
+      // -----------------------------------------------------
       let speed = null;
 
       if (hist.length >= 2) {
         const p2 = hist[hist.length - 2];
         const dt = (now - p2.timestamp) / 1000;
         const dist = haversine(p2.lat, p2.lon, pos[0], pos[1]);
-        if (dt > 0) speed = (dist / dt) * 3.6;
+
+        if (dt > 0 && dist > 3) {
+          speed = (dist / dt) * 3.6;
+        }
+      }
+
+      // Hvis speed fortsatt er null → behold forrige speed
+      if (speed == null && prev?.speed != null) {
+        speed = prev.speed;
       }
 
       // Finn fartsgrense
@@ -187,6 +201,7 @@ async function loadKolumbusLive(map) {
     console.error("Feil ved henting av sanntidsdata:", err);
   }
 }
+
 
 // -----------------------------------------------------
 // Start sanntidsoppdatering
