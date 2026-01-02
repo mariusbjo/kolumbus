@@ -37,17 +37,25 @@ const historyById = {};
 // -----------------------------------------------------
 // Smooth animasjon av markør (posisjon over tid)
 // -----------------------------------------------------
-function animateMarker(marker, from, to, duration = 500) {
+function animateMarker(marker, from, to, duration = 700) {
   const start = performance.now();
 
+  function easeInOut(t) {
+    return t < 0.5
+      ? 2 * t * t
+      : -1 + (4 - 2 * t) * t;
+  }
+
   function frame(t) {
-    const progress = Math.min((t - start) / duration, 1);
+    const linear = Math.min((t - start) / duration, 1);
+    const progress = easeInOut(linear);
+
     const lat = from.lat + (to.lat - from.lat) * progress;
     const lon = from.lng + (to.lng - from.lng) * progress;
 
     marker.setLatLng([lat, lon]);
 
-    if (progress < 1) requestAnimationFrame(frame);
+    if (linear < 1) requestAnimationFrame(frame);
   }
 
   requestAnimationFrame(frame);
@@ -98,9 +106,11 @@ async function loadKolumbusLive(map) {
 
       // Beregn fart
       let speed = null;
-      if (prev) {
-        const dt = (now - prev.timestamp) / 1000;
-        const dist = haversine(prev.lat, prev.lon, pos[0], pos[1]);
+
+      if (hist.length >= 2) {
+        const p2 = hist[hist.length - 2];
+        const dt = (now - p2.timestamp) / 1000;
+        const dist = haversine(p2.lat, p2.lon, pos[0], pos[1]);
         if (dt > 0) speed = (dist / dt) * 3.6;
       }
 
