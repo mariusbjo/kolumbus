@@ -56,20 +56,36 @@ export function updateHistoryForBus(map, historyById) {
   historyLayer.clearLayers();
 
   // -----------------------------------------------------
-  // DOM-basert historikk: kun punkter bakover i tid
-  // og kun når speed > 15 km/t
+  // DOM-basert historikk:
+  // - kun punkter bakover i tid (hopper over siste)
+  // - kun speed > 15 km/t
+  // - minimumsavstand mellom punkter (20 meter)
   // -----------------------------------------------------
+
+  let lastAccepted = null;
+
   for (let i = 0; i < hist.length - 1; i++) {
     const p = hist[i];
 
     // Hopp over punkter uten fart eller under 15 km/t
     if (p.speed == null || p.speed < 15) continue;
 
+    // Minimumsavstand mellom historikkpunkter
+    if (lastAccepted) {
+      const d = map.distance(
+        [lastAccepted.lat, lastAccepted.lon],
+        [p.lat, p.lon]
+      );
+      if (d < 20) continue; // 20 meter terskel
+    }
+
+    // Opprett DOM-markør
     const marker = L.marker([p.lat, p.lon], {
       icon: speedIcon(p.speed, p.speedLimit)
     });
 
     historyLayer.addLayer(marker);
+    lastAccepted = p;
   }
 }
 
