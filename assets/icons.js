@@ -18,7 +18,7 @@ export function speedIcon(speed, limit, scale = 1) {
   const over = limit && speed > limit * 1.1;
   const className = over ? 'speed-icon over' : 'speed-icon';
 
-  const size = 32 * scale;
+  const size = 24 * scale;
   const anchor = size / 2;
 
   return L.divIcon({
