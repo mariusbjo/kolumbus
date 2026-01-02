@@ -5,6 +5,7 @@
 
 import { getFollowBusId, registerFollowCallback } from './map-follow.js';
 import { speedIcon } from './icons.js';
+import { getCurrentScale } from './map-core.js';
 
 let historyLayer = null;     // L.layerGroup() for historikkmarkører
 let mapRef = null;
@@ -81,7 +82,7 @@ export function updateHistoryForBus(map, historyById) {
 
     // Opprett DOM-markør
     const marker = L.marker([p.lat, p.lon], {
-      icon: speedIcon(p.speed, p.speedLimit)
+      icon: speedIcon(p.speed, p.speedLimit, getCurrentScale())
     });
 
     historyLayer.addLayer(marker);

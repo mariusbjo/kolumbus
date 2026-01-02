@@ -14,15 +14,18 @@ export const busIcon = L.icon({
 // FARTSSKILT-IKON (brukes langs historikk-ruten i follow-modus)
 // Nå med 10 % margin før "over" blir rødt
 // ---------------------------------------------------------
-export function speedIcon(speed, limit) {
-  const over = limit && speed > limit * 1.1; // 10 % margin
+export function speedIcon(speed, limit, scale = 1) {
+  const over = limit && speed > limit * 1.1;
   const className = over ? 'speed-icon over' : 'speed-icon';
+
+  const size = 32 * scale;
+  const anchor = size / 2;
 
   return L.divIcon({
     className,
     html: `<div>${Math.round(speed)}</div>`,
-    iconSize: [32, 32],
-    iconAnchor: [16, 16]
+    iconSize: [size, size],
+    iconAnchor: [anchor, anchor]
   });
 }
 
