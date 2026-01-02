@@ -18,7 +18,9 @@ export function speedIcon(speed, limit, scale = 1) {
   const over = limit && speed > limit * 1.1;
   const className = over ? 'speed-icon over' : 'speed-icon';
 
-  const size = 24 * scale;
+  // EGEN base-størrelse for historiske fartsikoner
+  const baseSize = 24; // ← juster denne for å finne perfekt størrelse
+  const size = baseSize * scale;
   const anchor = size / 2;
 
   return L.divIcon({
