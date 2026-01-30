@@ -2,1667 +2,2220 @@
   {
     "id": "3200",
     "lineRef": "KOL:Line:8_6402",
-    "lat": 59.1756717,
-    "lon": 6.0772763,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.1912847,
+    "lon": 6.0745623,
+    "lastUpdated": "2026-01-30T13:56:45Z"
   },
   {
     "id": "258009600",
     "lineRef": "KOL:Line:8_5200",
-    "lat": 58.9738946,
-    "lon": 5.7469872,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "lat": 58.97205333333333,
+    "lon": 5.73917,
+    "lastUpdated": "2026-01-30T13:47:09.594Z"
   },
   {
     "id": "3215",
-    "lineRef": "KOL:Line:8_6403",
-    "lat": 59.1755553,
-    "lon": 6.0772943,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_6401",
+    "lat": 59.2031617,
+    "lon": 6.0480573,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "3280",
     "lineRef": "KOL:Line:8_6122",
-    "lat": 58.9015173,
-    "lon": 6.0885353,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.8961638,
+    "lon": 6.1327852,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "671",
-    "lineRef": "KOL:Line:8_1017",
-    "lat": 59.0644123,
-    "lon": 5.6763112,
-    "lastUpdated": "2026-01-30T12:50:58Z"
+    "lineRef": "KOL:Line:8_1018",
+    "lat": 59.0561443,
+    "lon": 5.6729343,
+    "lastUpdated": "2026-01-30T13:56:03Z"
   },
   {
-    "id": "3276",
-    "lineRef": "KOL:Line:8_6301",
-    "lat": 59.0688182,
-    "lon": 5.9719392,
-    "lastUpdated": "2026-01-30T12:54:57Z"
+    "id": "672",
+    "lineRef": "KOL:Line:8_1017",
+    "lat": 59.0788167,
+    "lon": 5.6657987,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "3271",
+    "lineRef": "KOL:Line:8_6121",
+    "lat": 59.0120452,
+    "lon": 6.0516802,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "3273",
-    "lineRef": "KOL:Line:8_6130",
-    "lat": 59.036747,
-    "lon": 5.9355302,
-    "lastUpdated": "2026-01-30T12:51:02Z"
+    "lineRef": "KOL:Line:8_6301",
+    "lat": 59.065845,
+    "lon": 5.9156238,
+    "lastUpdated": "2026-01-30T13:54:57Z"
   },
   {
     "id": "258002060",
     "lineRef": "KOL:Line:26_5958",
-    "lat": 59.26126333333333,
-    "lon": 6.159495000000001,
-    "lastUpdated": "2026-01-30T12:55:20.756Z"
+    "lat": 59.234815000000005,
+    "lon": 6.16595,
+    "lastUpdated": "2026-01-30T13:56:42.773Z"
   },
   {
-    "id": "3311",
-    "lineRef": "KOL:Line:8_2631",
-    "lat": 58.6843307,
-    "lon": 6.144082,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "id": "3305",
+    "lineRef": "KOL:Line:8_2686",
+    "lat": 58.6707067,
+    "lon": 5.6358107,
+    "lastUpdated": "2026-01-30T13:51:56Z"
+  },
+  {
+    "id": "3304",
+    "lineRef": "KOL:Line:8_2647",
+    "lat": 58.5465992,
+    "lon": 5.6956795,
+    "lastUpdated": "2026-01-30T13:47:00Z"
+  },
+  {
+    "id": "3315",
+    "lineRef": "KOL:Line:8_2624",
+    "lat": 58.5354808,
+    "lon": 6.154022,
+    "lastUpdated": "2026-01-30T13:52:20Z"
   },
   {
     "id": "258063000",
     "lineRef": "KOL:Line:8_5550",
-    "lat": 59.3440871,
-    "lon": 5.8586679,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "lat": 59.0210637,
+    "lon": 5.8203995,
+    "lastUpdated": "2026-01-30T13:56:45Z"
   },
   {
     "id": "3313",
-    "lineRef": "KOL:Line:8_2018",
-    "lat": 58.7822607,
-    "lon": 5.7300237,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_2024",
+    "lat": 58.7850723,
+    "lon": 5.6108133,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "3308",
+    "lineRef": "KOL:Line:8_2024",
+    "lat": 58.7747277,
+    "lon": 5.6344721,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "3307",
-    "lineRef": "KOL:Line:8_2670",
-    "lat": 58.7675365,
-    "lon": 5.6682808,
-    "lastUpdated": "2026-01-30T12:55:24Z"
-  },
-  {
-    "id": "3306",
-    "lineRef": "KOL:Line:8_2656",
-    "lat": 58.6691422,
-    "lon": 5.6512593,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_2679",
+    "lat": 58.712038,
+    "lon": 5.6174228,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2013",
     "lineRef": "KOL:Line:8_1002",
-    "lat": 58.891531,
-    "lon": 5.7337862,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9385915,
+    "lon": 5.7443192,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2014",
     "lineRef": "KOL:Line:8_1004",
-    "lat": 58.924312,
-    "lon": 5.734592,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.953367,
+    "lon": 5.6830185,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2011",
-    "lineRef": "KOL:Line:8_2007",
-    "lat": 58.8511967,
-    "lon": 5.7368078,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1002",
+    "lat": 58.9140622,
+    "lon": 5.727199,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2012",
     "lineRef": "KOL:Line:8_1002",
-    "lat": 58.9576487,
-    "lon": 5.592119,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9668265,
+    "lon": 5.7336058,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "2017",
+    "lineRef": "KOL:Line:8_2004",
+    "lat": 58.8258777,
+    "lon": 5.7151345,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "2018",
-    "lineRef": "KOL:Line:8_1002",
-    "lat": 58.9668468,
-    "lon": 5.7341513,
-    "lastUpdated": "2026-01-30T12:55:23Z"
+    "lineRef": "KOL:Line:8_1006",
+    "lat": 58.8577075,
+    "lon": 5.7332967,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "2015",
-    "lineRef": "KOL:Line:8_1007",
-    "lat": 58.9511522,
-    "lon": 5.683157,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1002",
+    "lat": 58.8916375,
+    "lon": 5.7339945,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "2016",
+    "lineRef": "KOL:Line:8_1000",
+    "lat": 58.983172,
+    "lon": 5.740625,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2010",
     "lineRef": "KOL:Line:8_1004",
-    "lat": 58.9136323,
-    "lon": 5.7260598,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9599862,
+    "lon": 5.7076943,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2008",
     "lineRef": "KOL:Line:8_1004",
-    "lat": 58.9651055,
-    "lon": 5.5989282,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.8918693,
+    "lon": 5.7083543,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "2009",
+    "lineRef": "KOL:Line:8_1038",
+    "lat": 59.0040198,
+    "lon": 5.7281517,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "2002",
+    "lineRef": "KOL:Line:8_1038",
+    "lat": 58.9509203,
+    "lon": 5.7135027,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2003",
-    "lineRef": "KOL:Line:8_1004",
-    "lat": 58.9052403,
-    "lon": 5.6981325,
-    "lastUpdated": "2026-01-30T12:53:04Z"
+    "lineRef": "KOL:Line:8_2007",
+    "lat": 58.8488468,
+    "lon": 5.7380228,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2001",
-    "lineRef": "KOL:Line:8_1006",
-    "lat": 58.9676482,
-    "lon": 5.725759,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1007",
+    "lat": 58.9187673,
+    "lon": 5.714127,
+    "lastUpdated": "2026-01-30T13:56:43Z"
+  },
+  {
+    "id": "2006",
+    "lineRef": "KOL:Line:8_2007",
+    "lat": 58.8781967,
+    "lon": 5.725521,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "2007",
     "lineRef": "KOL:Line:8_1008",
-    "lat": 58.9300093,
-    "lon": 5.6944877,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.8823445,
+    "lon": 5.6716893,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2004",
     "lineRef": "KOL:Line:8_1025",
-    "lat": 58.8761578,
-    "lon": 5.7247983,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.0108849,
+    "lon": 5.6416895,
+    "lastUpdated": "2026-01-30T13:56:45Z"
   },
   {
     "id": "2005",
-    "lineRef": "KOL:Line:8_1000",
-    "lat": 58.967038,
-    "lon": 5.733673,
-    "lastUpdated": "2026-01-30T12:55:24Z"
-  },
-  {
-    "id": "2035",
-    "lineRef": "KOL:Line:8_1004",
-    "lat": 58.9526923,
-    "lon": 5.6690148,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1011",
+    "lat": 58.9973635,
+    "lon": 5.6556788,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2036",
     "lineRef": "KOL:Line:8_1004",
-    "lat": 58.9465602,
-    "lon": 5.7438865,
-    "lastUpdated": "2026-01-30T12:55:23Z"
+    "lat": 58.955897,
+    "lon": 5.6982267,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "2033",
     "lineRef": "KOL:Line:8_1012",
-    "lat": 58.8748235,
-    "lon": 5.724902,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.95545,
+    "lon": 5.5989073,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "2034",
+    "lineRef": "KOL:Line:8_1025",
+    "lat": 58.8823058,
+    "lon": 5.7270317,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2031",
     "lineRef": "KOL:Line:8_1004",
-    "lat": 58.9595867,
-    "lon": 5.6335525,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9051308,
+    "lon": 5.7363842,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2032",
-    "lineRef": "KOL:Line:8_1010",
-    "lat": 58.941765,
-    "lon": 5.6535313,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1032",
+    "lat": 58.8783458,
+    "lon": 5.6695013,
+    "lastUpdated": "2026-01-30T13:56:03Z"
+  },
+  {
+    "id": "2030",
+    "lineRef": "KOL:Line:8_1016",
+    "lat": 59.096771,
+    "lon": 5.6978193,
+    "lastUpdated": "2026-01-30T13:46:44Z"
   },
   {
     "id": "2024",
     "lineRef": "KOL:Line:8_1004",
-    "lat": 58.902747,
-    "lon": 5.7001907,
-    "lastUpdated": "2026-01-30T12:55:23Z"
+    "lat": 58.9580072,
+    "lon": 5.6356853,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2025",
-    "lineRef": "KOL:Line:8_1002",
-    "lat": 58.926665,
-    "lon": 5.7344288,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1006",
+    "lat": 58.8897081,
+    "lon": 5.7194662,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2022",
     "lineRef": "KOL:Line:8_1002",
-    "lat": 58.9278818,
-    "lon": 5.6075502,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.901398,
+    "lon": 5.7392568,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "2023",
+    "lineRef": "KOL:Line:8_1503",
+    "lat": 58.8487502,
+    "lon": 5.6050243,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2028",
     "lineRef": "KOL:Line:8_1004",
-    "lat": 58.9627083,
-    "lon": 5.7360222,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.8999815,
+    "lon": 5.7396187,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2026",
     "lineRef": "KOL:Line:8_1004",
-    "lat": 58.896388,
-    "lon": 5.7026895,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9644287,
+    "lon": 5.6141915,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2027",
-    "lineRef": "KOL:Line:8_1038",
-    "lat": 58.954432,
-    "lon": 5.7421022,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1029",
+    "lat": 58.9660797,
+    "lon": 5.7339292,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2020",
-    "lineRef": "KOL:Line:8_1038",
-    "lat": 58.9934935,
-    "lon": 5.7333726,
-    "lastUpdated": "2026-01-30T12:50:20Z"
+    "lineRef": "KOL:Line:8_1011",
+    "lat": 58.989344,
+    "lon": 5.6748945,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2021",
-    "lineRef": "KOL:Line:8_1007",
-    "lat": 58.9201978,
-    "lon": 5.7108578,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1006",
+    "lat": 58.9344527,
+    "lon": 5.7022867,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2019",
-    "lineRef": "KOL:Line:8_1008",
-    "lat": 58.879414,
-    "lon": 5.6693635,
-    "lastUpdated": "2026-01-30T12:51:09Z"
-  },
-  {
-    "id": "3389",
-    "lineRef": "KOL:Line:8_2630",
-    "lat": 58.4929302,
-    "lon": 6.3545118,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "lineRef": "KOL:Line:8_1043",
+    "lat": 58.9519087,
+    "lon": 5.7416063,
+    "lastUpdated": "2026-01-30T13:56:42Z"
   },
   {
     "id": "258021190",
     "lineRef": "KOL:Line:8_5961",
-    "lat": 59.07611166666666,
-    "lon": 5.8041583333333335,
-    "lastUpdated": "2026-01-30T12:55:20.659Z"
+    "lat": 59.057339999999996,
+    "lon": 5.896483333333333,
+    "lastUpdated": "2026-01-30T13:56:43.658Z"
   },
   {
     "id": "2110",
     "lineRef": "KOL:Line:8_1013",
-    "lat": 59.1011833,
-    "lon": 5.7015148,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9912194,
+    "lon": 5.6538657,
+    "lastUpdated": "2026-01-30T13:56:45Z"
   },
   {
     "id": "2111",
-    "lineRef": "KOL:Line:8_1018",
-    "lat": 59.0423928,
-    "lon": 5.6662305,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1013",
+    "lat": 59.0624975,
+    "lon": 5.6771452,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2107",
-    "lineRef": "KOL:Line:8_1018",
-    "lat": 59.04287,
-    "lon": 5.738648,
-    "lastUpdated": "2026-01-30T12:55:24Z"
-  },
-  {
-    "id": "2108",
     "lineRef": "KOL:Line:8_1013",
-    "lat": 58.9627641,
-    "lon": 5.724438,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "lat": 58.9654983,
+    "lon": 5.7308963,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2101",
     "lineRef": "KOL:Line:8_1019",
-    "lat": 59.0003825,
-    "lon": 5.6227482,
-    "lastUpdated": "2026-01-30T12:55:23Z"
+    "lat": 58.9892,
+    "lon": 5.6614622,
+    "lastUpdated": "2026-01-30T13:54:57Z"
+  },
+  {
+    "id": "2211",
+    "lineRef": "KOL:Line:8_1000",
+    "lat": 58.9715438,
+    "lon": 5.7362142,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2215",
-    "lineRef": "KOL:Line:8_1000",
-    "lat": 58.9662588,
-    "lon": 5.7335045,
-    "lastUpdated": "2026-01-30T12:54:56Z"
+    "lineRef": "KOL:Line:8_1011",
+    "lat": 58.9684363,
+    "lon": 5.7310899,
+    "lastUpdated": "2026-01-30T13:56:45Z"
   },
   {
     "id": "2213",
     "lineRef": "KOL:Line:8_1004",
-    "lat": 58.9609758,
-    "lon": 5.6249942,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.8895818,
+    "lon": 5.7309562,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2208",
-    "lineRef": "KOL:Line:8_1006",
-    "lat": 58.9468058,
-    "lon": 5.7075713,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1007",
+    "lat": 58.9610517,
+    "lon": 5.71154,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2209",
     "lineRef": "KOL:Line:8_1006",
-    "lat": 58.9811063,
-    "lon": 5.6911927,
-    "lastUpdated": "2026-01-30T12:55:23Z"
+    "lat": 58.8544423,
+    "lon": 5.7299648,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "2206",
-    "lineRef": "KOL:Line:8_1011",
-    "lat": 58.9952315,
-    "lon": 5.6634985,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1000",
+    "lat": 58.9700545,
+    "lon": 5.7349265,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2207",
-    "lineRef": "KOL:Line:8_1007",
-    "lat": 58.9786563,
-    "lon": 5.6967492,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1006",
+    "lat": 58.8899547,
+    "lon": 5.7181407,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2200",
     "lineRef": "KOL:Line:8_1006",
-    "lat": 58.8632952,
-    "lon": 5.7355912,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9946532,
+    "lon": 5.6821212,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "2201",
-    "lineRef": "KOL:Line:8_1006",
-    "lat": 58.988628,
-    "lon": 5.6752095,
-    "lastUpdated": "2026-01-30T12:52:00Z"
+    "lineRef": "KOL:Line:8_1007",
+    "lat": 58.8564615,
+    "lon": 5.740965,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2204",
-    "lineRef": "KOL:Line:8_1002",
-    "lat": 58.8731777,
-    "lon": 5.7245728,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1000",
+    "lat": 58.9980072,
+    "lon": 5.721601,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2205",
-    "lineRef": "KOL:Line:8_2007",
-    "lat": 58.8489386,
-    "lon": 5.7378114,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "lineRef": "KOL:Line:8_1007",
+    "lat": 58.9817883,
+    "lon": 5.6907822,
+    "lastUpdated": "2026-01-30T13:56:43Z"
+  },
+  {
+    "id": "2202",
+    "lineRef": "KOL:Line:8_1011",
+    "lat": 58.9870515,
+    "lon": 5.7033865,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "2203",
-    "lineRef": "KOL:Line:8_1011",
-    "lat": 59.0002168,
-    "lon": 5.6179947,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1000",
+    "lat": 58.9941725,
+    "lon": 5.7268713,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2234",
-    "lineRef": "KOL:Line:8_1000",
-    "lat": 58.9856835,
-    "lon": 5.73288,
-    "lastUpdated": "2026-01-30T12:55:23Z"
+    "lineRef": "KOL:Line:8_1011",
+    "lat": 58.999572,
+    "lon": 5.6532415,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "2231",
+    "lineRef": "KOL:Line:8_1002",
+    "lat": 58.8514535,
+    "lon": 5.7354867,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2237",
     "lineRef": "KOL:Line:8_1012",
-    "lat": 58.8847875,
-    "lon": 5.6216002,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.8868695,
+    "lon": 5.669205,
+    "lastUpdated": "2026-01-30T13:56:42Z"
   },
   {
     "id": "2238",
     "lineRef": "KOL:Line:8_1004",
-    "lat": 58.944504,
-    "lon": 5.7447215,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.8944158,
+    "lon": 5.7026097,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2230",
-    "lineRef": "KOL:Line:8_1009",
-    "lat": 58.9676058,
-    "lon": 5.725707,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1014",
+    "lat": 58.9550765,
+    "lon": 5.7380598,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2228",
-    "lineRef": "KOL:Line:8_1006",
-    "lat": 58.9657233,
-    "lon": 5.7332063,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_2007",
+    "lat": 58.8453825,
+    "lon": 5.743444,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "2222",
-    "lineRef": "KOL:Line:8_1007",
-    "lat": 58.9689438,
-    "lon": 5.7310922,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1006",
+    "lat": 58.940777,
+    "lon": 5.6950797,
+    "lastUpdated": "2026-01-30T13:56:45Z"
   },
   {
     "id": "2220",
-    "lineRef": "KOL:Line:8_1002",
-    "lat": 58.8512053,
-    "lon": 5.7362195,
-    "lastUpdated": "2026-01-30T12:54:34Z"
+    "lineRef": "KOL:Line:8_1006",
+    "lat": 58.9714993,
+    "lon": 5.714876,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2221",
     "lineRef": "KOL:Line:8_1002",
-    "lat": 58.9272323,
-    "lon": 5.6072707,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9357367,
+    "lon": 5.7418605,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "2226",
-    "lineRef": "KOL:Line:8_1007",
-    "lat": 58.8603872,
-    "lon": 5.7439147,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1002",
+    "lat": 58.9670888,
+    "lon": 5.7325877,
+    "lastUpdated": "2026-01-30T13:56:18Z"
   },
   {
     "id": "2227",
-    "lineRef": "KOL:Line:8_1000",
-    "lat": 58.9899512,
-    "lon": 5.731512,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1002",
+    "lat": 58.9633613,
+    "lon": 5.7353295,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "2224",
+    "lineRef": "KOL:Line:8_1002",
+    "lat": 58.9005327,
+    "lon": 5.7394453,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2219",
     "lineRef": "KOL:Line:8_1002",
-    "lat": 58.863732,
-    "lon": 5.7357488,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9439705,
+    "lon": 5.5796348,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2255",
     "lineRef": "KOL:Line:8_1011",
-    "lat": 58.9855913,
-    "lon": 5.7059843,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9685463,
+    "lon": 5.7308732,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2256",
     "lineRef": "KOL:Line:8_1038",
-    "lat": 59.0013025,
-    "lon": 5.7423537,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.8829617,
+    "lon": 5.7272887,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "2253",
+    "lineRef": "KOL:Line:8_1004",
+    "lat": 58.9514643,
+    "lon": 5.6491465,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2254",
-    "lineRef": "KOL:Line:8_1025",
-    "lat": 58.8741072,
-    "lon": 5.7252098,
-    "lastUpdated": "2026-01-30T12:51:57Z"
-  },
-  {
-    "id": "2257",
-    "lineRef": "KOL:Line:8_1006",
-    "lat": 58.9350017,
-    "lon": 5.7012065,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1038",
+    "lat": 58.9937215,
+    "lon": 5.7338423,
+    "lastUpdated": "2026-01-30T13:52:52Z"
   },
   {
     "id": "2258",
     "lineRef": "KOL:Line:8_1011",
-    "lat": 58.9812213,
-    "lon": 5.711102,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9847285,
+    "lon": 5.7072453,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2251",
-    "lineRef": "KOL:Line:8_1006",
-    "lat": 58.9052118,
-    "lon": 5.6971572,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1007",
+    "lat": 58.9757683,
+    "lon": 5.709981,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2252",
-    "lineRef": "KOL:Line:8_1000",
-    "lat": 58.9955453,
-    "lon": 5.7224673,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1011",
+    "lat": 59.0053033,
+    "lon": 5.6197827,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2244",
     "lineRef": "KOL:Line:8_1002",
-    "lat": 58.9648518,
-    "lon": 5.7344482,
-    "lastUpdated": "2026-01-30T12:55:24Z"
-  },
-  {
-    "id": "2245",
-    "lineRef": "KOL:Line:8_1000",
-    "lat": 59.0037274,
-    "lon": 5.7178441,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9340508,
+    "lon": 5.6054897,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "2242",
-    "lineRef": "KOL:Line:8_1007",
-    "lat": 58.8842883,
-    "lon": 5.7429128,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1006",
+    "lat": 58.9841768,
+    "lon": 5.691978,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2243",
-    "lineRef": "KOL:Line:8_1006",
-    "lat": 58.8693485,
-    "lon": 5.7269303,
-    "lastUpdated": "2026-01-30T12:55:23Z"
+    "lineRef": "KOL:Line:8_1007",
+    "lat": 58.9031917,
+    "lon": 5.7388782,
+    "lastUpdated": "2026-01-30T13:56:43Z"
+  },
+  {
+    "id": "2248",
+    "lineRef": "KOL:Line:8_2006",
+    "lat": 58.8253745,
+    "lon": 5.7563277,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2249",
-    "lineRef": "KOL:Line:8_1007",
-    "lat": 58.9280705,
-    "lon": 5.7015063,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1006",
+    "lat": 58.967811,
+    "lon": 5.7289922,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2246",
     "lineRef": "KOL:Line:8_1002",
-    "lat": 58.8959392,
-    "lon": 5.7392943,
-    "lastUpdated": "2026-01-30T12:55:23Z"
+    "lat": 58.930319,
+    "lon": 5.6074577,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "2241",
-    "lineRef": "KOL:Line:8_2007",
-    "lat": 58.8361677,
-    "lon": 5.77362,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1007",
+    "lat": 58.9678352,
+    "lon": 5.7279523,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2239",
-    "lineRef": "KOL:Line:8_2004",
-    "lat": 58.8220267,
-    "lon": 5.7167183,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1002",
+    "lat": 58.9378498,
+    "lon": 5.7436725,
+    "lastUpdated": "2026-01-30T13:56:42Z"
   },
   {
     "id": "2266",
-    "lineRef": "KOL:Line:8_1006",
-    "lat": 58.8899507,
-    "lon": 5.7181807,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1002",
+    "lat": 58.8507203,
+    "lon": 5.7346615,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2267",
     "lineRef": "KOL:Line:8_1038",
-    "lat": 58.9478852,
-    "lon": 5.7093383,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.95454,
+    "lon": 5.7421003,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2265",
-    "lineRef": "KOL:Line:8_1007",
-    "lat": 58.9751515,
-    "lon": 5.710763,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1002",
+    "lat": 58.8504072,
+    "lon": 5.734103,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2268",
     "lineRef": "KOL:Line:8_1004",
-    "lat": 58.908303,
-    "lon": 5.7288353,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9351923,
+    "lon": 5.7414417,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2269",
-    "lineRef": "KOL:Line:8_1002",
-    "lat": 58.8516175,
-    "lon": 5.7363317,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1009",
+    "lat": 58.9646945,
+    "lon": 5.6912843,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "258000840",
     "lineRef": "KOL:Line:8_5986",
-    "lat": 59.16601333333333,
-    "lon": 5.882953333333333,
-    "lastUpdated": "2026-01-30T12:55:21.164Z"
+    "lat": 59.22179833333333,
+    "lon": 5.925858333333333,
+    "lastUpdated": "2026-01-30T13:56:44.171Z"
   },
   {
     "id": "2262",
-    "lineRef": "KOL:Line:8_1011",
-    "lat": 59.0102644,
-    "lon": 5.6456893,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "lineRef": "KOL:Line:8_1000",
+    "lat": 58.9722135,
+    "lon": 5.7487482,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "2260",
     "lineRef": "KOL:Line:8_1002",
-    "lat": 58.9568005,
-    "lon": 5.7005235,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9610255,
+    "lon": 5.6211937,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "2261",
+    "lineRef": "KOL:Line:8_1007",
+    "lat": 58.8822553,
+    "lon": 5.7432613,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "258223000",
     "lineRef": "KOL:Line:30_1130",
-    "lat": 59.157475,
-    "lon": 5.540893333333333,
-    "lastUpdated": "2026-01-30T12:55:21.011Z"
+    "lat": 59.15949833333333,
+    "lon": 5.52793,
+    "lastUpdated": "2026-01-30T13:56:43.093Z"
   },
   {
     "id": "2310",
-    "lineRef": "KOL:Line:8_1025",
-    "lat": 58.9542616,
-    "lon": 5.6913134,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "lineRef": "KOL:Line:8_1039",
+    "lat": 58.9529928,
+    "lon": 5.6765353,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2311",
-    "lineRef": "KOL:Line:8_2006",
-    "lat": 58.8513138,
-    "lon": 5.736934,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_2005",
+    "lat": 58.8707668,
+    "lon": 5.7674135,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "2315",
+    "lineRef": "KOL:Line:8_1005",
+    "lat": 58.9459873,
+    "lon": 5.7181986,
+    "lastUpdated": "2026-01-30T13:56:45Z"
   },
   {
     "id": "2313",
     "lineRef": "KOL:Line:8_1014",
-    "lat": 58.9310613,
-    "lon": 5.7306846,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "lat": 58.9357332,
+    "lon": 5.7264356,
+    "lastUpdated": "2026-01-30T13:56:45Z"
   },
   {
     "id": "2307",
-    "lineRef": "KOL:Line:8_1014",
-    "lat": 58.9586697,
-    "lon": 5.7371753,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1015",
+    "lat": 58.9756805,
+    "lon": 5.710258,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2308",
-    "lineRef": "KOL:Line:8_1021",
-    "lat": 58.9521237,
-    "lon": 5.6655085,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1005",
+    "lat": 58.949552,
+    "lon": 5.7315213,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2306",
     "lineRef": "KOL:Line:8_1039",
-    "lat": 58.8743448,
-    "lon": 5.7252845,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.996294,
+    "lon": 5.6124453,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2309",
     "lineRef": "KOL:Line:8_1025",
-    "lat": 59.0118625,
-    "lon": 5.6374377,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.8761618,
+    "lon": 5.724764,
+    "lastUpdated": "2026-01-30T13:53:41Z"
   },
   {
     "id": "2300",
-    "lineRef": "KOL:Line:8_2008",
-    "lat": 58.8662647,
-    "lon": 5.7606663,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_2007",
+    "lat": 58.8511913,
+    "lon": 5.7368145,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2303",
-    "lineRef": "KOL:Line:8_1005",
-    "lat": 58.9472227,
-    "lon": 5.7164377,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1031",
+    "lat": 58.8927738,
+    "lon": 5.7050343,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2304",
-    "lineRef": "KOL:Line:8_1043",
-    "lat": 58.9668017,
-    "lon": 5.733259,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1009",
+    "lat": 58.9685017,
+    "lon": 5.7309335,
+    "lastUpdated": "2026-01-30T13:53:22Z"
   },
   {
     "id": "2301",
-    "lineRef": "KOL:Line:8_2005",
-    "lat": 58.8514528,
-    "lon": 5.7364572,
-    "lastUpdated": "2026-01-30T12:55:23Z"
+    "lineRef": "KOL:Line:8_2006",
+    "lat": 58.8256008,
+    "lon": 5.751995,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "2302",
     "lineRef": "KOL:Line:8_1012",
-    "lat": 58.8819375,
-    "lon": 5.6286155,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.8770402,
+    "lon": 5.7251288,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2332",
-    "lineRef": "KOL:Line:8_2006",
-    "lat": 58.8200692,
-    "lon": 5.751865,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1012",
+    "lat": 58.8835653,
+    "lon": 5.6570797,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2333",
     "lineRef": "KOL:Line:8_1015",
-    "lat": 58.976534,
-    "lon": 5.7091692,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.966633,
+    "lon": 5.7332933,
+    "lastUpdated": "2026-01-30T13:49:56Z"
   },
   {
     "id": "2330",
-    "lineRef": "KOL:Line:8_2005",
-    "lat": 58.8663997,
-    "lon": 5.7617483,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1012",
+    "lat": 58.891355,
+    "lon": 5.6304238,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "2331",
+    "lineRef": "KOL:Line:8_1040",
+    "lat": 58.8880462,
+    "lon": 5.7291145,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2336",
-    "lineRef": "KOL:Line:8_1043",
-    "lat": 58.9400641,
-    "lon": 5.724172,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "lineRef": "KOL:Line:8_1008",
+    "lat": 58.9429722,
+    "lon": 5.6819115,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2337",
     "lineRef": "KOL:Line:8_1005",
-    "lat": 58.9673142,
-    "lon": 5.7584292,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9661427,
+    "lon": 5.7594215,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2334",
-    "lineRef": "KOL:Line:8_1043",
-    "lat": 58.8989218,
-    "lon": 5.7102425,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1015",
+    "lat": 58.9992297,
+    "lon": 5.6204803,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2335",
     "lineRef": "KOL:Line:8_1043",
-    "lat": 58.9049233,
-    "lon": 5.730137,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9123795,
+    "lon": 5.726529,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2329",
-    "lineRef": "KOL:Line:8_1009",
-    "lat": 58.9679762,
-    "lon": 5.711269,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1043",
+    "lat": 58.9664213,
+    "lon": 5.7338857,
+    "lastUpdated": "2026-01-30T13:56:45Z"
   },
   {
     "id": "2327",
     "lineRef": "KOL:Line:8_1039",
-    "lat": 58.9989483,
-    "lon": 5.6174228,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.8846157,
+    "lon": 5.7278883,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2328",
     "lineRef": "KOL:Line:8_1012",
-    "lat": 58.8516993,
-    "lon": 5.736548,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.8827042,
+    "lon": 5.628793,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2321",
-    "lineRef": "KOL:Line:8_1010",
-    "lat": 58.9671645,
-    "lon": 5.7321015,
-    "lastUpdated": "2026-01-30T12:53:59Z"
+    "lineRef": "KOL:Line:8_1008",
+    "lat": 58.898268,
+    "lon": 5.6575628,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "2322",
-    "lineRef": "KOL:Line:8_1012",
-    "lat": 58.886476,
-    "lon": 5.6681837,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_2003",
+    "lat": 58.8514745,
+    "lon": 5.7361838,
+    "lastUpdated": "2026-01-30T13:56:43Z"
+  },
+  {
+    "id": "2320",
+    "lineRef": "KOL:Line:8_1014",
+    "lat": 58.9540887,
+    "lon": 5.7363085,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2325",
     "lineRef": "KOL:Line:8_1012",
-    "lat": 58.8929716,
-    "lon": 5.6722187,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "lat": 58.8722402,
+    "lon": 5.7371803,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2326",
-    "lineRef": "KOL:Line:8_1014",
-    "lat": 58.9537295,
-    "lon": 5.7299123,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1043",
+    "lat": 58.9639853,
+    "lon": 5.7350062,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "2323",
     "lineRef": "KOL:Line:8_1008",
-    "lat": 58.9442742,
-    "lon": 5.6816763,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9396063,
+    "lon": 5.6857133,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2324",
     "lineRef": "KOL:Line:8_1020",
-    "lat": 59.0025425,
-    "lon": 5.7425207,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9928873,
+    "lon": 5.746681,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2319",
-    "lineRef": "KOL:Line:8_2006",
-    "lat": 58.8374023,
-    "lon": 5.7419263,
-    "lastUpdated": "2026-01-30T12:55:23Z"
+    "lineRef": "KOL:Line:8_2008",
+    "lat": 58.898535,
+    "lon": 5.7782057,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "2316",
     "lineRef": "KOL:Line:8_1012",
-    "lat": 58.8818873,
-    "lon": 5.7268305,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.8516915,
+    "lon": 5.736546,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2354",
-    "lineRef": "KOL:Line:8_1014",
-    "lat": 58.9297728,
-    "lon": 5.7316633,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1043",
+    "lat": 58.8972363,
+    "lon": 5.7205518,
+    "lastUpdated": "2026-01-30T13:56:45Z"
   },
   {
     "id": "2352",
     "lineRef": "KOL:Line:8_1025",
-    "lat": 58.9531,
-    "lon": 5.6874465,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "lat": 58.9492752,
+    "lon": 5.6985897,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2353",
-    "lineRef": "KOL:Line:8_1039",
-    "lat": 58.9354463,
-    "lon": 5.7004903,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1025",
+    "lat": 58.957554,
+    "lon": 5.6994523,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2359",
-    "lineRef": "KOL:Line:8_1506",
-    "lat": 58.8604105,
-    "lon": 5.5704215,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1008",
+    "lat": 58.9670823,
+    "lon": 5.7322947,
+    "lastUpdated": "2026-01-30T13:53:57Z"
+  },
+  {
+    "id": "2356",
+    "lineRef": "KOL:Line:8_1005",
+    "lat": 58.9664812,
+    "lon": 5.7343857,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2350",
     "lineRef": "KOL:Line:8_1005",
-    "lat": 58.9442235,
-    "lon": 5.7239805,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9539343,
+    "lon": 5.684807,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "2351",
+    "lineRef": "KOL:Line:8_1042",
+    "lat": 58.8959902,
+    "lon": 5.7393263,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2349",
     "lineRef": "KOL:Line:8_1012",
-    "lat": 58.9551319,
-    "lon": 5.6022284,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "lat": 58.871459,
+    "lon": 5.7392288,
+    "lastUpdated": "2026-01-30T13:56:43Z"
+  },
+  {
+    "id": "2343",
+    "lineRef": "KOL:Line:8_1005",
+    "lat": 58.9437862,
+    "lon": 5.688339,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "2344",
     "lineRef": "KOL:Line:8_1039",
-    "lat": 58.9529253,
-    "lon": 5.6694235,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9335158,
+    "lon": 5.7041407,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2342",
-    "lineRef": "KOL:Line:8_1005",
-    "lat": 58.9423365,
-    "lon": 5.6831237,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1010",
+    "lat": 58.9435152,
+    "lon": 5.6597012,
+    "lastUpdated": "2026-01-30T13:56:45Z"
   },
   {
     "id": "2347",
     "lineRef": "KOL:Line:8_1005",
-    "lat": 58.9536345,
-    "lon": 5.6833858,
-    "lastUpdated": "2026-01-30T12:55:23Z"
+    "lat": 58.95157699163601,
+    "lon": 5.736804774576327,
+    "lastUpdated": "2026-01-30T13:56:45Z"
+  },
+  {
+    "id": "2348",
+    "lineRef": "KOL:Line:8_1032",
+    "lat": 58.912078,
+    "lon": 5.6794788,
+    "lastUpdated": "2026-01-30T13:56:45Z"
+  },
+  {
+    "id": "2345",
+    "lineRef": "KOL:Line:8_1032",
+    "lat": 58.965677,
+    "lon": 5.7324132,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2346",
     "lineRef": "KOL:Line:8_1005",
-    "lat": 58.966235,
-    "lon": 5.7345362,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9458057,
+    "lon": 5.7323615,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2340",
-    "lineRef": "KOL:Line:8_1005",
-    "lat": 58.9706815,
-    "lon": 5.7355197,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1029",
+    "lat": 58.956197,
+    "lon": 5.7467622,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2338",
-    "lineRef": "KOL:Line:8_1029",
-    "lat": 58.966271,
-    "lon": 5.7337868,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_1014",
+    "lat": 58.9232758,
+    "lon": 5.7250837,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2339",
     "lineRef": "KOL:Line:8_1005",
-    "lat": 58.9518673,
-    "lon": 5.7407935,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9697282,
+    "lon": 5.7518377,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
-    "id": "5405",
-    "lineRef": "KOL:Line:8_4602",
-    "lat": 59.3243747,
-    "lon": 6.1101275,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "id": "5403",
+    "lineRef": "KOL:Line:8_4604",
+    "lat": 59.3302643,
+    "lon": 6.2344765,
+    "lastUpdated": "2026-01-30T13:52:28Z"
+  },
+  {
+    "id": "5401",
+    "lineRef": "KOL:Line:8_4617",
+    "lat": 59.5112843,
+    "lon": 6.6230832,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "5402",
+    "lineRef": "KOL:Line:8_3071",
+    "lat": 59.42964154162122,
+    "lon": 6.128862790412613,
+    "lastUpdated": "2026-01-30T13:56:45Z"
   },
   {
     "id": "258000810",
     "lineRef": "KOL:Line:8_5986",
-    "lat": 59.17021833333333,
-    "lon": 5.879771666666667,
-    "lastUpdated": "2026-01-30T12:55:16.919Z"
+    "lat": 59.233716666666666,
+    "lon": 5.93714,
+    "lastUpdated": "2026-01-30T13:56:16.906Z"
+  },
+  {
+    "id": "5423",
+    "lineRef": "KOL:Line:8_4501",
+    "lat": 59.3429642,
+    "lon": 6.0409153,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "5410",
+    "lineRef": "KOL:Line:8_4613",
+    "lat": 59.261947,
+    "lon": 6.1588603,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5411",
-    "lineRef": "KOL:Line:8_3301",
-    "lat": 59.4175002,
-    "lon": 6.022645,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_3073",
+    "lat": 59.4076348,
+    "lon": 6.0077243,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
-    "id": "5448",
-    "lineRef": "KOL:Line:8_3360",
-    "lat": 59.544414,
-    "lon": 5.8630008,
-    "lastUpdated": "2026-01-30T12:55:23Z"
+    "id": "5408",
+    "lineRef": "KOL:Line:8_4605",
+    "lat": 59.3846113,
+    "lon": 6.3056585,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5449",
     "lineRef": "KOL:Line:8_3359",
-    "lat": 59.5338918,
-    "lon": 5.965464,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.5357317,
+    "lon": 5.9767108,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "5441",
+    "lineRef": "KOL:Line:8_4606",
+    "lat": 59.336852,
+    "lon": 6.187881,
+    "lastUpdated": "2026-01-30T13:54:57Z"
+  },
+  {
+    "id": "5432",
+    "lineRef": "KOL:Line:8_4629",
+    "lat": 59.3186182,
+    "lon": 6.3528482,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5433",
     "lineRef": "KOL:Line:8_4500",
-    "lat": 59.477181,
-    "lon": 6.432649,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.5112252,
+    "lon": 6.5813875,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5465",
     "lineRef": "KOL:Line:8_3078",
-    "lat": 59.6060087,
-    "lon": 5.8061347,
-    "lastUpdated": "2026-01-30T12:52:40Z"
+    "lat": 59.4824718,
+    "lon": 6.0855425,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "5461",
+    "lineRef": "KOL:Line:8_4617",
+    "lat": 59.5076157,
+    "lon": 6.5767428,
+    "lastUpdated": "2026-01-30T13:49:56Z"
   },
   {
     "id": "5462",
     "lineRef": "KOL:Line:8_3078",
-    "lat": 59.5766643,
-    "lon": 6.2979582,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.562297,
+    "lon": 5.8103422,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
-    "id": "5452",
-    "lineRef": "KOL:Line:8_4631",
-    "lat": 59.4887863,
-    "lon": 5.9581633,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "id": "9839",
+    "lineRef": "KOL:Line:8_2016",
+    "lat": 58.8432495,
+    "lon": 6.2911693,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "9836",
     "lineRef": "KOL:Line:8_2016",
-    "lat": 58.7858039,
-    "lon": 6.061843,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.7863855,
+    "lon": 6.0217085,
+    "lastUpdated": "2026-01-30T13:56:43Z"
+  },
+  {
+    "id": "9837",
+    "lineRef": "KOL:Line:8_2016",
+    "lat": 58.7758932,
+    "lon": 6.3301958,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "9835",
+    "lineRef": "KOL:Line:8_2016",
+    "lat": 58.8308053,
+    "lon": 6.043795,
+    "lastUpdated": "2026-01-30T13:53:37Z"
   },
   {
     "id": "9832",
     "lineRef": "KOL:Line:8_2016",
-    "lat": 58.7715732,
-    "lon": 5.8484234,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "lat": 58.7797764,
+    "lon": 6.3208808,
+    "lastUpdated": "2026-01-30T13:56:45Z"
   },
   {
     "id": "257144700",
     "lineRef": "KOL:Line:30_1130",
-    "lat": 59.161465,
-    "lon": 5.500114999999999,
-    "lastUpdated": "2026-01-30T12:55:20.702Z"
+    "lat": 59.16105,
+    "lon": 5.504935000000001,
+    "lastUpdated": "2026-01-30T13:56:43.778Z"
   },
   {
     "id": "2431",
     "lineRef": "KOL:Line:8_1004",
-    "lat": 58.9534288,
-    "lon": 5.6834277,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.8958017,
+    "lon": 5.739189,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2430",
     "lineRef": "KOL:Line:8_1004",
-    "lat": 58.9750818,
-    "lon": 5.6133303,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.89936,
+    "lon": 5.7027663,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "2429",
+    "lineRef": "KOL:Line:8_1004",
+    "lat": 58.9573583,
+    "lon": 5.7402265,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "2426",
     "lineRef": "KOL:Line:8_1004",
-    "lat": 58.8900015,
-    "lon": 5.7177727,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9738105,
+    "lon": 5.6103917,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2424",
     "lineRef": "KOL:Line:8_1004",
-    "lat": 58.9561352,
-    "lon": 5.7411272,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9670755,
+    "lon": 5.7322538,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "2423",
     "lineRef": "KOL:Line:8_1004",
-    "lat": 58.9663713,
-    "lon": 5.7313873,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9668453,
+    "lon": 5.7340165,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "259678000",
     "lineRef": "KOL:Line:8_5200",
-    "lat": 58.97477333333333,
-    "lon": 5.75036,
-    "lastUpdated": "2026-01-30T12:55:20.796Z"
+    "lat": 58.97209333333333,
+    "lon": 5.738611666666667,
+    "lastUpdated": "2026-01-30T13:56:00.123Z"
+  },
+  {
+    "id": "5502",
+    "lineRef": "KOL:Line:8_3001",
+    "lat": 59.4122877,
+    "lon": 5.271179,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5504",
     "lineRef": "KOL:Line:8_3001",
-    "lat": 59.4167403,
-    "lon": 5.270102,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.4153788,
+    "lon": 5.2665233,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5505",
     "lineRef": "KOL:Line:8_3001",
-    "lat": 59.3553085,
-    "lon": 5.3238665,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.3947697,
+    "lon": 5.3300608,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5501",
     "lineRef": "KOL:Line:8_3000",
-    "lat": 59.4323132,
-    "lon": 5.2629295,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.4088377,
+    "lon": 5.2736248,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "259386000",
     "lineRef": "KOL:Line:30_1130",
-    "lat": 59.171005,
-    "lon": 5.454836666666667,
-    "lastUpdated": "2026-01-30T12:55:21.402Z"
+    "lat": 59.171153333333336,
+    "lon": 5.454095,
+    "lastUpdated": "2026-01-30T13:56:42.489Z"
   },
   {
     "id": "5524",
     "lineRef": "KOL:Line:8_3010",
-    "lat": 59.4037387,
-    "lon": 5.2806913,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.2551285,
+    "lon": 5.1948757,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
-    "id": "5526",
-    "lineRef": "KOL:Line:8_3083",
-    "lat": 59.3976487,
-    "lon": 5.3292608,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "id": "5527",
+    "lineRef": "KOL:Line:8_3326",
+    "lat": 59.4116235,
+    "lon": 5.3656168,
+    "lastUpdated": "2026-01-30T13:54:57Z"
   },
   {
     "id": "5520",
     "lineRef": "KOL:Line:8_3083",
-    "lat": 59.4126323,
-    "lon": 5.2707597,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.4008272,
+    "lon": 5.2992585,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "5521",
+    "lineRef": "KOL:Line:8_3319",
+    "lat": 59.2957325,
+    "lon": 5.2195235,
+    "lastUpdated": "2026-01-30T13:50:38Z"
   },
   {
     "id": "5523",
     "lineRef": "KOL:Line:8_3011",
-    "lat": 59.1499837,
-    "lon": 5.2610338,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.3772537,
+    "lon": 5.303603,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5517",
     "lineRef": "KOL:Line:8_3001",
-    "lat": 59.4130731,
-    "lon": 5.3250383,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "lat": 59.4113277,
+    "lon": 5.3130853,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "5518",
+    "lineRef": "KOL:Line:8_3010",
+    "lat": 59.4031048,
+    "lon": 5.2816172,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5519",
     "lineRef": "KOL:Line:8_3011",
-    "lat": 59.340083,
-    "lon": 5.2763392,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.1602723,
+    "lon": 5.2326338,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5513",
     "lineRef": "KOL:Line:8_3000",
-    "lat": 59.3960847,
-    "lon": 5.3140152,
-    "lastUpdated": "2026-01-30T12:55:23Z"
+    "lat": 59.3944552,
+    "lon": 5.3298813,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "5514",
+    "lineRef": "KOL:Line:8_3001",
+    "lat": 59.3846985,
+    "lon": 5.3189547,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5515",
     "lineRef": "KOL:Line:8_3000",
-    "lat": 59.4118017,
-    "lon": 5.2717987,
-    "lastUpdated": "2026-01-30T12:55:24Z"
-  },
-  {
-    "id": "5516",
-    "lineRef": "KOL:Line:8_3000",
-    "lat": 59.3959807,
-    "lon": 5.3280815,
-    "lastUpdated": "2026-01-30T12:55:23Z"
+    "lat": 59.437124,
+    "lon": 5.2879117,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "5510",
     "lineRef": "KOL:Line:8_3001",
-    "lat": 59.3947902,
-    "lon": 5.3300135,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.3552437,
+    "lon": 5.3200598,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5511",
     "lineRef": "KOL:Line:8_3000",
-    "lat": 59.4123861,
-    "lon": 5.2688139,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.4028207,
+    "lon": 5.306685,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5506",
     "lineRef": "KOL:Line:8_3001",
-    "lat": 59.3928745,
-    "lon": 5.3069942,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.4059627,
+    "lon": 5.332824,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
-    "id": "5507",
-    "lineRef": "KOL:Line:8_3001",
-    "lat": 59.394502,
-    "lon": 5.3036918,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "id": "5509",
+    "lineRef": "KOL:Line:8_3000",
+    "lat": 59.4122142,
+    "lon": 5.2896142,
+    "lastUpdated": "2026-01-30T13:56:45Z"
   },
   {
-    "id": "5547",
-    "lineRef": "KOL:Line:8_3060",
-    "lat": 59.5445673,
-    "lon": 5.8629688,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "id": "5548",
+    "lineRef": "KOL:Line:8_3310",
+    "lat": 59.3595622,
+    "lon": 5.6073692,
+    "lastUpdated": "2026-01-30T13:56:43Z"
+  },
+  {
+    "id": "5549",
+    "lineRef": "KOL:Line:8_3011",
+    "lat": 59.1516038,
+    "lon": 5.2549367,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "5542",
+    "lineRef": "KOL:Line:8_3029",
+    "lat": 59.3212265,
+    "lon": 5.356744,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5545",
     "lineRef": "KOL:Line:8_3026",
-    "lat": 59.3848097,
-    "lon": 5.3190125,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "lat": 59.3853567,
+    "lon": 5.3318246,
+    "lastUpdated": "2026-01-30T13:56:45Z"
   },
   {
     "id": "5540",
     "lineRef": "KOL:Line:8_3010",
-    "lat": 59.4089058,
-    "lon": 5.273546,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.2802062,
+    "lon": 5.3071395,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5539",
-    "lineRef": "KOL:Line:8_3353",
-    "lat": 59.512533,
-    "lon": 5.7196773,
-    "lastUpdated": "2026-01-30T12:55:24Z"
-  },
-  {
-    "id": "5535",
-    "lineRef": "KOL:Line:8_3011",
-    "lat": 59.3057483,
-    "lon": 5.28706,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_3350",
+    "lat": 59.484417,
+    "lon": 5.7275532,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "5536",
     "lineRef": "KOL:Line:8_3074",
-    "lat": 59.4026902,
-    "lon": 5.2907355,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "lat": 59.6056178,
+    "lon": 5.8057675,
+    "lastUpdated": "2026-01-30T13:56:31Z"
   },
   {
     "id": "5537",
     "lineRef": "KOL:Line:8_3074",
-    "lat": 59.5960062,
-    "lon": 5.7409835,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.6361415,
+    "lon": 5.9044542,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "5538",
+    "lineRef": "KOL:Line:8_3083",
+    "lat": 59.4095032,
+    "lon": 5.2737243,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5531",
     "lineRef": "KOL:Line:8_3012",
-    "lat": 59.2127531,
-    "lon": 5.1856884,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "lat": 59.4172848,
+    "lon": 5.2725378,
+    "lastUpdated": "2026-01-30T13:53:06Z"
+  },
+  {
+    "id": "5532",
+    "lineRef": "KOL:Line:8_3012",
+    "lat": 59.3421807,
+    "lon": 5.2755042,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5533",
     "lineRef": "KOL:Line:8_3010",
-    "lat": 59.2818978,
-    "lon": 5.288059,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.2819407,
+    "lon": 5.3078402,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5534",
-    "lineRef": "KOL:Line:8_3318",
-    "lat": 59.2224027,
-    "lon": 5.1931673,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_3012",
+    "lat": 59.226896,
+    "lon": 5.1933547,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5530",
     "lineRef": "KOL:Line:8_3010",
-    "lat": 59.2840457,
-    "lon": 5.3064008,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.4000597,
+    "lon": 5.2847272,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5529",
     "lineRef": "KOL:Line:8_3074",
-    "lat": 59.6563952,
-    "lon": 5.9261025,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.4296265,
+    "lon": 5.4600457,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5569",
-    "lineRef": "KOL:Line:8_3354",
-    "lat": 59.5243092,
-    "lon": 5.6958163,
-    "lastUpdated": "2026-01-30T12:55:23Z"
+    "lineRef": "KOL:Line:8_3370",
+    "lat": 59.6301718,
+    "lon": 5.5857635,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5564",
     "lineRef": "KOL:Line:8_3308",
-    "lat": 59.2691563,
-    "lon": 5.6584862,
-    "lastUpdated": "2026-01-30T12:55:23Z"
+    "lat": 59.2971605,
+    "lon": 5.6670152,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
-    "id": "5562",
-    "lineRef": "KOL:Line:8_3309",
-    "lat": 59.3488118,
-    "lon": 5.7998018,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "id": "5565",
+    "lineRef": "KOL:Line:8_3298",
+    "lat": 59.4706557,
+    "lon": 5.2629898,
+    "lastUpdated": "2026-01-30T13:47:55Z"
+  },
+  {
+    "id": "5567",
+    "lineRef": "KOL:Line:8_3320",
+    "lat": 59.279542,
+    "lon": 5.2581345,
+    "lastUpdated": "2026-01-30T13:52:02Z"
   },
   {
     "id": "5563",
-    "lineRef": "KOL:Line:8_3384",
-    "lat": 59.4112879,
-    "lon": 5.2892531,
-    "lastUpdated": "2026-01-30T12:49:58Z"
+    "lineRef": "KOL:Line:8_3326",
+    "lat": 59.4116772,
+    "lon": 5.3652718,
+    "lastUpdated": "2026-01-30T13:55:21Z"
   },
   {
     "id": "5557",
     "lineRef": "KOL:Line:8_3025",
-    "lat": 59.2354052,
-    "lon": 5.322714,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.2193837,
+    "lon": 5.3196067,
+    "lastUpdated": "2026-01-30T13:56:42Z"
+  },
+  {
+    "id": "5559",
+    "lineRef": "KOL:Line:8_3311",
+    "lat": 59.3193978,
+    "lon": 5.4001633,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5553",
-    "lineRef": "KOL:Line:8_3375",
-    "lat": 59.3517843,
-    "lon": 5.261489,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_3022",
+    "lat": 59.3103093,
+    "lon": 5.2320795,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "5554",
+    "lineRef": "KOL:Line:8_3009",
+    "lat": 59.4125997,
+    "lon": 5.2684973,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "5555",
+    "lineRef": "KOL:Line:8_3306",
+    "lat": 59.4230933,
+    "lon": 5.424077,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "5556",
+    "lineRef": "KOL:Line:8_3011",
+    "lat": 59.3535453,
+    "lon": 5.2771125,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5550",
-    "lineRef": "KOL:Line:8_3322",
-    "lat": 59.3974177,
-    "lon": 5.2641485,
-    "lastUpdated": "2026-01-30T12:53:16Z"
+    "lineRef": "KOL:Line:8_3312",
+    "lat": 59.3931355,
+    "lon": 5.4655607,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5552",
     "lineRef": "KOL:Line:8_3052",
-    "lat": 59.4170748,
-    "lon": 5.2732007,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.4010652,
+    "lon": 5.6638142,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "5588",
     "lineRef": "KOL:Line:8_3001",
-    "lat": 59.4163353,
-    "lon": 5.3041082,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.3975867,
+    "lon": 5.2972297,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
-    "id": "5582",
-    "lineRef": "KOL:Line:8_3321",
-    "lat": 59.2992677,
-    "lon": 5.291982,
-    "lastUpdated": "2026-01-30T12:49:04Z"
+    "id": "5583",
+    "lineRef": "KOL:Line:8_3319",
+    "lat": 59.298911,
+    "lon": 5.202781,
+    "lastUpdated": "2026-01-30T13:52:40Z"
   },
   {
-    "id": "5581",
-    "lineRef": "KOL:Line:8_3323",
-    "lat": 59.3796788,
-    "lon": 5.3062132,
-    "lastUpdated": "2026-01-30T12:46:34Z"
+    "id": "5580",
+    "lineRef": "KOL:Line:8_3337",
+    "lat": 59.3364422,
+    "lon": 5.4390897,
+    "lastUpdated": "2026-01-30T13:49:44Z"
+  },
+  {
+    "id": "5579",
+    "lineRef": "KOL:Line:8_3008",
+    "lat": 59.3840313,
+    "lon": 5.278913,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "5575",
+    "lineRef": "KOL:Line:8_3008",
+    "lat": 59.3794175,
+    "lon": 5.3061565,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "5577",
     "lineRef": "KOL:Line:8_3009",
-    "lat": 59.3992625,
-    "lon": 5.2849047,
-    "lastUpdated": "2026-01-30T12:55:23Z"
+    "lat": 59.400727,
+    "lon": 5.2843232,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "5578",
+    "lineRef": "KOL:Line:8_3388",
+    "lat": 59.4318622,
+    "lon": 5.3854,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "5571",
+    "lineRef": "KOL:Line:8_3061",
+    "lat": 59.623411,
+    "lon": 5.589724,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "5572",
+    "lineRef": "KOL:Line:8_3313",
+    "lat": 59.3949437,
+    "lon": 5.5067718,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "5574",
     "lineRef": "KOL:Line:8_3307",
-    "lat": 59.4289812,
-    "lon": 5.6213778,
-    "lastUpdated": "2026-01-30T12:55:06Z"
+    "lat": 59.4489418,
+    "lon": 5.604288,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "5570",
+    "lineRef": "KOL:Line:8_3315",
+    "lat": 59.311765,
+    "lon": 5.4728238,
+    "lastUpdated": "2026-01-30T13:55:57Z"
   },
   {
     "id": "345",
-    "lineRef": "KOL:Line:8_1017",
-    "lat": 59.0914945,
-    "lon": 5.5789455,
-    "lastUpdated": "2026-01-30T12:51:57Z"
+    "lineRef": "KOL:Line:8_1013",
+    "lat": 58.991581,
+    "lon": 5.6535473,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "346",
+    "lineRef": "KOL:Line:8_1013",
+    "lat": 59.08901124800049,
+    "lon": 5.70356632534975,
+    "lastUpdated": "2026-01-30T13:56:45Z"
+  },
+  {
+    "id": "349",
+    "lineRef": "KOL:Line:8_1013",
+    "lat": 59.115466,
+    "lon": 5.7021917,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "259216000",
     "lineRef": "KOL:Line:30_1130",
-    "lat": 59.13805333333333,
-    "lon": 5.588933333333333,
-    "lastUpdated": "2026-01-30T12:55:20.661Z"
+    "lat": 59.170991666666666,
+    "lon": 5.454738333333333,
+    "lastUpdated": "2026-01-30T13:31:31.718Z"
+  },
+  {
+    "id": "3004",
+    "lineRef": "KOL:Line:8_2028",
+    "lat": 58.2915913,
+    "lon": 6.4437465,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "3002",
+    "lineRef": "KOL:Line:8_2028",
+    "lat": 58.3322443,
+    "lon": 6.3598882,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "258271000",
     "lineRef": "KOL:Line:30_1130",
-    "lat": 59.17102833333333,
-    "lon": 5.4546366666666675,
-    "lastUpdated": "2026-01-30T12:37:19.975Z"
+    "lat": 59.13802166666667,
+    "lon": 5.588945,
+    "lastUpdated": "2026-01-30T13:54:27.09Z"
   },
   {
     "id": "3026",
-    "lineRef": "KOL:Line:8_2695",
-    "lat": 58.4535505,
-    "lon": 6.0019465,
-    "lastUpdated": "2026-01-30T12:55:19Z"
+    "lineRef": "KOL:Line:8_2002",
+    "lat": 58.4617268,
+    "lon": 5.9807473,
+    "lastUpdated": "2026-01-30T13:56:43Z"
+  },
+  {
+    "id": "3029",
+    "lineRef": "KOL:Line:8_2043",
+    "lat": 58.8427997,
+    "lon": 5.7204902,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "3027",
+    "lineRef": "KOL:Line:8_2693",
+    "lat": 58.8497033,
+    "lon": 6.01015,
+    "lastUpdated": "2026-01-30T13:51:19Z"
   },
   {
     "id": "3022",
-    "lineRef": "KOL:Line:8_2658",
-    "lat": 58.733597,
-    "lon": 5.6761259,
-    "lastUpdated": "2026-01-30T12:54:15Z"
+    "lineRef": "KOL:Line:8_2021",
+    "lat": 58.6833978,
+    "lon": 5.7703408,
+    "lastUpdated": "2026-01-30T13:51:29Z"
   },
   {
     "id": "3021",
-    "lineRef": "KOL:Line:8_2010",
-    "lat": 58.924965,
-    "lon": 5.8511693,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_2023",
+    "lat": 58.8826333,
+    "lon": 5.65438,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "3015",
+    "lineRef": "KOL:Line:8_2012",
+    "lat": 58.7654208,
+    "lon": 5.8573397,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "3014",
+    "lineRef": "KOL:Line:8_2623",
+    "lat": 58.4418707,
+    "lon": 6.0047938,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "3012",
-    "lineRef": "KOL:Line:8_2031",
-    "lat": 58.5145765,
-    "lon": 6.512613,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_2033",
+    "lat": 58.5340927,
+    "lon": 6.1562708,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
-    "id": "3017",
-    "lineRef": "KOL:Line:8_2602",
-    "lat": 58.4624213,
-    "lon": 5.9683918,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "id": "3019",
+    "lineRef": "KOL:Line:8_2672",
+    "lat": 58.7891727,
+    "lon": 5.6918445,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "3018",
+    "lineRef": "KOL:Line:8_2701",
+    "lat": 58.8513998,
+    "lon": 5.7354882,
+    "lastUpdated": "2026-01-30T13:51:53Z"
   },
   {
     "id": "3016",
     "lineRef": "KOL:Line:8_2033",
-    "lat": 58.4534244,
-    "lon": 6.002206,
-    "lastUpdated": "2026-01-30T12:48:28Z"
-  },
-  {
-    "id": "3011",
-    "lineRef": "KOL:Line:8_2012",
-    "lat": 58.7729892,
-    "lon": 5.8762665,
-    "lastUpdated": "2026-01-30T12:55:23Z"
+    "lat": 58.4925132,
+    "lon": 6.0372568,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "3010",
     "lineRef": "KOL:Line:8_2029",
-    "lat": 58.5860263,
-    "lon": 6.0763593,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.5775273,
+    "lon": 6.0616837,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "3009",
+    "lineRef": "KOL:Line:8_2625",
+    "lat": 58.334778,
+    "lon": 6.2434047,
+    "lastUpdated": "2026-01-30T13:47:08Z"
   },
   {
     "id": "3047",
-    "lineRef": "KOL:Line:8_2667",
-    "lat": 58.7506298,
-    "lon": 5.5788292,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_2044",
+    "lat": 58.7743021,
+    "lon": 5.6294405,
+    "lastUpdated": "2026-01-30T13:56:45Z"
   },
   {
     "id": "3046",
     "lineRef": "KOL:Line:8_2013",
-    "lat": 58.9625978,
-    "lon": 5.8943752,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9526002,
+    "lon": 5.8956985,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "3045",
-    "lineRef": "KOL:Line:8_2608",
-    "lat": 58.4363722,
-    "lon": 5.9771492,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lineRef": "KOL:Line:8_2002",
+    "lat": 58.4338002,
+    "lon": 5.9798047,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
-    "id": "3038",
-    "lineRef": "KOL:Line:8_2694",
-    "lat": 58.4532413,
-    "lon": 6.0025253,
-    "lastUpdated": "2026-01-30T12:45:12Z"
+    "id": "3049",
+    "lineRef": "KOL:Line:8_2015",
+    "lat": 58.8231345,
+    "lon": 5.8730377,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
-    "id": "3068",
-    "lineRef": "KOL:Line:8_2036",
-    "lat": 58.3896517,
-    "lon": 6.0473234,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "id": "3040",
+    "lineRef": "KOL:Line:8_2010",
+    "lat": 58.8958411,
+    "lon": 5.8441956,
+    "lastUpdated": "2026-01-30T13:56:45Z"
+  },
+  {
+    "id": "3044",
+    "lineRef": "KOL:Line:8_2693",
+    "lat": 58.8629273,
+    "lon": 5.9272282,
+    "lastUpdated": "2026-01-30T13:55:51Z"
+  },
+  {
+    "id": "3043",
+    "lineRef": "KOL:Line:8_2682",
+    "lat": 58.9182782,
+    "lon": 5.8711527,
+    "lastUpdated": "2026-01-30T13:56:13Z"
+  },
+  {
+    "id": "3042",
+    "lineRef": "KOL:Line:8_2010",
+    "lat": 58.9301182,
+    "lon": 5.847714,
+    "lastUpdated": "2026-01-30T13:55:37Z"
+  },
+  {
+    "id": "3041",
+    "lineRef": "KOL:Line:8_2010",
+    "lat": 58.8515628,
+    "lon": 5.7366144,
+    "lastUpdated": "2026-01-30T13:56:45Z"
+  },
+  {
+    "id": "3037",
+    "lineRef": "KOL:Line:8_2015",
+    "lat": 58.892432,
+    "lon": 6.0359085,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "3035",
+    "lineRef": "KOL:Line:8_2700",
+    "lat": 58.8514002,
+    "lon": 5.7355814,
+    "lastUpdated": "2026-01-30T13:55:22Z"
+  },
+  {
+    "id": "3033",
+    "lineRef": "KOL:Line:8_2691",
+    "lat": 58.8296487,
+    "lon": 5.649004,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "3030",
+    "lineRef": "KOL:Line:8_2019",
+    "lat": 58.8514565,
+    "lon": 5.7354888,
+    "lastUpdated": "2026-01-30T13:53:50Z"
+  },
+  {
+    "id": "3069",
+    "lineRef": "KOL:Line:8_2011",
+    "lat": 58.823858,
+    "lon": 5.7149398,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "3062",
+    "lineRef": "KOL:Line:8_2044",
+    "lat": 58.890809,
+    "lon": 5.7133084,
+    "lastUpdated": "2026-01-30T13:56:45Z"
+  },
+  {
+    "id": "3061",
+    "lineRef": "KOL:Line:8_2025",
+    "lat": 58.8511913,
+    "lon": 5.7223012,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "3066",
     "lineRef": "KOL:Line:8_2011",
-    "lat": 58.782798,
-    "lon": 5.7311049,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.7832509,
+    "lon": 5.7273871,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "3065",
     "lineRef": "KOL:Line:8_2012",
-    "lat": 58.8513531,
-    "lon": 5.7370728,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "lat": 58.8514263,
+    "lon": 5.7370652,
+    "lastUpdated": "2026-01-30T13:56:45Z"
   },
   {
     "id": "3064",
     "lineRef": "KOL:Line:8_2040",
-    "lat": 58.3781718,
-    "lon": 6.2013137,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.7516347,
+    "lon": 5.921099,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "3063",
     "lineRef": "KOL:Line:8_2012",
-    "lat": 58.8484155,
-    "lon": 5.738724,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "lat": 58.8212322,
+    "lon": 5.7567677,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
-    "id": "3058",
-    "lineRef": "KOL:Line:8_2660",
-    "lat": 58.6371102,
-    "lon": 5.8144255,
-    "lastUpdated": "2026-01-30T12:55:24Z"
-  },
-  {
-    "id": "3056",
-    "lineRef": "KOL:Line:8_2024",
-    "lat": 58.7725155,
-    "lon": 5.67779,
-    "lastUpdated": "2026-01-30T12:55:24Z"
-  },
-  {
-    "id": "3051",
-    "lineRef": "KOL:Line:8_2011",
-    "lat": 58.8473395,
-    "lon": 5.7295402,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "id": "3059",
+    "lineRef": "KOL:Line:8_2012",
+    "lat": 58.7730518,
+    "lon": 5.8760405,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "3050",
     "lineRef": "KOL:Line:8_2035",
-    "lat": 58.8512641,
-    "lon": 5.7362165,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.6008542,
+    "lon": 6.0831275,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
-    "id": "3054",
-    "lineRef": "KOL:Line:8_2600",
-    "lat": 58.4450927,
-    "lon": 6.0057915,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "id": "3055",
+    "lineRef": "KOL:Line:8_2697",
+    "lat": 58.4167386,
+    "lon": 6.0218978,
+    "lastUpdated": "2026-01-30T13:53:26Z"
+  },
+  {
+    "id": "3053",
+    "lineRef": "KOL:Line:8_2626",
+    "lat": 58.3432905,
+    "lon": 6.2952447,
+    "lastUpdated": "2026-01-30T13:56:05Z"
+  },
+  {
+    "id": "3082",
+    "lineRef": "KOL:Line:8_2017",
+    "lat": 58.735273,
+    "lon": 5.6644953,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "3081",
-    "lineRef": "KOL:Line:8_2667",
-    "lat": 58.7348421,
-    "lon": 5.6489464,
-    "lastUpdated": "2026-01-30T12:45:57Z"
+    "lineRef": "KOL:Line:8_2022",
+    "lat": 58.6729628,
+    "lon": 5.6111035,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "3088",
+    "lineRef": "KOL:Line:8_2010",
+    "lat": 58.9303097,
+    "lon": 5.8477657,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "3086",
     "lineRef": "KOL:Line:8_2010",
-    "lat": 58.8549189,
-    "lon": 5.7674569,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.8506962,
+    "lon": 5.7379107,
+    "lastUpdated": "2026-01-30T13:50:00Z"
   },
   {
-    "id": "3085",
-    "lineRef": "KOL:Line:8_2019",
-    "lat": 58.8514111,
-    "lon": 5.7356098,
-    "lastUpdated": "2026-01-30T12:54:45Z"
+    "id": "3079",
+    "lineRef": "KOL:Line:8_2623",
+    "lat": 58.4402801,
+    "lon": 6.0079629,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "3073",
     "lineRef": "KOL:Line:8_2019",
-    "lat": 58.7738591,
-    "lon": 5.6296567,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.7738436,
+    "lon": 5.6295893,
+    "lastUpdated": "2026-01-30T13:56:45Z"
+  },
+  {
+    "id": "3077",
+    "lineRef": "KOL:Line:8_2023",
+    "lat": 58.844817,
+    "lon": 5.5949557,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "3076",
     "lineRef": "KOL:Line:8_2012",
-    "lat": 58.8145438,
-    "lon": 5.7672436,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "lat": 58.8431815,
+    "lon": 5.7373524,
+    "lastUpdated": "2026-01-30T13:56:45Z"
   },
   {
-    "id": "3092",
-    "lineRef": "KOL:Line:8_2632",
-    "lat": 58.6745407,
-    "lon": 6.1572695,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "id": "3075",
+    "lineRef": "KOL:Line:8_2040",
+    "lat": 58.8227868,
+    "lon": 5.7558292,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "3074",
+    "lineRef": "KOL:Line:8_2010",
+    "lat": 58.8695356,
+    "lon": 5.8052665,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "258001700",
     "lineRef": "KOL:Line:26_5958",
-    "lat": 59.23502166666666,
-    "lon": 6.1660433333333335,
-    "lastUpdated": "2026-01-30T12:55:20.922Z"
+    "lat": 59.26052666666667,
+    "lon": 6.160528333333334,
+    "lastUpdated": "2026-01-30T13:56:43.948Z"
   },
   {
     "id": "3169",
     "lineRef": "KOL:Line:8_6140",
-    "lat": 59.1642632,
-    "lon": 6.1710248,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.0361977,
+    "lon": 5.9360965,
+    "lastUpdated": "2026-01-30T13:53:48Z"
+  },
+  {
+    "id": "3167",
+    "lineRef": "KOL:Line:8_6140",
+    "lat": 59.1684248,
+    "lon": 6.1402522,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "3189",
     "lineRef": "KOL:Line:8_6100",
-    "lat": 58.9715572,
-    "lon": 5.7388177,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.0176665,
+    "lon": 6.0432108,
+    "lastUpdated": "2026-01-30T13:56:45Z"
   },
   {
-    "id": "3181",
-    "lineRef": "KOL:Line:8_6101",
-    "lat": 59.0861943,
-    "lon": 5.917381,
-    "lastUpdated": "2026-01-30T12:51:31Z"
+    "id": "3188",
+    "lineRef": "KOL:Line:8_6100",
+    "lat": 59.0252007,
+    "lon": 5.9817763,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
-    "id": "3186",
+    "id": "3183",
+    "lineRef": "KOL:Line:8_6100",
+    "lat": 59.0254717,
+    "lon": 6.0529545,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "3180",
     "lineRef": "KOL:Line:8_6101",
-    "lat": 59.0549493,
-    "lon": 5.9182755,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.0649105,
+    "lon": 5.9119238,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "3187",
+    "lineRef": "KOL:Line:8_6209",
+    "lat": 58.9010329,
+    "lon": 6.0878422,
+    "lastUpdated": "2026-01-30T13:55:27Z"
+  },
+  {
+    "id": "3185",
+    "lineRef": "KOL:Line:8_6101",
+    "lat": 59.0364737,
+    "lon": 5.9354802,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
     "id": "3179",
     "lineRef": "KOL:Line:8_6100",
-    "lat": 59.0307633,
-    "lon": 6.0436095,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.003999638296875,
+    "lon": 5.7391578073230995,
+    "lastUpdated": "2026-01-30T13:56:45Z"
   },
   {
     "id": "3178",
     "lineRef": "KOL:Line:8_6100",
-    "lat": 59.04968622473789,
-    "lon": 5.865808264867837,
-    "lastUpdated": "2026-01-30T12:55:25Z"
+    "lat": 59.0234625,
+    "lon": 6.0440463,
+    "lastUpdated": "2026-01-30T13:56:44Z"
   },
   {
-    "id": "3173",
-    "lineRef": "KOL:Line:8_6309",
-    "lat": 59.0874217,
-    "lon": 5.993805,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "id": "3172",
+    "lineRef": "KOL:Line:8_6140",
+    "lat": 59.171784,
+    "lon": 6.0715888,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "3170",
+    "lineRef": "KOL:Line:8_6101",
+    "lat": 58.9237405,
+    "lon": 5.7020483,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "3199",
-    "lineRef": "KOL:Line:8_6308",
-    "lat": 59.1328393,
-    "lon": 6.0976578,
-    "lastUpdated": "2026-01-30T12:52:27Z"
+    "lineRef": "KOL:Line:8_6130",
+    "lat": 59.1329288,
+    "lon": 6.0972258,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "3194",
+    "lineRef": "KOL:Line:8_6100",
+    "lat": 58.9661371,
+    "lon": 5.7337757,
+    "lastUpdated": "2026-01-30T13:56:43Z"
   },
   {
     "id": "3191",
     "lineRef": "KOL:Line:8_6100",
-    "lat": 59.0220013,
-    "lon": 6.047079,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 58.9691723,
+    "lon": 5.7501328,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "3198",
+    "lineRef": "KOL:Line:8_6121",
+    "lat": 58.9663107,
+    "lon": 6.0051102,
+    "lastUpdated": "2026-01-30T13:56:44Z"
+  },
+  {
+    "id": "3197",
+    "lineRef": "KOL:Line:8_6141",
+    "lat": 59.2399484,
+    "lon": 6.3072356,
+    "lastUpdated": "2026-01-30T13:56:45Z"
   },
   {
     "id": "3190",
     "lineRef": "KOL:Line:8_6100",
-    "lat": 59.0251007,
-    "lon": 5.9679953,
-    "lastUpdated": "2026-01-30T12:55:24Z"
+    "lat": 59.04341082852897,
+    "lon": 5.846531886469325,
+    "lastUpdated": "2026-01-30T13:56:45Z"
   }
 ]
